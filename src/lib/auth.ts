@@ -1,11 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { prisma } from "./prisma";
-import bcrypt from "bcryptjs";
-import type { RecruiterProfile, CandidateProfile } from "@prisma/client";
-import { UserRole } from "@prisma/client";
-import { query } from "./apollo-client";
-import { Auth, LoginDocument, LoginMutationVariables } from "@/graphql/generated/graphql";
+import { api } from "./api";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
 	providers: [
@@ -16,24 +11,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 				password: { label: "Password", type: "password" },
 			},
 			async authorize(credentials) {
-				if (!credentials?.email || !credentials?.password) return null;
 				try {
-					const reslut = await query<Auth, LoginMutationVariables>({
-						query: LoginDocument,
-						variables: { loginInput: { email: credentials.email as string, password: credentials.password as string } },
-					});
-					console.log("🚀 ~ authorize ~ reslut:", reslut);
-					const user = await prisma.user.findUnique({
-						where: { email: credentials.email as string },
-						include: { recruiterProfile: true, candidateProfile: true },
-					});
-					if (!user || !user.password) return null;
-					const isPasswordValid = bcrypt.compare(credentials.password as string, user.password as string);
-					if (!isPasswordValid) return null;
-					let profile: RecruiterProfile | CandidateProfile | null = null;
-					if (user.role === UserRole.RECRUITER && user.recruiterProfile) profile = user.recruiterProfile;
-					else if (user.role === UserRole.CANDIDATE && user.candidateProfile) profile = user.candidateProfile;
-					return { id: user.id, email: user.email, name: user.name, role: user.role, profile };
+					if (!credentials?.email || !credentials?.password) return null;
+					const result = await api.login(credentials.email as string, credentials.password as string);
+					return { accessToken: result.accessToken, refreshToken: result.refreshToken, ...result.user };
 				} catch (error) {
 					console.error("Auth error:", error);
 					return null;
@@ -48,7 +29,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 		async jwt({ token, user }) {
 			if (user) {
 				token.role = user.role;
-				token.profile = user.profile;
+				token.isActive = user.isActive;
+				token.isEmailVerified = user.isEmailVerified;
+				token.organizationId = user.organizationId;
+				token.accessToken = user.accessToken;
+				token.refreshToken = user.refreshToken;
 			}
 			return token;
 		},
@@ -56,7 +41,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 			if (token && session.user) {
 				session.user.id = token.sub as string;
 				session.user.role = token.role as string;
-				session.user.profile = token.profile as RecruiterProfile | CandidateProfile | null;
+				session.user.isActive = token.isActive as boolean;
+				session.user.isEmailVerified = token.isEmailVerified as boolean;
+				session.user.organizationId = token.organizationId as string;
+				session.accessToken = token.accessToken as string;
+				session.refreshToken = token.refreshToken as string;
 			}
 			return session;
 		},

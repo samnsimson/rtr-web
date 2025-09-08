@@ -1,7 +1,7 @@
 "use client";
 import { Stack, Heading, Text, HStack, VStack, List, For, Card } from "@chakra-ui/react";
 import { useJobForm } from "@/store/useJobForm";
-import { CompensationType } from "@prisma/client";
+import { CompensationType } from "@/graphql/generated/graphql";
 
 export const JobPreview = () => {
 	const { formData } = useJobForm((state) => state);

@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { CgMoreAlt } from "react-icons/cg";
 import { LuEye } from "react-icons/lu";
 import Link from "next/link";
-import { RTRStatus } from "@prisma/client";
+import { RtrStatus } from "@/graphql/generated/graphql";
 
 const dataTableItems = [
 	{
@@ -13,7 +13,7 @@ const dataTableItems = [
 		email: "samnsimson@gmail.com",
 		position: "Senior Software Engineer",
 		company: "TechCorp Inc.",
-		status: RTRStatus.SIGNED,
+		status: RtrStatus.Signed,
 		date: new Date(),
 	},
 	{
@@ -22,7 +22,7 @@ const dataTableItems = [
 		email: "samnsimson@gmail.com",
 		position: "Senior Software Engineer",
 		company: "Florida Blue",
-		status: RTRStatus.SIGNED,
+		status: RtrStatus.Signed,
 		date: new Date(),
 	},
 	{
@@ -31,17 +31,17 @@ const dataTableItems = [
 		email: "samnsimson@gmail.com",
 		position: "Senior Software Engineer",
 		company: "Blue Cross Blue Sheild",
-		status: RTRStatus.VIEWED,
+		status: RtrStatus.Viewed,
 		date: new Date(),
 	},
-	{ id: 4, name: "Sam Nishanth Simson", email: "samnsimson@gmail.com", position: "Senior Software Engineer", company: "FoodHub", status: RTRStatus.PENDING, date: new Date() },
+	{ id: 4, name: "Sam Nishanth Simson", email: "samnsimson@gmail.com", position: "Senior Software Engineer", company: "FoodHub", status: RtrStatus.Pending, date: new Date() },
 	{
 		id: 5,
 		name: "Sam Nishanth Simson",
 		email: "samnsimson@gmail.com",
 		position: "Senior Software Engineer",
 		company: "Matrimony.com",
-		status: RTRStatus.EXPIRED,
+		status: RtrStatus.Expired,
 		date: new Date(),
 	},
 	{
@@ -50,10 +50,10 @@ const dataTableItems = [
 		email: "samnsimson@gmail.com",
 		position: "Senior Software Engineer",
 		company: "Emazzanti Technologies",
-		status: RTRStatus.SIGNED,
+		status: RtrStatus.Signed,
 		date: new Date(),
 	},
-	{ id: 7, name: "Sam Nishanth Simson", email: "samnsimson@gmail.com", position: "Senior Software Engineer", company: "Flykart", status: RTRStatus.VIEWED, date: new Date() },
+	{ id: 7, name: "Sam Nishanth Simson", email: "samnsimson@gmail.com", position: "Senior Software Engineer", company: "Flykart", status: RtrStatus.Viewed, date: new Date() },
 ];
 
 export const RtrDataTable = () => {
@@ -124,7 +124,7 @@ export const RtrDataTable = () => {
 					</Table.Body>
 				</Table.Root>
 			</Table.ScrollArea>
-			<PaginationComponent count={dataTableItems.length} padding={2} bgColor={"bg.card"} display={"flex"} justifyContent={"center"} />
+			<PaginationComponent count={dataTableItems.length} padding={2} bgColor={"bg.card"} display={"flex"} justifyContent={"center"} limit={10} />
 		</Stack>
 	);
 };

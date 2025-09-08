@@ -3,7 +3,7 @@ import { EditIcon, DownloadIcon, ShareIcon } from "lucide-react";
 import { format } from "date-fns";
 import { LuCheck, LuEye, LuFileText, LuSend, LuX, LuClock } from "react-icons/lu";
 import { BackButton } from "@/components/ui/back-button";
-import { RTRStatus, WorkType, CompensationType } from "@prisma/client";
+import { RtrStatus, WorkType, CompensationType } from "@/graphql/generated/graphql";
 
 // Mock data - in a real app, this would come from an API call
 const getRtrData = (id: string) => {
@@ -15,7 +15,7 @@ const getRtrData = (id: string) => {
 			phone: "9049177058",
 			position: "Senior Software Engineer",
 			company: "TechCorp Inc.",
-			status: RTRStatus.SIGNED,
+			status: RtrStatus.SIGNED,
 			date: new Date(),
 			workType: WorkType.REMOTE,
 			jobType: "Full-time",
@@ -30,7 +30,7 @@ const getRtrData = (id: string) => {
 			phone: "9049177058",
 			position: "Senior Software Engineer",
 			company: "Florida Blue",
-			status: RTRStatus.SIGNED,
+			status: RtrStatus.SIGNED,
 			date: new Date(),
 			workType: WorkType.HYBRID,
 			jobType: "Full-time",
@@ -45,7 +45,7 @@ const getRtrData = (id: string) => {
 			phone: "9049177058",
 			position: "Senior Software Engineer",
 			company: "Blue Cross Blue Shield",
-			status: RTRStatus.VIEWED,
+			status: RtrStatus.VIEWED,
 			date: new Date(),
 			workType: WorkType.ON_SITE,
 			jobType: "Full-time",
@@ -60,7 +60,7 @@ const getRtrData = (id: string) => {
 			phone: "9049177058",
 			position: "Senior Software Engineer",
 			company: "FoodHub",
-			status: RTRStatus.PENDING,
+			status: RtrStatus.PENDING,
 			date: new Date(),
 			workType: WorkType.REMOTE,
 			jobType: "Full-time",
@@ -75,7 +75,7 @@ const getRtrData = (id: string) => {
 			phone: "9049177058",
 			position: "Senior Software Engineer",
 			company: "Matrimony.com",
-			status: RTRStatus.EXPIRED,
+			status: RtrStatus.EXPIRED,
 			date: new Date(),
 			workType: WorkType.HYBRID,
 			jobType: "Full-time",
@@ -90,7 +90,7 @@ const getRtrData = (id: string) => {
 			phone: "9049177058",
 			position: "Senior Software Engineer",
 			company: "Emazzanti Technologies",
-			status: RTRStatus.SIGNED,
+			status: RtrStatus.SIGNED,
 			date: new Date(),
 			workType: WorkType.REMOTE,
 			jobType: "Full-time",
@@ -105,7 +105,7 @@ const getRtrData = (id: string) => {
 			phone: "9049177058",
 			position: "Senior Software Engineer",
 			company: "Flykart",
-			status: RTRStatus.VIEWED,
+			status: RtrStatus.VIEWED,
 			date: new Date(),
 			workType: WorkType.ON_SITE,
 			jobType: "Full-time",
@@ -301,7 +301,7 @@ const RtrViewPage = async ({ params }: RtrViewPageProps) => {
 									</Timeline.Content>
 								</Timeline.Item>
 
-								{rtrData.status === RTRStatus.VIEWED && (
+								{rtrData.status === RtrStatus.VIEWED && (
 									<Timeline.Item>
 										<Timeline.Connector>
 											<Timeline.Separator />
@@ -319,7 +319,7 @@ const RtrViewPage = async ({ params }: RtrViewPageProps) => {
 									</Timeline.Item>
 								)}
 
-								{rtrData.status === RTRStatus.SIGNED && (
+								{rtrData.status === RtrStatus.SIGNED && (
 									<Timeline.Item>
 										<Timeline.Connector>
 											<Timeline.Separator />
@@ -337,7 +337,7 @@ const RtrViewPage = async ({ params }: RtrViewPageProps) => {
 									</Timeline.Item>
 								)}
 
-								{rtrData.status === RTRStatus.PENDING && (
+								{rtrData.status === RtrStatus.PENDING && (
 									<Timeline.Item>
 										<Timeline.Connector>
 											<Timeline.Separator />
@@ -355,7 +355,7 @@ const RtrViewPage = async ({ params }: RtrViewPageProps) => {
 									</Timeline.Item>
 								)}
 
-								{rtrData.status === RTRStatus.EXPIRED && (
+								{rtrData.status === RtrStatus.EXPIRED && (
 									<Timeline.Item>
 										<Timeline.Connector>
 											<Timeline.Separator />

@@ -1,9 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
-import { UserRole, RemotePreference } from "@prisma/client";
+
+// TODO: Replace with GraphQL types
+enum UserRole {
+	RECRUITER = "RECRUITER",
+	CANDIDATE = "CANDIDATE",
+	ADMIN = "ADMIN",
+}
 
 const registerSchema = z.object({
 	firstName: z.string().min(1, "First name is required").max(50, "First name must be less than 50 characters"),
@@ -23,18 +28,23 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json({ error: "Validation failed", details: errors }, { status: 400 });
 		}
 		const { firstName, lastName, email, phone, password, role } = validationResult.data;
-		const existingUser = await prisma.user.findUnique({ where: { email } });
-		if (existingUser) return NextResponse.json({ error: "User with this email already exists" }, { status: 409 });
 
+		// TODO: Replace with GraphQL mutation to check if user exists
+		// Mock check for now
 		const hashedPassword = await bcrypt.hash(password, 12);
-		const userData: any = { email, name: `${firstName} ${lastName}`, password: hashedPassword, role, phone };
 
-		if (role === UserRole.RECRUITER) userData.recruiterProfile = { create: { companyName: `${firstName}'s Company`, location: "Not specified" } };
-		else if (role === UserRole.CANDIDATE)
-			userData.candidateProfile = { create: { title: "Not specified", location: "Not specified", skills: [], remotePreference: RemotePreference.ANY } };
-		const user = await prisma.user.create({ data: userData, include: { recruiterProfile: true, candidateProfile: true } });
-		const { password: _, ...userWithoutPassword } = user;
-		return NextResponse.json({ message: "User created successfully", user: userWithoutPassword }, { status: 201 });
+		// TODO: Replace with GraphQL mutation to create user
+		// Mock user creation for now
+		const mockUser = {
+			id: "mock-user-id",
+			email,
+			name: `${firstName} ${lastName}`,
+			role,
+			phone,
+			createdAt: new Date().toISOString(),
+		};
+
+		return NextResponse.json({ message: "User created successfully", user: mockUser }, { status: 201 });
 	} catch (error: any) {
 		console.log("🚀 ~ POST ~ error:", error);
 		return NextResponse.json({ error: "Internal server error" }, { status: 500 });

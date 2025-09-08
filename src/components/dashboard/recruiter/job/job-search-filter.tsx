@@ -4,7 +4,7 @@ import { useParamSearch } from "@/hooks/user-search-params";
 import { Box, Card, CardRootProps, Field, Input, InputGroup, Stack } from "@chakra-ui/react";
 import { ChangeEvent, FC } from "react";
 import { BiSearch } from "react-icons/bi";
-import { WorkType, JobType, CompensationType } from "@prisma/client";
+import { WorkType, JobType, CompensationType } from "@/graphql/generated/graphql";
 
 type JobSearchFilterProps = CardRootProps;
 
@@ -32,9 +32,9 @@ export const JobSearchFilter: FC<JobSearchFilterProps> = ({ ...props }) => {
 							label="Work Type"
 							items={[
 								{ label: "All", value: "" },
-								{ label: "Remote", value: WorkType.REMOTE },
-								{ label: "Hybrid", value: WorkType.HYBRID },
-								{ label: "On Site", value: WorkType.ON_SITE },
+								{ label: "Remote", value: WorkType.Remote },
+								{ label: "Hybrid", value: WorkType.Hybrid },
+								{ label: "On Site", value: WorkType.OnSite },
 							]}
 							onValueChange={(e) => search("workType", e.value)}
 						/>
@@ -44,11 +44,11 @@ export const JobSearchFilter: FC<JobSearchFilterProps> = ({ ...props }) => {
 							label="Job Type"
 							items={[
 								{ label: "All", value: "" },
-								{ label: "Full Time", value: JobType.FULL_TIME },
-								{ label: "Part Time", value: JobType.PART_TIME },
-								{ label: "Contract", value: JobType.CONTRACT },
-								{ label: "Internship", value: JobType.INTERNSHIP },
-								{ label: "Freelance", value: JobType.FREELANCE },
+								{ label: "Full Time", value: JobType.FullTime },
+								{ label: "Part Time", value: JobType.PartTime },
+								{ label: "Contract", value: JobType.Contract },
+								{ label: "Internship", value: JobType.Internship },
+								{ label: "Freelance", value: JobType.Freelance },
 							]}
 							onValueChange={(e) => search("jobType", e.value)}
 						/>
@@ -58,10 +58,10 @@ export const JobSearchFilter: FC<JobSearchFilterProps> = ({ ...props }) => {
 							label="Compensation"
 							items={[
 								{ label: "All", value: "" },
-								{ label: "Salary", value: CompensationType.SALARY },
-								{ label: "Hourly", value: CompensationType.HOURLY },
-								{ label: "Project Based", value: CompensationType.PROJECT_BASED },
-								{ label: "Commission", value: CompensationType.COMMISSION },
+								{ label: "Salary", value: CompensationType.Salary },
+								{ label: "Hourly", value: CompensationType.Hourly },
+								{ label: "Project Based", value: CompensationType.ProjectBased },
+								{ label: "Commission", value: CompensationType.Commission },
 							]}
 							onValueChange={(e) => search("compensation", e.value)}
 						/>

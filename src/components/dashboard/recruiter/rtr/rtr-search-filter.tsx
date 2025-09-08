@@ -4,7 +4,7 @@ import { useParamSearch } from "@/hooks/user-search-params";
 import { Box, Card, CardRootProps, Field, Input, InputGroup, Stack } from "@chakra-ui/react";
 import { ChangeEvent, FC } from "react";
 import { BiSearch } from "react-icons/bi";
-import { RTRStatus } from "@prisma/client";
+import { RtrStatus } from "@/graphql/generated/graphql";
 
 type RtrSearchFilterProps = CardRootProps;
 
@@ -31,13 +31,13 @@ export const RtrSearchFilter: FC<RtrSearchFilterProps> = ({ ...props }) => {
 						<SelectBox
 							label="Status"
 							items={[
-								{ label: "Sent", value: RTRStatus.SENT },
-								{ label: "Draft", value: RTRStatus.DRAFT },
-								{ label: "Signed", value: RTRStatus.SIGNED },
-								{ label: "Viewed", value: RTRStatus.VIEWED },
-								{ label: "Expired", value: RTRStatus.EXPIRED },
-								{ label: "Rejected", value: RTRStatus.REJECTED },
-								{ label: "Pending", value: RTRStatus.PENDING },
+								{ label: "Sent", value: RtrStatus.Sent },
+								{ label: "Draft", value: RtrStatus.Draft },
+								{ label: "Signed", value: RtrStatus.Signed },
+								{ label: "Viewed", value: RtrStatus.Viewed },
+								{ label: "Expired", value: RtrStatus.Expired },
+								{ label: "Rejected", value: RtrStatus.Rejected },
+								{ label: "Pending", value: RtrStatus.Pending },
 							]}
 							onValueChange={(e) => search("status", e.value)}
 						/>

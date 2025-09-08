@@ -1,5 +1,5 @@
 import { HStack, RadioCard } from "@chakra-ui/react";
-import { WorkType } from "@prisma/client";
+import { WorkType } from "@/graphql/generated/graphql";
 
 const items = [
 	{ value: WorkType.HYBRID, title: "Hybrid", description: "Occational travel" },

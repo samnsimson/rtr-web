@@ -5,9 +5,9 @@ import { format } from "date-fns";
 import { LuEye, LuPencil, LuTrash2 } from "react-icons/lu";
 import Link from "next/link";
 import { FC, useState, useEffect } from "react";
-import { CompensationType, JobStatus, JobType, WorkType } from "@prisma/client";
+import { CompensationType, JobStatus, JobType, WorkType } from "@/graphql/generated/graphql";
 import { TableSkeleton } from "@/components/ui/table-skeleton";
-import { Job } from "@prisma/client";
+import { Job } from "@/graphql/generated/graphql";
 
 type JobDataTableProps = {
 	jobs: Job[];
@@ -29,13 +29,13 @@ export const JobDataTable: FC<JobDataTableProps> = ({ jobs, totalCount, currentP
 
 	const getStatusColor = (status: string) => {
 		switch (status) {
-			case JobStatus.ACTIVE:
+			case JobStatus.Active:
 				return "green";
-			case JobStatus.INACTIVE:
+			case JobStatus.Inactive:
 				return "yellow";
-			case JobStatus.CLOSED:
+			case JobStatus.Closed:
 				return "red";
-			case JobStatus.DRAFT:
+			case JobStatus.Draft:
 				return "gray";
 			default:
 				return "blue";
@@ -44,11 +44,11 @@ export const JobDataTable: FC<JobDataTableProps> = ({ jobs, totalCount, currentP
 
 	const getWorkTypeLabel = (workType: string) => {
 		switch (workType) {
-			case WorkType.REMOTE:
+			case WorkType.Remote:
 				return "Remote";
-			case WorkType.HYBRID:
+			case WorkType.Hybrid:
 				return "Hybrid";
-			case WorkType.ON_SITE:
+			case WorkType.OnSite:
 				return "On Site";
 			default:
 				return workType;
@@ -57,15 +57,15 @@ export const JobDataTable: FC<JobDataTableProps> = ({ jobs, totalCount, currentP
 
 	const getJobTypeLabel = (jobType: string) => {
 		switch (jobType) {
-			case JobType.FULL_TIME:
+			case JobType.FullTime:
 				return "Full Time";
-			case JobType.PART_TIME:
+			case JobType.PartTime:
 				return "Part Time";
-			case JobType.CONTRACT:
+			case JobType.Contract:
 				return "Contract";
-			case JobType.INTERNSHIP:
+			case JobType.Internship:
 				return "Internship";
-			case JobType.FREELANCE:
+			case JobType.Freelance:
 				return "Freelance";
 			default:
 				return jobType;
@@ -74,13 +74,13 @@ export const JobDataTable: FC<JobDataTableProps> = ({ jobs, totalCount, currentP
 
 	const getCompensationLabel = (compensation: string) => {
 		switch (compensation) {
-			case CompensationType.SALARY:
+			case CompensationType.Salary:
 				return "Salary";
-			case CompensationType.HOURLY:
+			case CompensationType.Hourly:
 				return "Hourly";
-			case CompensationType.PROJECT_BASED:
+			case CompensationType.ProjectBased:
 				return "Project Based";
-			case CompensationType.COMMISSION:
+			case CompensationType.Commission:
 				return "Commission";
 			default:
 				return compensation;
@@ -141,7 +141,7 @@ export const JobDataTable: FC<JobDataTableProps> = ({ jobs, totalCount, currentP
 											<Stack gap={0}>
 												<Heading size={"sm"}>{job.title}</Heading>
 												<Text fontSize="sm" color="fg.muted">
-													{job.compensation === CompensationType.SALARY ? "Annual Salary" : "Rate"}
+													{job.compensation === CompensationType.Salary ? "Annual Salary" : "Rate"}
 												</Text>
 											</Stack>
 										</Table.Cell>

@@ -2,12 +2,11 @@
 import { Stack, HStack, FieldRoot, FieldLabel, InputGroup, Input, Textarea, Button, Card, Heading, Text } from "@chakra-ui/react";
 import { UserIcon, Globe, DollarSign, Calendar } from "lucide-react";
 import { useState } from "react";
-import { WorkType, JobType, CompensationType } from "@prisma/client";
+import { WorkType, JobType, CompensationType } from "@/types/database";
 import { useRouter } from "next/navigation";
 import { SelectBox } from "../ui/select-box";
 import { useJobForm } from "@/store/useJobForm";
 import { JobFormData } from "@/types/database";
-import { api } from "@/lib/api";
 import { ValidationAlert } from "../ui/validation-alert";
 import { AlertDialog } from "../ui/alert";
 
@@ -36,15 +35,27 @@ export const CreateJobForm = () => {
 		console.log("Form data being sent:", formData);
 
 		try {
-			const response = await api.createJob({
-				...formData,
-				requirements: formData.requirements.filter((req) => req.trim() !== ""),
-				benefits: formData.benefits.filter((benefit) => benefit.trim() !== ""),
+			// TODO: Replace with GraphQL mutation
+			// Mock API call for now
+			const response = await fetch("/api/recruiter/jobs", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					...formData,
+					requirements: formData.requirements.filter((req) => req.trim() !== ""),
+					benefits: formData.benefits.filter((benefit) => benefit.trim() !== ""),
+				}),
 			});
 
-			if (response.error) {
-				if (response.status === 400 && response.errors) {
-					setValidationErrors(response.errors);
+			const result = await response.json();
+
+			if (!response.ok) {
+				if (response.status === 400 && result.errors) {
+					setValidationErrors(result.errors);
+				} else {
+					setValidationErrors({ general: result.error || "An error occurred" });
 				}
 				return;
 			}
@@ -53,6 +64,7 @@ export const CreateJobForm = () => {
 			resetForm();
 		} catch (err) {
 			console.log("🚀 ~ handleSubmit ~ err:", err);
+			setValidationErrors({ general: "Network error occurred" });
 		} finally {
 			setLoading(false);
 		}

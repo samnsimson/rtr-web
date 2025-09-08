@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { WorkType, JobType, CompensationType } from "@prisma/client";
+import { WorkType, JobType, CompensationType } from "@/graphql/generated/graphql";
 
 // Zod schema for GET query parameters
 export const getJobsQuerySchema = z.object({

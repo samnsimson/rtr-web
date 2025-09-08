@@ -2,7 +2,7 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { UserRole } from "@prisma/client";
+import { UserRole } from "@/graphql/generated/graphql";
 
 interface LoginCredentials {
 	email: string;

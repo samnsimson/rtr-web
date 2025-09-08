@@ -4,7 +4,7 @@ import { JobSearchFilter } from "@/components/dashboard/recruiter/job/job-search
 import { Card } from "@chakra-ui/react";
 import { Fragment, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Job } from "@prisma/client";
+import { Job } from "@/graphql/generated/graphql";
 
 export const JobList = () => {
 	const [jobs, setJobs] = useState<Job[]>([]);

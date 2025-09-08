@@ -5,7 +5,7 @@ import { HistoryIcon, LockIcon, MailIcon, PhoneIcon, UserIcon, UserPlus } from "
 import Link from "next/link";
 import { FaSignInAlt } from "react-icons/fa";
 import { useState } from "react";
-import { UserRole } from "@prisma/client";
+import { UserRole } from "@/graphql/generated/graphql";
 
 export const RegisterForm = () => {
 	const { register, isLoading, error } = useAuth();

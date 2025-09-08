@@ -1,5 +1,5 @@
 import { HStack, RadioCard } from "@chakra-ui/react";
-import { CompensationType } from "@prisma/client";
+import { CompensationType } from "@/graphql/generated/graphql";
 
 const items = [
 	{ value: CompensationType.HOURLY, title: "Per Hour", description: "Paid on hourly basis" },
