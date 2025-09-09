@@ -1,0 +1,20 @@
+mutation createJob($createJobInput: CreateJobInput!) {
+	createJob(createJobInput: $createJobInput) {
+		id
+		title
+		company
+		description
+		location
+		workType
+		jobType
+		compensation
+		salaryMin
+		salaryMax
+		benefits
+		recruiterId
+		organizationId
+		status
+		expiresAt
+		createdAt
+	}
+}

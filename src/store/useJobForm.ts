@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { JobFormData } from "@/types/database";
+import { CompensationType, JobType, WorkType } from "@/graphql/generated/graphql";
 
 interface JobFormStore {
 	formData: JobFormData;
@@ -17,11 +18,11 @@ const initialFormData: JobFormData = {
 	description: "",
 	requirements: [],
 	location: "",
-	workType: undefined,
-	jobType: undefined,
-	compensation: undefined,
-	salaryMin: undefined,
-	salaryMax: undefined,
+	workType: WorkType.Hybrid,
+	jobType: JobType.FullTime,
+	compensation: CompensationType.Salary,
+	salaryMin: 0,
+	salaryMax: 0,
 	benefits: [],
 	expiresAt: "",
 };

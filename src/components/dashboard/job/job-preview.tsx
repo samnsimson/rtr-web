@@ -37,7 +37,7 @@ export const JobPreview = () => {
 						</Card.Root>
 					</Stack>
 
-					{formData.compensation === CompensationType.SALARY && (
+					{formData.compensation === CompensationType.Salary && (
 						<Text fontWeight="medium">
 							{formData.salaryMin && formData.salaryMax
 								? `$${formData.salaryMin.toLocaleString()} - $${formData.salaryMax.toLocaleString()}`

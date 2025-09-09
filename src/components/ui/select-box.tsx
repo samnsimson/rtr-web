@@ -14,7 +14,7 @@ interface SelectBoxProps extends Omit<SelectRootProps, "collection"> {
 }
 
 export const SelectBox: FC<SelectBoxProps> = ({ label, onValueChange, items }) => {
-	const [selectedValue, setSelectedValue] = useState<Array<string>>([]);
+	const [selectedValue, setSelectedValue] = useState<string | undefined>(undefined);
 	const [defaultItems, setDefaultItems] = useState<ListCollection<SelectBoxItem>>();
 	const [isUserSelected, setIsUserSelected] = useState(false);
 	const params = useSearchParams();
@@ -27,18 +27,18 @@ export const SelectBox: FC<SelectBoxProps> = ({ label, onValueChange, items }) =
 		if (isUserSelected) return;
 		const status = params.get("status");
 		const templateExists = defaultItems?.items.some(({ value }) => value === status?.toLowerCase());
-		if (templateExists) setSelectedValue([status!]);
-		else setSelectedValue([]);
+		if (templateExists) setSelectedValue(status!);
+		else setSelectedValue(undefined);
 	}, [defaultItems?.items, params, isUserSelected]);
 
 	const handleValueChange = (e: SelectValueChangeDetails<SelectBoxItem>) => {
-		setSelectedValue(e.value);
+		setSelectedValue(e.value[0]);
 		setIsUserSelected(true);
 		if (onValueChange) onValueChange(e);
 	};
 
 	return (
-		<Select.Root collection={defaultItems!} width="full" value={selectedValue} onValueChange={handleValueChange}>
+		<Select.Root collection={defaultItems!} width="full" value={selectedValue ? [selectedValue] : []} onValueChange={handleValueChange}>
 			<Select.HiddenSelect />
 			<Select.Label>{label}</Select.Label>
 			<Select.Control bgColor={"bg.card"}>

@@ -2,20 +2,25 @@
 import { Stack, HStack, FieldRoot, FieldLabel, InputGroup, Input, Textarea, Button, Card, Heading, Text } from "@chakra-ui/react";
 import { UserIcon, Globe, DollarSign, Calendar } from "lucide-react";
 import { useState } from "react";
-import { WorkType, JobType, CompensationType } from "@/types/database";
 import { useRouter } from "next/navigation";
+import { WorkType, JobType, CompensationType } from "@/graphql/generated/graphql";
 import { SelectBox } from "../ui/select-box";
 import { useJobForm } from "@/store/useJobForm";
 import { JobFormData } from "@/types/database";
 import { ValidationAlert } from "../ui/validation-alert";
 import { AlertDialog } from "../ui/alert";
+import { CreateJobDocument } from "@/graphql/generated/graphql";
+import { useMutation } from "@apollo/client/react";
 
 export const CreateJobForm = () => {
 	const router = useRouter();
-	const [loading, setLoading] = useState(false);
 	const [success, setSuccess] = useState<string | null>(null);
 	const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 	const { formData, updateField, updateArrayField, addArrayItem, removeArrayItem, resetForm } = useJobForm((state) => state);
+	const [createJob, { loading: isCreatingJob }] = useMutation(CreateJobDocument, {
+		onCompleted: () => resetForm(),
+		onError: (error) => setValidationErrors({ general: error.message }),
+	});
 
 	const handleInputChange = (field: keyof JobFormData, value: any) => {
 		updateField(field, value);
@@ -27,47 +32,10 @@ export const CreateJobForm = () => {
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		setLoading(true);
 		setValidationErrors({});
 		setSuccess(null);
-
-		// Debug: Log what's being sent
 		console.log("Form data being sent:", formData);
-
-		try {
-			// TODO: Replace with GraphQL mutation
-			// Mock API call for now
-			const response = await fetch("/api/recruiter/jobs", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					...formData,
-					requirements: formData.requirements.filter((req) => req.trim() !== ""),
-					benefits: formData.benefits.filter((benefit) => benefit.trim() !== ""),
-				}),
-			});
-
-			const result = await response.json();
-
-			if (!response.ok) {
-				if (response.status === 400 && result.errors) {
-					setValidationErrors(result.errors);
-				} else {
-					setValidationErrors({ general: result.error || "An error occurred" });
-				}
-				return;
-			}
-
-			setSuccess("Job created successfully!");
-			resetForm();
-		} catch (err) {
-			console.log("🚀 ~ handleSubmit ~ err:", err);
-			setValidationErrors({ general: "Network error occurred" });
-		} finally {
-			setLoading(false);
-		}
+		await createJob({ variables: { createJobInput: formData } });
 	};
 
 	return (
@@ -159,33 +127,33 @@ export const CreateJobForm = () => {
 							<HStack gap={4}>
 								<SelectBox
 									label="Job Type"
-									onValueChange={(e) => handleInputChange("jobType", e.value)}
+									onValueChange={(e) => handleInputChange("jobType", e.value.pop())}
 									items={[
-										{ label: "Full Time", value: JobType.FULL_TIME },
-										{ label: "Part Time", value: JobType.PART_TIME },
-										{ label: "Contract", value: JobType.CONTRACT },
-										{ label: "Internship", value: JobType.INTERNSHIP },
-										{ label: "Freelance", value: JobType.FREELANCE },
+										{ label: "Full Time", value: JobType.FullTime },
+										{ label: "Part Time", value: JobType.PartTime },
+										{ label: "Contract", value: JobType.Contract },
+										{ label: "Internship", value: JobType.Internship },
+										{ label: "Freelance", value: JobType.Freelance },
 									]}
 								/>
 								<SelectBox
 									label="Work Type"
-									onValueChange={(e) => handleInputChange("workType", e.value)}
+									onValueChange={(e) => handleInputChange("workType", e.value.pop())}
 									items={[
-										{ label: "Remote", value: WorkType.REMOTE },
-										{ label: "Hybrid", value: WorkType.HYBRID },
-										{ label: "On Site", value: WorkType.ON_SITE },
+										{ label: "Remote", value: WorkType.Remote },
+										{ label: "Hybrid", value: WorkType.Hybrid },
+										{ label: "On Site", value: WorkType.OnSite },
 									]}
 								/>
 							</HStack>
 							<SelectBox
 								label="Compensation Type"
-								onValueChange={(e) => handleInputChange("compensation", e.value)}
+								onValueChange={(e) => handleInputChange("compensation", e.value.pop())}
 								items={[
-									{ label: "Salary", value: CompensationType.SALARY },
-									{ label: "Hourly", value: CompensationType.HOURLY },
-									{ label: "Project Based", value: CompensationType.PROJECT_BASED },
-									{ label: "Commission", value: CompensationType.COMMISSION },
+									{ label: "Salary", value: CompensationType.Salary },
+									{ label: "Hourly", value: CompensationType.Hourly },
+									{ label: "Project Based", value: CompensationType.ProjectBased },
+									{ label: "Commission", value: CompensationType.Commission },
 								]}
 							/>
 						</Stack>
@@ -329,11 +297,11 @@ export const CreateJobForm = () => {
 
 				{/* Submit Buttons */}
 				<HStack gap={4} justify={"stretch"}>
-					<Button flex={1} type="button" variant="outline" onClick={() => router.back()} disabled={loading}>
+					<Button flex={1} type="button" variant="outline" onClick={() => router.back()} disabled={isCreatingJob}>
 						Cancel
 					</Button>
-					<Button flex={1} type="submit" variant="solid" colorPalette="blue" loading={loading}>
-						{loading ? "Creating..." : "Create Job"}
+					<Button flex={1} type="submit" variant="solid" colorPalette="blue" loading={isCreatingJob}>
+						{isCreatingJob ? "Creating..." : "Create Job"}
 					</Button>
 				</HStack>
 			</Stack>

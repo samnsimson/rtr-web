@@ -1,4 +1,7 @@
 // TODO: Replace with GraphQL generated types
+
+import { CompensationType, JobType, RtrStatus, WorkType } from "@/graphql/generated/graphql";
+
 // Mock types for now
 export type User = {
 	id: string;
@@ -89,43 +92,6 @@ export enum CompanySize {
 	MEDIUM = "MEDIUM",
 	LARGE = "LARGE",
 	ENTERPRISE = "ENTERPRISE",
-}
-
-export enum RemotePreference {
-	ANY = "ANY",
-	REMOTE_ONLY = "REMOTE_ONLY",
-	HYBRID_ONLY = "HYBRID_ONLY",
-	ONSITE_ONLY = "ONSITE_ONLY",
-}
-
-export enum WorkType {
-	REMOTE = "REMOTE",
-	HYBRID = "HYBRID",
-	ON_SITE = "ON_SITE",
-}
-
-export enum JobType {
-	FULL_TIME = "FULL_TIME",
-	PART_TIME = "PART_TIME",
-	CONTRACT = "CONTRACT",
-	INTERNSHIP = "INTERNSHIP",
-	FREELANCE = "FREELANCE",
-}
-
-export enum CompensationType {
-	SALARY = "SALARY",
-	HOURLY = "HOURLY",
-	PROJECT_BASED = "PROJECT_BASED",
-	COMMISSION = "COMMISSION",
-}
-
-export enum RtrStatus {
-	PENDING = "PENDING",
-	SENT = "SENT",
-	VIEWED = "VIEWED",
-	SIGNED = "SIGNED",
-	EXPIRED = "EXPIRED",
-	REJECTED = "REJECTED",
 }
 
 export enum ApplicationStatus {
@@ -315,9 +281,9 @@ export type JobFormData = {
 	description: string;
 	requirements: string[];
 	location: string;
-	workType: WorkType | undefined;
-	jobType: JobType | undefined;
-	compensation: CompensationType | undefined;
+	workType: WorkType;
+	jobType: JobType;
+	compensation: CompensationType;
 	salaryMin?: number;
 	salaryMax?: number;
 	benefits: string[];
