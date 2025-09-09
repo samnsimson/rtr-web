@@ -7,5 +7,5 @@ interface SessionProviderProps {
 }
 
 export const SessionProvider = ({ children }: SessionProviderProps) => {
-	return <NextAuthSessionProvider>{children}</NextAuthSessionProvider>;
+	return <NextAuthSessionProvider refetchOnWindowFocus={true}>{children}</NextAuthSessionProvider>;
 };

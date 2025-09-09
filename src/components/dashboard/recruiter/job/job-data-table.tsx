@@ -5,12 +5,11 @@ import { format } from "date-fns";
 import { LuEye, LuPencil, LuTrash2 } from "react-icons/lu";
 import Link from "next/link";
 import { FC, useState, useEffect } from "react";
-import { CompensationType, JobStatus, JobType, WorkType } from "@/graphql/generated/graphql";
+import { CompensationType, JobStatus, JobType, ListJobsQuery, WorkType } from "@/graphql/generated/graphql";
 import { TableSkeleton } from "@/components/ui/table-skeleton";
-import { Job } from "@/graphql/generated/graphql";
 
 type JobDataTableProps = {
-	jobs: Job[];
+	jobs: ListJobsQuery["jobs"]["data"];
 	totalCount: number;
 	currentPage: number;
 	limit: number;

@@ -21,25 +21,23 @@ interface RegisterCredentials {
 
 export const useAuth = () => {
 	const { data: session, status } = useSession();
-	const router = useRouter();
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
+	const router = useRouter();
 
-	const login = async (credentials: LoginCredentials) => {
+	const login = async ({ email, password }: LoginCredentials) => {
 		setIsLoading(true);
 		setError(null);
-
 		try {
-			await signIn("credentials", {
-				email: credentials.email,
-				password: credentials.password,
-				redirect: true,
-				callbackUrl: "/api/auth/callback",
-			});
+			await signIn("credentials", { email, password, redirect: true, callbackUrl: "/api/auth/callback" });
+			// console.log("🚀 ~ login ~ result:", result);
+			// if (!session) throw new Error("Unable to authenticate");
+			// localStorage.setItem("accessToken", session.accessToken);
+			// localStorage.setItem("refreshToken", session.refreshToken);
+			// router.push("/api/auth/callback");
 		} catch (err: any) {
 			console.log("🚀 ~ login ~ err:", err);
 			setError("An error occurred during login");
-			return false;
 		} finally {
 			setIsLoading(false);
 		}
@@ -91,6 +89,8 @@ export const useAuth = () => {
 
 	const logout = async () => {
 		await signOut({ redirect: false });
+		localStorage.removeItem("accessToken");
+		localStorage.removeItem("refreshToken");
 		router.push("/auth/login");
 	};
 
