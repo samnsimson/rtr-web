@@ -1,26 +1,17 @@
-"use client";
 import { JobDataTable } from "@/components/dashboard/recruiter/job/job-data-table";
-import { JobSearchFilter } from "@/components/dashboard/recruiter/job/job-search-filter";
 import { Card } from "@chakra-ui/react";
-import { FC, Fragment } from "react";
-import { useSearchParams } from "next/navigation";
-import { ListJobsQuery } from "@/graphql/generated/graphql";
+import { api } from "@/lib/api";
+import { NextPage } from "next";
 
-type JobListProps = Pick<ListJobsQuery, "jobs">;
-
-export const JobList: FC<JobListProps> = ({ jobs }) => {
-	const searchParams = useSearchParams();
-	const currentPage = parseInt(searchParams.get("page") || "1");
-	const limit = 10;
-
+const JobList: NextPage = async () => {
+	const jobs = await api.listJobs(1, 10);
 	return (
-		<Fragment>
-			<JobSearchFilter />
-			<Card.Root>
-				<Card.Body padding={0}>
-					<JobDataTable jobs={jobs.data} totalCount={jobs.total} currentPage={currentPage} limit={limit} />
-				</Card.Body>
-			</Card.Root>
-		</Fragment>
+		<Card.Root>
+			<Card.Body padding={0}>
+				<JobDataTable jobs={jobs.data} totalCount={jobs.total} currentPage={1} limit={10} />
+			</Card.Body>
+		</Card.Root>
 	);
 };
+
+export default JobList;

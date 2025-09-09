@@ -1,16 +1,18 @@
-import { JobList } from "@/components/dashboard/recruiter/job/job-list";
+import JobList from "@/components/dashboard/recruiter/job/job-list";
 import { JobHeader } from "@/components/dashboard/recruiter/job/job-header";
 import { Stack } from "@chakra-ui/react";
-import { api } from "@/lib/api";
+import { JobListSuspense } from "@/components/suspence";
 import { Suspense } from "react";
+import { JobSearchFilter } from "@/components/dashboard/recruiter/job/job-search-filter";
+import { FC } from "react";
 
-const JobsPage = async () => {
-	const jobs = await api.listJobs(1, 10);
+const JobsPage: FC = async () => {
 	return (
 		<Stack padding={4} gap={4}>
 			<JobHeader />
-			<Suspense fallback={<div>Loading...</div>}>
-				<JobList jobs={jobs} />
+			<JobSearchFilter />
+			<Suspense fallback={<JobListSuspense />}>
+				<JobList />
 			</Suspense>
 		</Stack>
 	);
