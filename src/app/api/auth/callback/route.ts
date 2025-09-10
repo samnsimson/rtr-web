@@ -4,16 +4,12 @@ import { UserRole } from "@/graphql/generated/graphql";
 
 export async function GET() {
 	const session = await auth();
-	if (!session?.user?.role) return redirect("/dashboard");
+	if (!session) return redirect("/auth/login");
 	switch (session.user.role) {
 		case UserRole.OrganizationOwner:
 		case UserRole.OrganizationAdmin:
 		case UserRole.RecruiterManager:
 		case UserRole.Recruiter:
 			return redirect("/recruiter");
-		case UserRole.Candidate:
-			return redirect("/candidate");
-		default:
-			return redirect("/dashboard");
 	}
 }

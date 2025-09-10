@@ -30,11 +30,6 @@ export const useAuth = () => {
 		setError(null);
 		try {
 			await signIn("credentials", { email, password, redirect: true, callbackUrl: "/api/auth/callback" });
-			// console.log("🚀 ~ login ~ result:", result);
-			// if (!session) throw new Error("Unable to authenticate");
-			// localStorage.setItem("accessToken", session.accessToken);
-			// localStorage.setItem("refreshToken", session.refreshToken);
-			// router.push("/api/auth/callback");
 		} catch (err: any) {
 			console.log("🚀 ~ login ~ err:", err);
 			setError("An error occurred during login");
@@ -88,10 +83,7 @@ export const useAuth = () => {
 	};
 
 	const logout = async () => {
-		await signOut({ redirect: false });
-		localStorage.removeItem("accessToken");
-		localStorage.removeItem("refreshToken");
-		router.push("/auth/login");
+		await signOut({ redirect: true, callbackUrl: "/api/auth/callback" });
 	};
 
 	return {

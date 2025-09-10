@@ -55,7 +55,7 @@ export const CreateJobForm = () => {
 					</Card.Header>
 					<Card.Body padding={6}>
 						<Stack gap={4}>
-							<HStack gap={4}>
+							<Stack gap={4} direction={{ base: "column", md: "row" }}>
 								<FieldRoot id="position-title" required>
 									<FieldLabel>Position Title</FieldLabel>
 									<InputGroup startElement={<UserIcon />}>
@@ -82,8 +82,8 @@ export const CreateJobForm = () => {
 										/>
 									</InputGroup>
 								</FieldRoot>
-							</HStack>
-							<HStack gap={4}>
+							</Stack>
+							<Stack gap={4} direction={{ base: "column", md: "row" }}>
 								<FieldRoot id="location" required>
 									<FieldLabel>Location</FieldLabel>
 									<InputGroup startElement={<Globe />}>
@@ -109,7 +109,7 @@ export const CreateJobForm = () => {
 										/>
 									</InputGroup>
 								</FieldRoot>
-							</HStack>
+							</Stack>
 						</Stack>
 					</Card.Body>
 				</Card.Root>
@@ -124,7 +124,7 @@ export const CreateJobForm = () => {
 					</Card.Header>
 					<Card.Body padding={6}>
 						<Stack gap={4}>
-							<HStack gap={4}>
+							<Stack gap={4} direction={{ base: "column", md: "row" }}>
 								<SelectBox
 									label="Job Type"
 									onValueChange={(e) => handleInputChange("jobType", e.value.pop())}
@@ -145,7 +145,7 @@ export const CreateJobForm = () => {
 										{ label: "On Site", value: WorkType.OnSite },
 									]}
 								/>
-							</HStack>
+							</Stack>
 							<SelectBox
 								label="Compensation Type"
 								onValueChange={(e) => handleInputChange("compensation", e.value.pop())}
@@ -169,7 +169,7 @@ export const CreateJobForm = () => {
 						</Text>
 					</Card.Header>
 					<Card.Body padding={6}>
-						<HStack gap={4}>
+						<Stack gap={4} direction={{ base: "column", md: "row" }}>
 							<FieldRoot id="salary-min">
 								<FieldLabel>Min Salary</FieldLabel>
 								<InputGroup startElement={<DollarSign />}>
@@ -196,7 +196,7 @@ export const CreateJobForm = () => {
 									/>
 								</InputGroup>
 							</FieldRoot>
-						</HStack>
+						</Stack>
 					</Card.Body>
 				</Card.Root>
 

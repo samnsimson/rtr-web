@@ -1,16 +1,16 @@
-import { HStack, RadioCard } from "@chakra-ui/react";
+import { RadioCard, Stack } from "@chakra-ui/react";
 import { CompensationType } from "@/graphql/generated/graphql";
 
 const items = [
-	{ value: CompensationType.HOURLY, title: "Per Hour", description: "Paid on hourly basis" },
-	{ value: CompensationType.SALARY, title: "Annual", description: "Paid annually" },
+	{ value: CompensationType.Hourly, title: "Per Hour", description: "Paid on hourly basis" },
+	{ value: CompensationType.Salary, title: "Annual", description: "Paid annually" },
 ];
 
 export const RtrCompensationType = () => {
 	return (
-		<RadioCard.Root defaultValue={CompensationType.HOURLY} variant={"surface"} colorPalette={"blue"}>
+		<RadioCard.Root defaultValue={CompensationType.Hourly} variant={"surface"} colorPalette={"blue"}>
 			<RadioCard.Label>Compensation type</RadioCard.Label>
-			<HStack align="stretch">
+			<Stack direction={{ base: "column", md: "row" }}>
 				{items.map((item) => (
 					<RadioCard.Item key={item.value} value={item.value}>
 						<RadioCard.ItemHiddenInput />
@@ -23,7 +23,7 @@ export const RtrCompensationType = () => {
 						</RadioCard.ItemControl>
 					</RadioCard.Item>
 				))}
-			</HStack>
+			</Stack>
 		</RadioCard.Root>
 	);
 };

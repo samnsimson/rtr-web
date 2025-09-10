@@ -1,4 +1,4 @@
-import { Card, Stack, HStack, FieldRoot, FieldLabel, InputGroup, Input } from "@chakra-ui/react";
+import { Card, Stack, FieldRoot, FieldLabel, InputGroup, Input } from "@chakra-ui/react";
 import { UserIcon, MailIcon, PhoneIcon } from "lucide-react";
 
 export const RtrCandidateInformation = () => {
@@ -10,7 +10,7 @@ export const RtrCandidateInformation = () => {
 			</Card.Header>
 			<Card.Body>
 				<Stack gap={4}>
-					<HStack gap={4}>
+					<Stack gap={4} direction={{ base: "column", md: "row" }}>
 						<FieldRoot id="candidate-first-name">
 							<FieldLabel>First Name</FieldLabel>
 							<InputGroup startElement={<UserIcon />}>
@@ -23,8 +23,8 @@ export const RtrCandidateInformation = () => {
 								<Input bgColor={"bg.card"} type="text" size={"lg"} placeholder="Enter candidate's last name" />
 							</InputGroup>
 						</FieldRoot>
-					</HStack>
-					<HStack gap={4}>
+					</Stack>
+					<Stack gap={4} direction={{ base: "column", md: "row" }}>
 						<FieldRoot id="candidate-email">
 							<FieldLabel>Email</FieldLabel>
 							<InputGroup startElement={<MailIcon />}>
@@ -37,7 +37,7 @@ export const RtrCandidateInformation = () => {
 								<Input bgColor={"bg.card"} type="text" size={"lg"} placeholder="Enter candidate's phone" />
 							</InputGroup>
 						</FieldRoot>
-					</HStack>
+					</Stack>
 				</Stack>
 			</Card.Body>
 		</Card.Root>

@@ -21,7 +21,7 @@ export const RtrTemplateInfo = () => {
 			</Card.Header>
 			<Card.Body>
 				<Stack gap={4}>
-					<HStack gap={4}>
+					<Stack gap={4} direction={{ base: "column", md: "row" }}>
 						<SelectBox label="RTR Template" items={[]} />
 						<FieldRoot id="rtr-expiry-days">
 							<FieldLabel>Expiry Days</FieldLabel>
@@ -32,7 +32,7 @@ export const RtrTemplateInfo = () => {
 								</InputGroup>
 							</NumberInput.Root>
 						</FieldRoot>
-					</HStack>
+					</Stack>
 					<FieldRoot id="rtr-notes">
 						<FieldLabel>Notes</FieldLabel>
 						<Textarea bgColor={"bg.card"} size={"lg"} placeholder="Add internal notes about this RTR..." />
