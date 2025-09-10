@@ -3,11 +3,13 @@ import { registerApolloClient, ApolloClient, InMemoryCache } from "@apollo/clien
 import { SetContextLink } from "@apollo/client/link/context";
 import { auth } from "./auth";
 
-export const { getClient, query, PreloadQuery } = registerApolloClient(async () => {
-	const session = await auth();
-	const accessToken = session?.accessToken;
-	const authorization = accessToken ? `Bearer ${accessToken}` : undefined;
-	const authLink = new SetContextLink(({ headers }) => ({ headers: { ...headers, authorization } }));
+export const { getClient, query, PreloadQuery } = registerApolloClient(() => {
+	const authLink = new SetContextLink(async ({ headers }) => {
+		const session = await auth();
+		const accessToken = session?.accessToken;
+		const authorization = accessToken ? `Bearer ${accessToken}` : undefined;
+		return { headers: { ...headers, authorization } };
+	});
 	return new ApolloClient({
 		cache: new InMemoryCache(),
 		link: authLink.concat(

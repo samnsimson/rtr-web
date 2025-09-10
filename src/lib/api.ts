@@ -28,7 +28,7 @@ class Api extends ApiHelper {
 
 	async createJob(job: CreateJobInput) {
 		try {
-			const client = await getClient();
+			const client = getClient();
 			const { data } = await client.mutate<CreateJobMutation, CreateJobMutationVariables>({ mutation: CreateJobDocument, variables: { createJobInput: job } });
 			if (!data || !data.createJob) throw new Error("Create job failed");
 			return data.createJob;
@@ -39,7 +39,7 @@ class Api extends ApiHelper {
 	}
 
 	async listJobs(page: number, limit: number) {
-		const client = await getClient();
+		const client = getClient();
 		const { data } = await client.query<ListJobsQuery, ListJobsQueryVariables>({ query: ListJobsDocument, variables: { filters: { page, limit } } });
 		if (!data || !data.jobs) throw new Error("List jobs failed");
 		return data.jobs;
