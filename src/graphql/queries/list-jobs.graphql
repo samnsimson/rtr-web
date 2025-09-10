@@ -1,9 +1,7 @@
-query listJobs($pagination: PaginationDto) {
-	jobs(pagination: $pagination) {
+query listJobs($filters: JobListFiltersInput!) {
+	jobs(filters: $filters) {
 		total
 		page
-		limit
-		totalPages
 		data {
 			id
 			organizationId

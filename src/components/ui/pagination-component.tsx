@@ -1,5 +1,6 @@
 "use client";
 import { ButtonGroup, IconButton, Pagination, PaginationRootProps } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 import { FC } from "react";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 
@@ -8,6 +9,12 @@ interface PaginationComponentProps extends PaginationRootProps {
 }
 
 export const PaginationComponent: FC<PaginationComponentProps> = ({ count, limit = 10, page = 1, ...props }) => {
+	const router = useRouter();
+
+	const handlePageChange = (page: number) => {
+		router.push(`?page=${page}`);
+	};
+
 	return (
 		<Pagination.Root count={count} pageSize={limit} page={page} {...props}>
 			<ButtonGroup variant="ghost" size="sm" wrap="wrap">
@@ -19,7 +26,7 @@ export const PaginationComponent: FC<PaginationComponentProps> = ({ count, limit
 
 				<Pagination.Items
 					render={(page) => (
-						<IconButton variant={{ base: "ghost", _selected: "solid" }} colorPalette={"white"} rounded={"full"}>
+						<IconButton variant={{ base: "ghost", _selected: "solid" }} colorPalette={"white"} rounded={"full"} onClick={() => handlePageChange(page.value)}>
 							{page.value}
 						</IconButton>
 					)}

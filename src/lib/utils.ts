@@ -12,3 +12,10 @@ export function removeUndefinedValues<T extends Record<string, any>>(obj: T): Pa
 	});
 	return cleaned;
 }
+
+export const toEnum = <T extends object>(value: string | null | undefined, enumObject: T): T[keyof T] | null => {
+	if (!value) return null;
+	const validValues = Object.values(enumObject);
+	if (validValues.includes(value as any)) return value as T[keyof T];
+	return null;
+};

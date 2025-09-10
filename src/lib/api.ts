@@ -11,6 +11,9 @@ import {
 	LoginDocument,
 	LoginMutation,
 	LoginMutationVariables,
+	RefreshTokenDocument,
+	RefreshTokenMutation,
+	RefreshTokenMutationVariables,
 } from "@/graphql/generated/graphql";
 import { ApiHelper } from "./api-helper";
 
@@ -40,6 +43,17 @@ class Api extends ApiHelper {
 		const { data } = await client.query<ListJobsQuery, ListJobsQueryVariables>({ query: ListJobsDocument, variables: { pagination: { page, limit } } });
 		if (!data || !data.jobs) throw new Error("List jobs failed");
 		return data.jobs;
+	}
+
+	async refreshToken(refreshToken: string) {
+		const client = await getClient();
+		const { data } = await client.mutate<RefreshTokenMutation, RefreshTokenMutationVariables>({
+			mutation: RefreshTokenDocument,
+			variables: { refreshTokenInput: { refreshToken } },
+		});
+		if (!data || !data.refreshToken) throw new Error("Token refresh failed");
+		const { accessToken, refreshToken: newRefreshToken, user } = data.refreshToken;
+		return { accessToken, refreshToken: newRefreshToken, user: this.getUserObject(user as AuthUser) };
 	}
 }
 

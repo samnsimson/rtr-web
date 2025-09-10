@@ -185,7 +185,7 @@ export const JobDataTable: FC<JobDataTableProps> = ({ jobs, totalCount, currentP
 													</Link>
 												</IconButton>
 												<IconButton variant={"ghost"} rounded={"full"} _hover={{ color: "primary" }} asChild>
-													<Link href={`/recruiter/job/${job.id}/edit`}>
+													<Link href={`/recruiter/job/${job.id}`}>
 														<LuPencil />
 													</Link>
 												</IconButton>

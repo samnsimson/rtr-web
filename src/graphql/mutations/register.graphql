@@ -1,0 +1,16 @@
+mutation register($registerInput: RegisterInput!) {
+	register(registerInput: $registerInput) {
+		accessToken
+		refreshToken
+		user {
+			id
+			name
+			role
+			isActive
+			isEmailVerified
+			organization {
+				id
+			}
+		}
+	}
+}

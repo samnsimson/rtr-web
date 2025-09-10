@@ -1,0 +1,16 @@
+mutation refreshToken($refreshTokenInput: RefreshTokenInput!) {
+	refreshToken(refreshTokenInput: $refreshTokenInput) {
+		accessToken
+		refreshToken
+		user {
+			id
+			name
+			role
+			isActive
+			isEmailVerified
+			organization {
+				id
+			}
+		}
+	}
+}

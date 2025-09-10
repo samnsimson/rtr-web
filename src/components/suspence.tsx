@@ -1,7 +1,13 @@
 import { Card } from "@chakra-ui/react";
 import { TableSkeleton } from "./ui/table-skeleton";
+import { FC, PropsWithChildren } from "react";
 
-export const JobListSuspense = () => {
+interface JobListSuspenseProps extends PropsWithChildren {
+	isLoading?: boolean;
+}
+
+export const JobListSuspense: FC<JobListSuspenseProps> = ({ children, isLoading }) => {
+	if (!isLoading) return children;
 	return (
 		<Card.Root>
 			<Card.Body padding={0}>
