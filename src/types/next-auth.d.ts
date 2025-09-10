@@ -25,6 +25,7 @@ declare module "next-auth" {
 		organizationId?: string;
 		accessToken: string;
 		refreshToken: string;
+		expiresAt: string;
 	}
 }
 
@@ -36,5 +37,6 @@ declare module "next-auth/jwt" {
 		organizationId?: string;
 		accessToken: string;
 		refreshToken: string;
+		expiresAt: string;
 	}
 }

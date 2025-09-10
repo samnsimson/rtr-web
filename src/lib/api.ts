@@ -1,4 +1,4 @@
-import { getClient } from "./apollo-client";
+import { getClient, getPublicClient } from "./apollo-client";
 import {
 	AuthUser,
 	CreateJobDocument,
@@ -19,11 +19,11 @@ import { ApiHelper } from "./api-helper";
 
 class Api extends ApiHelper {
 	async login(email: string, password: string) {
-		const client = await getClient();
+		const client = getPublicClient();
 		const { data } = await client.mutate<LoginMutation, LoginMutationVariables>({ mutation: LoginDocument, variables: { loginInput: { email, password } } });
 		if (!data || !data.login) throw new Error("Login failed");
-		const { accessToken, refreshToken, user } = data.login;
-		return { accessToken, refreshToken, user: this.getUserObject(user as AuthUser) };
+		const { accessToken, refreshToken, tokenType, expiresAt, user } = data.login;
+		return { accessToken, refreshToken, tokenType, expiresAt, user: this.getUserObject(user as AuthUser) };
 	}
 
 	async createJob(job: CreateJobInput) {
@@ -40,20 +40,21 @@ class Api extends ApiHelper {
 
 	async listJobs(page: number, limit: number) {
 		const client = await getClient();
-		const { data } = await client.query<ListJobsQuery, ListJobsQueryVariables>({ query: ListJobsDocument, variables: { pagination: { page, limit } } });
+		const { data } = await client.query<ListJobsQuery, ListJobsQueryVariables>({ query: ListJobsDocument, variables: { filters: { page, limit } } });
 		if (!data || !data.jobs) throw new Error("List jobs failed");
 		return data.jobs;
 	}
 
 	async refreshToken(refreshToken: string) {
-		const client = await getClient();
-		const { data } = await client.mutate<RefreshTokenMutation, RefreshTokenMutationVariables>({
+		const client = getPublicClient();
+		const { data, error } = await client.mutate<RefreshTokenMutation, RefreshTokenMutationVariables>({
 			mutation: RefreshTokenDocument,
 			variables: { refreshTokenInput: { refreshToken } },
 		});
+		if (error) throw new Error("Token refresh failed");
 		if (!data || !data.refreshToken) throw new Error("Token refresh failed");
-		const { accessToken, refreshToken: newRefreshToken, user } = data.refreshToken;
-		return { accessToken, refreshToken: newRefreshToken, user: this.getUserObject(user as AuthUser) };
+		const { accessToken, refreshToken: newRefreshToken, user, expiresAt } = data.refreshToken;
+		return { accessToken, refreshToken: newRefreshToken, user: this.getUserObject(user as AuthUser), expiresAt };
 	}
 }
 

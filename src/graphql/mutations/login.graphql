@@ -1,5 +1,7 @@
 mutation login($loginInput: LoginInput!) {
 	login(loginInput: $loginInput) {
+		expiresAt
+		tokenType
 		accessToken
 		refreshToken
 		user {

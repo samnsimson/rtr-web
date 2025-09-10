@@ -1,7 +1,9 @@
 mutation refreshToken($refreshTokenInput: RefreshTokenInput!) {
 	refreshToken(refreshTokenInput: $refreshTokenInput) {
+		tokenType
 		accessToken
 		refreshToken
+		expiresAt
 		user {
 			id
 			name

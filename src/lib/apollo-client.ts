@@ -6,9 +6,22 @@ import { auth } from "./auth";
 export const { getClient, query, PreloadQuery } = registerApolloClient(async () => {
 	const session = await auth();
 	const accessToken = session?.accessToken;
-	const authLink = new SetContextLink(({ headers }) => {
-		return { headers: { ...headers, authorization: accessToken ? `Bearer ${accessToken}` : "" } };
+	const authorization = accessToken ? `Bearer ${accessToken}` : undefined;
+	const authLink = new SetContextLink(({ headers }) => ({ headers: { ...headers, authorization } }));
+	return new ApolloClient({
+		cache: new InMemoryCache(),
+		link: authLink.concat(
+			new HttpLink({
+				uri: process.env.GRAPHQL_ENDPOINT || "http://localhost:8000/graphql",
+				fetchOptions: { credentials: "include", headers: { "Content-Type": "application/json" } },
+			}),
+		),
 	});
+});
+
+// Public client for unauthenticated requests
+export const { getClient: getPublicClient } = registerApolloClient(() => {
+	const authLink = new SetContextLink(({ headers }) => ({ headers: { ...headers } }));
 	return new ApolloClient({
 		cache: new InMemoryCache(),
 		link: authLink.concat(

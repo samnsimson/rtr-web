@@ -5,7 +5,6 @@ import { SetContextLink } from "@apollo/client/link/context";
 import { Session } from "next-auth";
 
 export const makeClient = (session: Session | null) => {
-	console.log("🚀 ~ makeClient ~ session:", session);
 	return () => {
 		const authLink = new SetContextLink(({ headers }) => {
 			const accessToken = session?.accessToken;

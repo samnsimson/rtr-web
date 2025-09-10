@@ -1,6 +1,8 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { api } from "./api";
+import { UserRole } from "@/graphql/generated/graphql";
+import { format, isBefore } from "date-fns";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
 	providers: [
@@ -14,7 +16,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 				try {
 					if (!credentials?.email || !credentials?.password) return null;
 					const result = await api.login(credentials.email as string, credentials.password as string);
-					return { accessToken: result.accessToken, refreshToken: result.refreshToken, ...result.user };
+					return { accessToken: result.accessToken, refreshToken: result.refreshToken, expiresAt: result.expiresAt, ...result.user };
 				} catch (error) {
 					console.error("Auth error:", error);
 					return null;
@@ -26,27 +28,55 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 		strategy: "jwt",
 	},
 	callbacks: {
+		async signIn({ user }) {
+			if (!user) return false;
+			switch (user.role) {
+				case UserRole.OrganizationAdmin:
+				case UserRole.OrganizationOwner:
+				case UserRole.RecruiterManager:
+				case UserRole.Recruiter:
+				case UserRole.Candidate:
+				case UserRole.Admin:
+					return true;
+				default:
+					return false;
+			}
+		},
 		async jwt({ token, user }) {
 			if (user) {
+				console.log("User is logged in");
 				token.role = user.role;
 				token.isActive = user.isActive;
 				token.isEmailVerified = user.isEmailVerified;
 				token.organizationId = user.organizationId;
 				token.accessToken = user.accessToken;
 				token.refreshToken = user.refreshToken;
+				token.expiresAt = user.expiresAt;
+				return token;
+			} else if (token.expiresAt && isBefore(Date.now(), new Date(token.expiresAt as string))) {
+				return token;
+			} else {
+				try {
+					const result = await api.refreshToken(token.refreshToken as string);
+					token.accessToken = result.accessToken;
+					token.refreshToken = result.refreshToken;
+					token.expiresAt = result.expiresAt;
+					return token;
+				} catch (error) {
+					console.error("Error refreshing token:", error);
+					return token;
+				}
 			}
-			return token;
 		},
 		async session({ session, token }) {
-			if (token && session.user) {
-				session.user.id = token.sub as string;
-				session.user.role = token.role as string;
-				session.user.isActive = token.isActive as boolean;
-				session.user.isEmailVerified = token.isEmailVerified as boolean;
-				session.user.organizationId = token.organizationId as string;
-				session.accessToken = token.accessToken as string;
-				session.refreshToken = token.refreshToken as string;
-			}
+			if (!token || !session.user) return session;
+			session.user.id = token.sub as string;
+			session.user.role = token.role as string;
+			session.user.isActive = token.isActive as boolean;
+			session.user.isEmailVerified = token.isEmailVerified as boolean;
+			session.user.organizationId = token.organizationId as string;
+			session.accessToken = token.accessToken as string;
+			session.refreshToken = token.refreshToken as string;
 			return session;
 		},
 	},
