@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { api } from "./api";
 import { UserRole } from "@/graphql/generated/graphql";
-import { format, isBefore } from "date-fns";
+import { isBefore } from "date-fns";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
 	providers: [

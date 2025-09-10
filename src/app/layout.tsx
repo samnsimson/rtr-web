@@ -22,11 +22,10 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-	const session = await auth();
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body className={`${poppins.variable} ${quicksand.variable}`}>
-				<AppProviders session={session}>
+				<AppProviders>
 					<Provider forcedTheme="dark">{children}</Provider>
 				</AppProviders>
 			</body>
