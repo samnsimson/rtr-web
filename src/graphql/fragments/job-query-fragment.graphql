@@ -1,0 +1,21 @@
+fragment JobQueryFragment on JobResponse {
+	id
+	jobId
+	organizationId
+	title
+	description
+	company
+	location
+	workType
+	jobType
+	compensation
+	salaryMin
+	salaryMax
+	recruiterId
+	benefits
+	requirements
+	createdAt
+	updatedAt
+	expiresAt
+	status
+}

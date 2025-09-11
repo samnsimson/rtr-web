@@ -14,7 +14,7 @@ const CreateJobPage = () => {
 					<CreateJobForm />
 				</GridItem>
 				<GridItem>
-					<JobPreview />
+					<JobPreview display={{ base: "none", md: "flex" }} />
 				</GridItem>
 			</SimpleGrid>
 		</Stack>

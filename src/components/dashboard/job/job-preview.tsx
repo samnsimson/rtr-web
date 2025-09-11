@@ -1,13 +1,16 @@
 "use client";
-import { Stack, Heading, Text, HStack, VStack, List, For, Card } from "@chakra-ui/react";
+import { Stack, Heading, Text, HStack, VStack, List, For, Card, CardRootProps } from "@chakra-ui/react";
 import { useJobForm } from "@/store/useJobForm";
 import { CompensationType } from "@/graphql/generated/graphql";
+import { FC } from "react";
 
-export const JobPreview = () => {
+type JobPreviewProps = CardRootProps;
+
+export const JobPreview: FC<JobPreviewProps> = ({ ...props }) => {
 	const { formData } = useJobForm((state) => state);
 
 	return (
-		<Card.Root bgColor={"bg"} divideY={"1px"} divideColor={"border"}>
+		<Card.Root bgColor={"bg"} divideY={"1px"} divideColor={"border"} {...props}>
 			<Card.Header padding={4} gap={0}>
 				<Card.Title>Job Preview</Card.Title>
 				<Card.Description>A preview of the job you created</Card.Description>

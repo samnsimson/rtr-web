@@ -1,10 +1,11 @@
 import { JobBenefitsCard } from "@/components/dashboard/recruiter/job/job-benefits-card";
+import { JobInfoExtraCard } from "@/components/dashboard/recruiter/job/job-info-extra-card";
 import { JobDescriptionCard } from "@/components/dashboard/recruiter/job/job-description-card";
 import { JobDetailHeader } from "@/components/dashboard/recruiter/job/job-detail-header";
 import { JobInfoCard } from "@/components/dashboard/recruiter/job/job-info-card";
 import { JobRequirementCard } from "@/components/dashboard/recruiter/job/job-requirement-card";
-import { api } from "@/lib/api";
 import { GridItem, SimpleGrid, Stack } from "@chakra-ui/react";
+import { api } from "@/lib/api";
 
 const JobViewPage = async (props: PageProps<"/recruiter/job/[id]">) => {
 	const { id } = await props.params;
@@ -12,13 +13,13 @@ const JobViewPage = async (props: PageProps<"/recruiter/job/[id]">) => {
 
 	return (
 		<Stack padding={4} gap={4}>
-			<JobDetailHeader />
+			<JobDetailHeader job={jobData} />
 			<SimpleGrid columns={{ base: 1, md: 2 }} gap={4}>
 				<GridItem>
 					<JobInfoCard job={jobData} />
 				</GridItem>
 				<GridItem>
-					<JobInfoCard job={jobData} />
+					<JobInfoExtraCard job={jobData} />
 				</GridItem>
 			</SimpleGrid>
 			<JobDescriptionCard job={jobData} />

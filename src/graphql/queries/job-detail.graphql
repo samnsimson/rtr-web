@@ -1,20 +1,8 @@
+#import "../fragments/job-query-fragment.graphql"
+
 query jobDetail($id: String!) {
 	job(id: $id) {
-		id
-		title
-		company
-		description
-		location
-		workType
-		jobType
-		compensation
-		salaryMin
-		salaryMax
-		benefits
-		requirements
-		status
-		createdAt
-		updatedAt
+		...JobQueryFragment
 		recruiter {
 			id
 			name

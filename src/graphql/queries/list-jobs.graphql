@@ -1,26 +1,11 @@
+#import "../fragments/job-query-fragment.graphql"
+
 query listJobs($filters: JobListFiltersInput!) {
 	jobs(filters: $filters) {
 		total
 		page
 		data {
-			id
-			organizationId
-			title
-			description
-			company
-			location
-			workType
-			jobType
-			compensation
-			salaryMin
-			salaryMax
-			recruiterId
-			benefits
-			requirements
-			createdAt
-			updatedAt
-			expiresAt
-			status
+			...JobQueryFragment
 		}
 	}
 }
