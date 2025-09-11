@@ -2,23 +2,24 @@
 import { useSidebar } from "@/store/useSidebar";
 import { useAuth } from "@/hooks/use-auth";
 import { AvatarFallback, AvatarRoot, Box, Drawer, Flex, Heading, Icon, IconButton, Portal, Stack, Text, useBreakpoint } from "@chakra-ui/react";
-import { LogOutIcon, Menu } from "lucide-react";
+import { LogOutIcon } from "lucide-react";
 import { Fragment, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NavItemProps, SidebarConfig } from "@/lib/types";
+import { LuMenu } from "react-icons/lu";
 
 export const SidebarToggle = () => {
 	const { toggle } = useSidebar((state) => state);
 	return (
-		<IconButton rounded={"full"} variant={"ghost"} colorPalette={"white"} display={{ base: "block", md: "none" }} onClick={toggle}>
-			<Menu />
+		<IconButton rounded={"full"} variant={"ghost"} colorPalette={"white"} display={{ base: "flex", lg: "none" }} onClick={toggle}>
+			<LuMenu />
 		</IconButton>
 	);
 };
 
 const NavItem = ({ href, icon, label, children, isActive = false }: NavItemProps & { isActive?: boolean }) => (
-	<Link href={href} style={{ textDecoration: "none" }}>
+	<Link href={href as any} style={{ textDecoration: "none" }}>
 		<Flex
 			alignItems={"center"}
 			px={4}
@@ -107,7 +108,7 @@ export const Sidebar = ({ config }: { config: SidebarConfig }) => {
 
 	return (
 		<Fragment>
-			<Box width={"2/12"} h={"full"} bgColor={"bg"} display={{ base: "none", md: "flex" }}>
+			<Box width={"2/12"} h={"full"} bgColor={"bg"} display={{ base: "none", lg: "flex" }}>
 				<SidebarContent config={config} />
 			</Box>
 			<Drawer.Root open={open && !isDesktop} onOpenChange={toggle} placement={"start"}>

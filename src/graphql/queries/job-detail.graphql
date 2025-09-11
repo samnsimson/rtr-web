@@ -1,0 +1,32 @@
+query jobDetail($id: String!) {
+	job(id: $id) {
+		id
+		title
+		company
+		description
+		location
+		workType
+		jobType
+		compensation
+		salaryMin
+		salaryMax
+		benefits
+		requirements
+		status
+		createdAt
+		updatedAt
+		recruiter {
+			id
+			name
+			email
+			phone
+		}
+		organization {
+			id
+			name
+			website
+			linkedinUrl
+			logo
+		}
+	}
+}

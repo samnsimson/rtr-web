@@ -4,26 +4,20 @@ import { Badge, For, Heading, HStack, IconButton, Stack, Table, Text } from "@ch
 import { format } from "date-fns";
 import { LuEye, LuPencil, LuTrash2 } from "react-icons/lu";
 import Link from "next/link";
-import { FC, useState, useEffect } from "react";
+import { FC } from "react";
 import { CompensationType, JobStatus, JobType, ListJobsQuery, WorkType } from "@/graphql/generated/graphql";
 import { TableSkeleton } from "@/components/ui/table-skeleton";
+import { JobDataEmpty } from "./job-data-empty";
 
 type JobDataTableProps = {
-	jobs: ListJobsQuery["jobs"]["data"];
-	totalCount: number;
+	jobs?: ListJobsQuery["jobs"]["data"];
+	totalCount?: number;
 	currentPage: number;
 	limit: number;
 	loading?: boolean;
 };
 
 export const JobDataTable: FC<JobDataTableProps> = ({ jobs, totalCount, currentPage, limit, loading = false }) => {
-	const [mounted, setMounted] = useState(false);
-
-	// Prevent hydration mismatch
-	useEffect(() => {
-		setMounted(true);
-	}, []);
-
 	const formatDate = (dateString: Date) => format(dateString, "MMM dd");
 
 	const getStatusColor = (status: string) => {
@@ -86,11 +80,6 @@ export const JobDataTable: FC<JobDataTableProps> = ({ jobs, totalCount, currentP
 		}
 	};
 
-	// Don't render until mounted
-	if (!mounted) {
-		return <div>Loading...</div>;
-	}
-
 	return (
 		<Stack gap={0}>
 			<Table.ScrollArea maxW={{ base: "sm", md: "full" }}>
@@ -133,7 +122,7 @@ export const JobDataTable: FC<JobDataTableProps> = ({ jobs, totalCount, currentP
 						<TableSkeleton rows={5} columns={10} />
 					) : (
 						<Table.Body>
-							<For each={jobs}>
+							<For each={jobs} fallback={<JobDataEmpty />}>
 								{(job) => (
 									<Table.Row key={job.id}>
 										<Table.Cell>

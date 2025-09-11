@@ -5,6 +5,9 @@ import {
 	CreateJobInput,
 	CreateJobMutation,
 	CreateJobMutationVariables,
+	JobDetailDocument,
+	JobDetailQuery,
+	JobDetailQueryVariables,
 	ListJobsDocument,
 	ListJobsQuery,
 	ListJobsQueryVariables,
@@ -43,6 +46,14 @@ class Api extends ApiHelper {
 		const { data } = await client.query<ListJobsQuery, ListJobsQueryVariables>({ query: ListJobsDocument, variables: { filters: { page, limit } } });
 		if (!data || !data.jobs) throw new Error("List jobs failed");
 		return data.jobs;
+	}
+
+	async getJobDetail(id: string) {
+		const client = getClient();
+		const { data, error } = await client.query<JobDetailQuery, JobDetailQueryVariables>({ query: JobDetailDocument, variables: { id } });
+		if (error) throw new Error(error.message);
+		if (!data || !data.job) throw new Error("Get job detail failed");
+		return data.job;
 	}
 
 	async refreshToken(refreshToken: string) {
