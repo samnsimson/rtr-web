@@ -1,7 +1,10 @@
+"use client";
+import { useRtrForm } from "@/store/useRtrForm";
 import { Card, Stack, FieldRoot, FieldLabel, InputGroup, Input } from "@chakra-ui/react";
 import { UserIcon, MailIcon, PhoneIcon } from "lucide-react";
 
 export const RtrCandidateInformation = () => {
+	const { formData, updateField } = useRtrForm();
 	return (
 		<Card.Root bgColor={"bg"} divideY={"1px"} divideColor={"border"}>
 			<Card.Header padding={4} gap={0}>
@@ -14,13 +17,27 @@ export const RtrCandidateInformation = () => {
 						<FieldRoot id="candidate-first-name">
 							<FieldLabel>First Name</FieldLabel>
 							<InputGroup startElement={<UserIcon />}>
-								<Input bgColor={"bg.card"} type="text" size={"lg"} placeholder="Enter candidate's first name" />
+								<Input
+									bgColor={"bg.card"}
+									type="text"
+									size={"lg"}
+									placeholder="Enter candidate's first name"
+									value={formData.firstName}
+									onChange={(e) => updateField("firstName", e.target.value)}
+								/>
 							</InputGroup>
 						</FieldRoot>
 						<FieldRoot id="candidate-last-name">
 							<FieldLabel>Last Name</FieldLabel>
 							<InputGroup startElement={<UserIcon />}>
-								<Input bgColor={"bg.card"} type="text" size={"lg"} placeholder="Enter candidate's last name" />
+								<Input
+									bgColor={"bg.card"}
+									type="text"
+									size={"lg"}
+									placeholder="Enter candidate's last name"
+									value={formData.lastName}
+									onChange={(e) => updateField("lastName", e.target.value)}
+								/>
 							</InputGroup>
 						</FieldRoot>
 					</Stack>
@@ -28,13 +45,27 @@ export const RtrCandidateInformation = () => {
 						<FieldRoot id="candidate-email">
 							<FieldLabel>Email</FieldLabel>
 							<InputGroup startElement={<MailIcon />}>
-								<Input bgColor={"bg.card"} type="text" size={"lg"} placeholder="Enter candidate's email address" />
+								<Input
+									bgColor={"bg.card"}
+									type="text"
+									size={"lg"}
+									placeholder="Enter candidate's email address"
+									value={formData.email}
+									onChange={(e) => updateField("email", e.target.value)}
+								/>
 							</InputGroup>
 						</FieldRoot>
 						<FieldRoot id="candidate-phone">
 							<FieldLabel>Phone</FieldLabel>
 							<InputGroup startElement={<PhoneIcon />}>
-								<Input bgColor={"bg.card"} type="text" size={"lg"} placeholder="Enter candidate's phone" />
+								<Input
+									bgColor={"bg.card"}
+									type="text"
+									size={"lg"}
+									placeholder="Enter candidate's phone"
+									value={formData.phone}
+									onChange={(e) => updateField("phone", e.target.value)}
+								/>
 							</InputGroup>
 						</FieldRoot>
 					</Stack>

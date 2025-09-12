@@ -1,7 +1,7 @@
 import { SelectBox } from "@/components/ui/select-box";
 import { Card, Stack, HStack, FieldRoot, FieldLabel, NumberInput, InputGroup, Textarea, Link } from "@chakra-ui/react";
-import { ArrowRightIcon, CalendarIcon } from "lucide-react";
 import NextLink from "next/link";
+import { LuArrowRight, LuCalendar } from "react-icons/lu";
 
 export const RtrTemplateInfo = () => {
 	return (
@@ -12,7 +12,7 @@ export const RtrTemplateInfo = () => {
 					<Link asChild colorPalette={"yellow"} fontSize={"sm"}>
 						<NextLink href={"/recruiter/rtr/template/create"}>
 							Create RTR template
-							<ArrowRightIcon size={16} />
+							<LuArrowRight size={16} />
 						</NextLink>
 					</Link>
 				</HStack>
@@ -27,7 +27,7 @@ export const RtrTemplateInfo = () => {
 							<FieldLabel>Expiry Days</FieldLabel>
 							<NumberInput.Root defaultValue="30" size={"lg"} width={"full"}>
 								<NumberInput.Control />
-								<InputGroup startElement={<CalendarIcon />}>
+								<InputGroup startElement={<LuCalendar />}>
 									<NumberInput.Input bgColor={"bg.card"} />
 								</InputGroup>
 							</NumberInput.Root>
