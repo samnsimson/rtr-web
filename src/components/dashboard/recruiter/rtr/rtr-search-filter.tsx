@@ -9,7 +9,7 @@ import { RtrStatus } from "@/graphql/generated/graphql";
 type RtrSearchFilterProps = CardRootProps;
 
 export const RtrSearchFilter: FC<RtrSearchFilterProps> = ({ ...props }) => {
-	const { searchDebounced, search } = useParamSearch();
+	const { searchDebounced } = useParamSearch();
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => searchDebounced("query", e.target.value);
 
 	return (
@@ -29,8 +29,11 @@ export const RtrSearchFilter: FC<RtrSearchFilterProps> = ({ ...props }) => {
 					<Box width={{ base: "full", md: "2/12" }}>
 						<Suspense>
 							<SelectBox
+								name="status"
 								label="Status"
+								updateUrl={true}
 								items={[
+									{ label: "All", value: "" },
 									{ label: "Sent", value: RtrStatus.Sent },
 									{ label: "Draft", value: RtrStatus.Draft },
 									{ label: "Signed", value: RtrStatus.Signed },
@@ -39,7 +42,6 @@ export const RtrSearchFilter: FC<RtrSearchFilterProps> = ({ ...props }) => {
 									{ label: "Rejected", value: RtrStatus.Rejected },
 									{ label: "Pending", value: RtrStatus.Pending },
 								]}
-								onValueChange={(e) => search("status", e.value)}
 							/>
 						</Suspense>
 					</Box>

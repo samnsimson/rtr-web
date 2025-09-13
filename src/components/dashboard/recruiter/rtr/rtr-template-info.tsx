@@ -24,7 +24,7 @@ export const RtrTemplateInfo = () => {
 				<Stack gap={4}>
 					<Stack gap={4} direction={{ base: "column", md: "row" }}>
 						<Suspense>
-							<SelectBox label="RTR Template" items={[]} />
+							<SelectBox name="rtrTemplate" label="RTR Template" items={[]} />
 						</Suspense>
 						<FieldRoot id="rtr-expiry-days">
 							<FieldLabel>Expiry Days</FieldLabel>

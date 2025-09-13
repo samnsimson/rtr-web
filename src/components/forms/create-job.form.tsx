@@ -1,6 +1,5 @@
 "use client";
 import { Stack, HStack, FieldRoot, FieldLabel, InputGroup, Input, Textarea, Button, Card, Heading, Text } from "@chakra-ui/react";
-import { UserIcon, Globe, DollarSign, Calendar } from "lucide-react";
 import { Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
 import { WorkType, JobType, CompensationType } from "@/graphql/generated/graphql";
@@ -11,6 +10,7 @@ import { ValidationAlert } from "../ui/validation-alert";
 import { AlertDialog } from "../ui/alert";
 import { CreateJobDocument } from "@/graphql/generated/graphql";
 import { useMutation } from "@apollo/client/react";
+import { LuDollarSign, LuUser, LuGlobe, LuCalendar } from "react-icons/lu";
 
 export const CreateJobForm = () => {
 	const router = useRouter();
@@ -58,7 +58,7 @@ export const CreateJobForm = () => {
 							<Stack gap={4} direction={{ base: "column", md: "row" }}>
 								<FieldRoot id="position-title" required>
 									<FieldLabel>Position Title</FieldLabel>
-									<InputGroup startElement={<UserIcon />}>
+									<InputGroup startElement={<LuUser />}>
 										<Input
 											bgColor={"bg.card"}
 											type="text"
@@ -71,7 +71,7 @@ export const CreateJobForm = () => {
 								</FieldRoot>
 								<FieldRoot id="company-name" required>
 									<FieldLabel>Company Name</FieldLabel>
-									<InputGroup startElement={<UserIcon />}>
+									<InputGroup startElement={<LuUser />}>
 										<Input
 											bgColor={"bg.card"}
 											type="text"
@@ -86,7 +86,7 @@ export const CreateJobForm = () => {
 							<Stack gap={4} direction={{ base: "column", md: "row" }}>
 								<FieldRoot id="location" required>
 									<FieldLabel>Location</FieldLabel>
-									<InputGroup startElement={<Globe />}>
+									<InputGroup startElement={<LuGlobe />}>
 										<Input
 											bgColor={"bg.card"}
 											type="text"
@@ -99,7 +99,7 @@ export const CreateJobForm = () => {
 								</FieldRoot>
 								<FieldRoot id="expires-at">
 									<FieldLabel>Expires At</FieldLabel>
-									<InputGroup startElement={<Calendar />}>
+									<InputGroup startElement={<LuCalendar />}>
 										<Input
 											bgColor={"bg.card"}
 											type="date"
@@ -127,6 +127,7 @@ export const CreateJobForm = () => {
 							<Stack gap={4} direction={{ base: "column", md: "row" }}>
 								<Suspense>
 									<SelectBox
+										name="jobType"
 										label="Job Type"
 										onValueChange={(e) => handleInputChange("jobType", e.value.pop())}
 										items={[
@@ -140,6 +141,7 @@ export const CreateJobForm = () => {
 								</Suspense>
 								<Suspense>
 									<SelectBox
+										name="workType"
 										label="Work Type"
 										onValueChange={(e) => handleInputChange("workType", e.value.pop())}
 										items={[
@@ -152,6 +154,7 @@ export const CreateJobForm = () => {
 							</Stack>
 							<Suspense>
 								<SelectBox
+									name="compensation"
 									label="Compensation Type"
 									onValueChange={(e) => handleInputChange("compensation", e.value.pop())}
 									items={[
@@ -178,7 +181,7 @@ export const CreateJobForm = () => {
 						<Stack gap={4} direction={{ base: "column", md: "row" }}>
 							<FieldRoot id="salary-min">
 								<FieldLabel>Min Salary</FieldLabel>
-								<InputGroup startElement={<DollarSign />}>
+								<InputGroup startElement={<LuDollarSign />}>
 									<Input
 										bgColor={"bg.card"}
 										type="number"
@@ -191,7 +194,7 @@ export const CreateJobForm = () => {
 							</FieldRoot>
 							<FieldRoot id="salary-max">
 								<FieldLabel>Max Salary</FieldLabel>
-								<InputGroup startElement={<DollarSign />}>
+								<InputGroup startElement={<LuDollarSign />}>
 									<Input
 										bgColor={"bg.card"}
 										type="number"

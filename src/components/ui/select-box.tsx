@@ -1,7 +1,8 @@
 "use client";
 import { createListCollection, For, ListCollection, Portal, Select, SelectRootProps, SelectValueChangeDetails, Stack } from "@chakra-ui/react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FC, useEffect, useState } from "react";
+import qs from "qs";
 
 type SelectBoxItem = {
 	label: string;
@@ -9,32 +10,43 @@ type SelectBoxItem = {
 };
 
 interface SelectBoxProps extends Omit<SelectRootProps, "collection"> {
+	name: string;
 	label: string;
 	items: Array<SelectBoxItem>;
+	updateUrl?: boolean;
 }
 
-export const SelectBox: FC<SelectBoxProps> = ({ label, onValueChange, items }) => {
+export const SelectBox: FC<SelectBoxProps> = ({ name, label, onValueChange, items, updateUrl = false }) => {
 	const [selectedValue, setSelectedValue] = useState<string | undefined>(undefined);
 	const [defaultItems, setDefaultItems] = useState<ListCollection<SelectBoxItem>>();
-	const [isUserSelected, setIsUserSelected] = useState(false);
 	const params = useSearchParams();
+	const router = useRouter();
 
 	useEffect(() => {
 		setDefaultItems(createListCollection({ items }));
 	}, [items]);
 
 	useEffect(() => {
-		if (isUserSelected) return;
-		const status = params.get("status");
-		const templateExists = defaultItems?.items.some(({ value }) => value === status?.toLowerCase());
-		if (templateExists) setSelectedValue(status!);
-		else setSelectedValue(undefined);
-	}, [defaultItems?.items, params, isUserSelected]);
+		if (!updateUrl || !defaultItems?.items) return;
+		const urlValue = params.get(name);
+		if (!urlValue) return setSelectedValue(undefined);
+		const itemExists = defaultItems.items.some(({ value }) => value === urlValue);
+		if (itemExists) setSelectedValue(urlValue);
+	}, [updateUrl, defaultItems?.items, params, name]);
+
+	const updateRoute = (newValue: string) => {
+		const currentParams = qs.parse(params.toString());
+		if (newValue && newValue !== "") currentParams[name] = newValue;
+		else delete currentParams[name];
+		const queryString = qs.stringify(currentParams, { arrayFormat: "comma", encode: false, skipNulls: true });
+		router.push(`?${queryString}`, { scroll: false });
+	};
 
 	const handleValueChange = (e: SelectValueChangeDetails<SelectBoxItem>) => {
-		setSelectedValue(e.value[0]);
-		setIsUserSelected(true);
-		if (onValueChange) onValueChange(e);
+		const newValue = e.value[0];
+		setSelectedValue(newValue);
+		if (updateUrl) updateRoute(newValue);
+		else if (onValueChange) onValueChange(e);
 	};
 
 	return (
@@ -43,7 +55,7 @@ export const SelectBox: FC<SelectBoxProps> = ({ label, onValueChange, items }) =
 			<Select.Label>{label}</Select.Label>
 			<Select.Control bgColor={"bg.card"}>
 				<Select.Trigger height={11}>
-					<Select.ValueText placeholder="Select a template" />
+					<Select.ValueText placeholder={`Select ${label.toLowerCase()}`} />
 				</Select.Trigger>
 				<Select.IndicatorGroup spaceX={2}>
 					<Select.ClearTrigger />

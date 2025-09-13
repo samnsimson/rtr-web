@@ -21,7 +21,7 @@ export const RtrPositionDetails = () => {
 			</Card.Header>
 			<Card.Body gap={6}>
 				<Suspense>
-					<SelectBox label="Choose a job from the list" items={[]} />
+					<SelectBox name="jobId" label="Choose a job from the list" items={[]} />
 				</Suspense>
 			</Card.Body>
 		</Card.Root>

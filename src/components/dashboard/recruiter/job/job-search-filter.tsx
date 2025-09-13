@@ -2,14 +2,38 @@
 import { SelectBox } from "@/components/ui/select-box";
 import { useParamSearch } from "@/hooks/user-search-params";
 import { Box, Card, CardRootProps, Field, Input, InputGroup, Stack } from "@chakra-ui/react";
-import { ChangeEvent, FC, Suspense } from "react";
+import { ChangeEvent, FC } from "react";
 import { BiSearch } from "react-icons/bi";
 import { WorkType, JobType, CompensationType } from "@/graphql/generated/graphql";
 
 type JobSearchFilterProps = CardRootProps;
 
+const workTypeItems = [
+	{ label: "All", value: "" },
+	{ label: "Remote", value: WorkType.Remote },
+	{ label: "Hybrid", value: WorkType.Hybrid },
+	{ label: "On Site", value: WorkType.OnSite },
+];
+
+const jobTypeItems = [
+	{ label: "All", value: "" },
+	{ label: "Full Time", value: JobType.FullTime },
+	{ label: "Part Time", value: JobType.PartTime },
+	{ label: "Contract", value: JobType.Contract },
+	{ label: "Internship", value: JobType.Internship },
+	{ label: "Freelance", value: JobType.Freelance },
+];
+
+const compensationItems = [
+	{ label: "All", value: "" },
+	{ label: "Salary", value: CompensationType.Salary },
+	{ label: "Hourly", value: CompensationType.Hourly },
+	{ label: "Project Based", value: CompensationType.ProjectBased },
+	{ label: "Commission", value: CompensationType.Commission },
+];
+
 export const JobSearchFilter: FC<JobSearchFilterProps> = ({ ...props }) => {
-	const { searchDebounced, search } = useParamSearch();
+	const { searchDebounced } = useParamSearch();
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => searchDebounced("query", e.target.value);
 
@@ -28,49 +52,13 @@ export const JobSearchFilter: FC<JobSearchFilterProps> = ({ ...props }) => {
 						</InputGroup>
 					</Field.Root>
 					<Box width={{ base: "full", md: "2/12" }}>
-						<Suspense>
-							<SelectBox
-								label="Work Type"
-								items={[
-									{ label: "All", value: "" },
-									{ label: "Remote", value: WorkType.Remote },
-									{ label: "Hybrid", value: WorkType.Hybrid },
-									{ label: "On Site", value: WorkType.OnSite },
-								]}
-								onValueChange={(e) => search("workType", e.value)}
-							/>
-						</Suspense>
+						<SelectBox name="workType" label="Work Type" updateUrl={true} items={workTypeItems} />
 					</Box>
 					<Box width={{ base: "full", md: "2/12" }}>
-						<Suspense>
-							<SelectBox
-								label="Job Type"
-								items={[
-									{ label: "All", value: "" },
-									{ label: "Full Time", value: JobType.FullTime },
-									{ label: "Part Time", value: JobType.PartTime },
-									{ label: "Contract", value: JobType.Contract },
-									{ label: "Internship", value: JobType.Internship },
-									{ label: "Freelance", value: JobType.Freelance },
-								]}
-								onValueChange={(e) => search("jobType", e.value)}
-							/>
-						</Suspense>
+						<SelectBox name="jobType" label="Job Type" updateUrl={true} items={jobTypeItems} />
 					</Box>
 					<Box width={{ base: "full", md: "2/12" }}>
-						<Suspense>
-							<SelectBox
-								label="Compensation"
-								items={[
-									{ label: "All", value: "" },
-									{ label: "Salary", value: CompensationType.Salary },
-									{ label: "Hourly", value: CompensationType.Hourly },
-									{ label: "Project Based", value: CompensationType.ProjectBased },
-									{ label: "Commission", value: CompensationType.Commission },
-								]}
-								onValueChange={(e) => search("compensation", e.value)}
-							/>
-						</Suspense>
+						<SelectBox name="compensation" label="Compensation" updateUrl={true} items={compensationItems} />
 					</Box>
 				</Stack>
 			</Card.Body>
