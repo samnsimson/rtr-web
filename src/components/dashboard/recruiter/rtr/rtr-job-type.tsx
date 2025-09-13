@@ -2,8 +2,8 @@ import { HStack, RadioCard } from "@chakra-ui/react";
 import { WorkType } from "@/graphql/generated/graphql";
 
 const items = [
-	{ value: WorkType.HYBRID, title: "Hybrid", description: "Occational travel" },
-	{ value: WorkType.REMOTE, title: "Remote", description: "No travel" },
+	{ value: WorkType.Hybrid, title: "Hybrid", description: "Occational travel" },
+	{ value: WorkType.Remote, title: "Remote", description: "No travel" },
 ];
 
 export const RtrJobType = () => {

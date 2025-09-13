@@ -15,11 +15,11 @@ const getRtrData = (id: string) => {
 			phone: "9049177058",
 			position: "Senior Software Engineer",
 			company: "TechCorp Inc.",
-			status: RtrStatus.SIGNED,
+			status: RtrStatus.Signed,
 			date: new Date(),
-			workType: WorkType.REMOTE,
+			workType: WorkType.Remote,
 			jobType: "Full-time",
-			compensation: CompensationType.SALARY,
+			compensation: CompensationType.Salary,
 			pay: "$120,000 - $150,000",
 			notes: "Excellent candidate with strong React skills",
 		},
@@ -30,11 +30,11 @@ const getRtrData = (id: string) => {
 			phone: "9049177058",
 			position: "Senior Software Engineer",
 			company: "Florida Blue",
-			status: RtrStatus.SIGNED,
+			status: RtrStatus.Signed,
 			date: new Date(),
-			workType: WorkType.HYBRID,
+			workType: WorkType.Hybrid,
 			jobType: "Full-time",
-			compensation: CompensationType.SALARY,
+			compensation: CompensationType.Salary,
 			pay: "$130,000 - $160,000",
 			notes: "Great fit for healthcare technology role",
 		},
@@ -45,11 +45,11 @@ const getRtrData = (id: string) => {
 			phone: "9049177058",
 			position: "Senior Software Engineer",
 			company: "Blue Cross Blue Shield",
-			status: RtrStatus.VIEWED,
+			status: RtrStatus.Viewed,
 			date: new Date(),
-			workType: WorkType.ON_SITE,
+			workType: WorkType.OnSite,
 			jobType: "Full-time",
-			compensation: CompensationType.SALARY,
+			compensation: CompensationType.Salary,
 			pay: "$125,000 - $155,000",
 			notes: "Candidate interested in healthcare domain",
 		},
@@ -60,11 +60,11 @@ const getRtrData = (id: string) => {
 			phone: "9049177058",
 			position: "Senior Software Engineer",
 			company: "FoodHub",
-			status: RtrStatus.PENDING,
+			status: RtrStatus.Pending,
 			date: new Date(),
-			workType: WorkType.REMOTE,
+			workType: WorkType.Remote,
 			jobType: "Full-time",
-			compensation: CompensationType.SALARY,
+			compensation: CompensationType.Salary,
 			pay: "$110,000 - $140,000",
 			notes: "Pending candidate response",
 		},
@@ -75,11 +75,11 @@ const getRtrData = (id: string) => {
 			phone: "9049177058",
 			position: "Senior Software Engineer",
 			company: "Matrimony.com",
-			status: RtrStatus.EXPIRED,
+			status: RtrStatus.Expired,
 			date: new Date(),
-			workType: WorkType.HYBRID,
+			workType: WorkType.Hybrid,
 			jobType: "Full-time",
-			compensation: CompensationType.SALARY,
+			compensation: CompensationType.Salary,
 			pay: "$100,000 - $130,000",
 			notes: "Position expired - candidate no longer available",
 		},
@@ -90,11 +90,11 @@ const getRtrData = (id: string) => {
 			phone: "9049177058",
 			position: "Senior Software Engineer",
 			company: "Emazzanti Technologies",
-			status: RtrStatus.SIGNED,
+			status: RtrStatus.Signed,
 			date: new Date(),
-			workType: WorkType.REMOTE,
+			workType: WorkType.Remote,
 			jobType: "Full-time",
-			compensation: CompensationType.SALARY,
+			compensation: CompensationType.Salary,
 			pay: "$115,000 - $145,000",
 			notes: "Successfully placed candidate",
 		},
@@ -105,11 +105,11 @@ const getRtrData = (id: string) => {
 			phone: "9049177058",
 			position: "Senior Software Engineer",
 			company: "Flykart",
-			status: RtrStatus.VIEWED,
+			status: RtrStatus.Viewed,
 			date: new Date(),
-			workType: WorkType.ON_SITE,
+			workType: WorkType.OnSite,
 			jobType: "Full-time",
-			compensation: CompensationType.SALARY,
+			compensation: CompensationType.Commission,
 			pay: "$105,000 - $135,000",
 			notes: "Candidate reviewed position details",
 		},
@@ -301,7 +301,7 @@ const RtrViewPage = async ({ params }: RtrViewPageProps) => {
 									</Timeline.Content>
 								</Timeline.Item>
 
-								{rtrData.status === RtrStatus.VIEWED && (
+								{rtrData.status === RtrStatus.Viewed && (
 									<Timeline.Item>
 										<Timeline.Connector>
 											<Timeline.Separator />
@@ -319,7 +319,7 @@ const RtrViewPage = async ({ params }: RtrViewPageProps) => {
 									</Timeline.Item>
 								)}
 
-								{rtrData.status === RtrStatus.SIGNED && (
+								{rtrData.status === RtrStatus.Signed && (
 									<Timeline.Item>
 										<Timeline.Connector>
 											<Timeline.Separator />
@@ -337,7 +337,7 @@ const RtrViewPage = async ({ params }: RtrViewPageProps) => {
 									</Timeline.Item>
 								)}
 
-								{rtrData.status === RtrStatus.PENDING && (
+								{rtrData.status === RtrStatus.Pending && (
 									<Timeline.Item>
 										<Timeline.Connector>
 											<Timeline.Separator />
@@ -355,7 +355,7 @@ const RtrViewPage = async ({ params }: RtrViewPageProps) => {
 									</Timeline.Item>
 								)}
 
-								{rtrData.status === RtrStatus.EXPIRED && (
+								{rtrData.status === RtrStatus.Expired && (
 									<Timeline.Item>
 										<Timeline.Connector>
 											<Timeline.Separator />

@@ -1,7 +1,7 @@
 "use client";
 import { Stack, HStack, FieldRoot, FieldLabel, InputGroup, Input, Textarea, Button, Card, Heading, Text } from "@chakra-ui/react";
 import { UserIcon, Globe, DollarSign, Calendar } from "lucide-react";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
 import { WorkType, JobType, CompensationType } from "@/graphql/generated/graphql";
 import { SelectBox } from "../ui/select-box";
@@ -125,37 +125,43 @@ export const CreateJobForm = () => {
 					<Card.Body padding={6}>
 						<Stack gap={4}>
 							<Stack gap={4} direction={{ base: "column", md: "row" }}>
-								<SelectBox
-									label="Job Type"
-									onValueChange={(e) => handleInputChange("jobType", e.value.pop())}
-									items={[
-										{ label: "Full Time", value: JobType.FullTime },
-										{ label: "Part Time", value: JobType.PartTime },
-										{ label: "Contract", value: JobType.Contract },
-										{ label: "Internship", value: JobType.Internship },
-										{ label: "Freelance", value: JobType.Freelance },
-									]}
-								/>
-								<SelectBox
-									label="Work Type"
-									onValueChange={(e) => handleInputChange("workType", e.value.pop())}
-									items={[
-										{ label: "Remote", value: WorkType.Remote },
-										{ label: "Hybrid", value: WorkType.Hybrid },
-										{ label: "On Site", value: WorkType.OnSite },
-									]}
-								/>
+								<Suspense>
+									<SelectBox
+										label="Job Type"
+										onValueChange={(e) => handleInputChange("jobType", e.value.pop())}
+										items={[
+											{ label: "Full Time", value: JobType.FullTime },
+											{ label: "Part Time", value: JobType.PartTime },
+											{ label: "Contract", value: JobType.Contract },
+											{ label: "Internship", value: JobType.Internship },
+											{ label: "Freelance", value: JobType.Freelance },
+										]}
+									/>
+								</Suspense>
+								<Suspense>
+									<SelectBox
+										label="Work Type"
+										onValueChange={(e) => handleInputChange("workType", e.value.pop())}
+										items={[
+											{ label: "Remote", value: WorkType.Remote },
+											{ label: "Hybrid", value: WorkType.Hybrid },
+											{ label: "On Site", value: WorkType.OnSite },
+										]}
+									/>
+								</Suspense>
 							</Stack>
-							<SelectBox
-								label="Compensation Type"
-								onValueChange={(e) => handleInputChange("compensation", e.value.pop())}
-								items={[
-									{ label: "Salary", value: CompensationType.Salary },
-									{ label: "Hourly", value: CompensationType.Hourly },
-									{ label: "Project Based", value: CompensationType.ProjectBased },
-									{ label: "Commission", value: CompensationType.Commission },
-								]}
-							/>
+							<Suspense>
+								<SelectBox
+									label="Compensation Type"
+									onValueChange={(e) => handleInputChange("compensation", e.value.pop())}
+									items={[
+										{ label: "Salary", value: CompensationType.Salary },
+										{ label: "Hourly", value: CompensationType.Hourly },
+										{ label: "Project Based", value: CompensationType.ProjectBased },
+										{ label: "Commission", value: CompensationType.Commission },
+									]}
+								/>
+							</Suspense>
 						</Stack>
 					</Card.Body>
 				</Card.Root>

@@ -46,7 +46,7 @@ export const Breadcrumb = () => {
 						</Text>
 					) : (
 						<Fragment>
-							<Link href={item.href} style={{ textDecoration: "none" }}>
+							<Link href={item.href as any} style={{ textDecoration: "none" }}>
 								<Flex alignItems="center" gap={1} _hover={{ color: "primary" }} transition="color 0.2s">
 									<Text fontSize="sm" color="fg.muted" _hover={{ color: "primary" }}>
 										{item.label}

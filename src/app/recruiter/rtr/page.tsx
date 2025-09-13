@@ -1,8 +1,9 @@
 import { RtrDataTable } from "@/components/dashboard/recruiter/rtr/rtr-data-table";
 import { RtrSearchFilter } from "@/components/dashboard/recruiter/rtr/rtr-search-filter";
 import { Button, Card, Flex, Heading, Stack, Text } from "@chakra-ui/react";
-import Link from "next/link";
 import { LuPlus } from "react-icons/lu";
+import { Suspense } from "react";
+import Link from "next/link";
 
 const RtrListPage = () => {
 	return (
@@ -18,7 +19,9 @@ const RtrListPage = () => {
 					</Link>
 				</Button>
 			</Flex>
-			<RtrSearchFilter />
+			<Suspense>
+				<RtrSearchFilter />
+			</Suspense>
 			<Card.Root>
 				<Card.Body padding={0}>
 					<RtrDataTable />

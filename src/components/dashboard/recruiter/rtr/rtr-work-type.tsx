@@ -2,13 +2,13 @@ import { HStack, RadioCard } from "@chakra-ui/react";
 import { WorkType } from "@/graphql/generated/graphql";
 
 const items = [
-	{ value: WorkType.HYBRID, title: "Hybrid", description: "Occational travel" },
-	{ value: WorkType.REMOTE, title: "Remote", description: "No travel" },
+	{ value: WorkType.Hybrid, title: "Hybrid", description: "Occational travel" },
+	{ value: WorkType.Remote, title: "Remote", description: "No travel" },
 ];
 
 export const RtrWorkType = () => {
 	return (
-		<RadioCard.Root defaultValue={WorkType.HYBRID} variant={"surface"} colorPalette={"blue"}>
+		<RadioCard.Root defaultValue={WorkType.Hybrid} variant={"surface"} colorPalette={"blue"}>
 			<RadioCard.Label>Work type</RadioCard.Label>
 			<HStack align="stretch">
 				{items.map((item) => (

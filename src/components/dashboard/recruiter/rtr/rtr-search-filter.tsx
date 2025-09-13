@@ -2,7 +2,7 @@
 import { SelectBox } from "@/components/ui/select-box";
 import { useParamSearch } from "@/hooks/user-search-params";
 import { Box, Card, CardRootProps, Field, Input, InputGroup, Stack } from "@chakra-ui/react";
-import { ChangeEvent, FC } from "react";
+import { ChangeEvent, FC, Suspense } from "react";
 import { BiSearch } from "react-icons/bi";
 import { RtrStatus } from "@/graphql/generated/graphql";
 
@@ -10,7 +10,6 @@ type RtrSearchFilterProps = CardRootProps;
 
 export const RtrSearchFilter: FC<RtrSearchFilterProps> = ({ ...props }) => {
 	const { searchDebounced, search } = useParamSearch();
-
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => searchDebounced("query", e.target.value);
 
 	return (
@@ -28,19 +27,21 @@ export const RtrSearchFilter: FC<RtrSearchFilterProps> = ({ ...props }) => {
 						</InputGroup>
 					</Field.Root>
 					<Box width={{ base: "full", md: "2/12" }}>
-						<SelectBox
-							label="Status"
-							items={[
-								{ label: "Sent", value: RtrStatus.Sent },
-								{ label: "Draft", value: RtrStatus.Draft },
-								{ label: "Signed", value: RtrStatus.Signed },
-								{ label: "Viewed", value: RtrStatus.Viewed },
-								{ label: "Expired", value: RtrStatus.Expired },
-								{ label: "Rejected", value: RtrStatus.Rejected },
-								{ label: "Pending", value: RtrStatus.Pending },
-							]}
-							onValueChange={(e) => search("status", e.value)}
-						/>
+						<Suspense>
+							<SelectBox
+								label="Status"
+								items={[
+									{ label: "Sent", value: RtrStatus.Sent },
+									{ label: "Draft", value: RtrStatus.Draft },
+									{ label: "Signed", value: RtrStatus.Signed },
+									{ label: "Viewed", value: RtrStatus.Viewed },
+									{ label: "Expired", value: RtrStatus.Expired },
+									{ label: "Rejected", value: RtrStatus.Rejected },
+									{ label: "Pending", value: RtrStatus.Pending },
+								]}
+								onValueChange={(e) => search("status", e.value)}
+							/>
+						</Suspense>
 					</Box>
 				</Stack>
 			</Card.Body>

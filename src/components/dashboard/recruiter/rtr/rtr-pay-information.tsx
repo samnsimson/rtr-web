@@ -1,5 +1,5 @@
 "use client";
-import { Card, Stack, FieldRoot, FieldLabel, InputGroup, Input, NumberInput } from "@chakra-ui/react";
+import { Card, Stack, FieldRoot, FieldLabel, InputGroup, NumberInput } from "@chakra-ui/react";
 import { RtrCompensationType } from "./rtr-compensation-type";
 import { BiDollar } from "react-icons/bi";
 import { useRtrForm } from "@/store/useRtrForm";

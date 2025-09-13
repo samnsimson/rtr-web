@@ -1,3 +1,4 @@
+"use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import { useCallback } from "react";
@@ -5,28 +6,28 @@ import qs from "qs";
 
 export const useParamSearch = () => {
 	const router = useRouter();
-	const searchParams = useSearchParams();
-	const currentParams = qs.parse(searchParams.toString());
+	const searchparams = useSearchParams();
+	const currentParams = qs.parse(searchparams.toString());
 
 	const search = useCallback(
 		(key: string, value: any) => {
-			const params = qs.parse(searchParams.toString());
+			const params = qs.parse(searchparams.toString());
 			if (value !== null && value !== undefined && value !== "") params[key] = value;
 			else delete params[key];
 			const queryString = qs.stringify(params, { arrayFormat: "comma", encode: false, skipNulls: true });
 			router.push(`?${queryString}`, { scroll: false });
 		},
-		[router, searchParams],
+		[router, searchparams],
 	);
 
 	const removeParam = useCallback(
 		(key: string) => {
-			const params = qs.parse(searchParams.toString());
+			const params = qs.parse(searchparams.toString());
 			delete params[key];
 			const queryString = qs.stringify(params, { arrayFormat: "comma", encode: false, skipNulls: true });
 			router.push(`?${queryString}`, { scroll: false });
 		},
-		[router, searchParams],
+		[router, searchparams],
 	);
 
 	const searchDebounced = useDebouncedCallback(search, 300);

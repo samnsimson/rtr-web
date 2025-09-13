@@ -16,7 +16,7 @@ export const RegisterForm = () => {
 		phone: "",
 		password: "",
 		confirmPassword: "",
-		role: UserRole.CANDIDATE,
+		role: UserRole.Candidate,
 	});
 
 	const handleChange = (field: string, value: string) => {
@@ -128,8 +128,8 @@ export const RegisterForm = () => {
 											value={formData.role}
 											onChange={(e) => handleChange("role", e.currentTarget.value)}
 										>
-											<option value={UserRole.CANDIDATE}>Candidate</option>
-											<option value={UserRole.RECRUITER}>Recruiter</option>
+											<option value={UserRole.Candidate}>Candidate</option>
+											<option value={UserRole.Recruiter}>Recruiter</option>
 										</NativeSelect.Field>
 										<NativeSelect.Indicator />
 									</NativeSelect.Root>

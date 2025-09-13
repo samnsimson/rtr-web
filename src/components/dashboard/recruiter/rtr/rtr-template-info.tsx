@@ -1,7 +1,8 @@
 import { SelectBox } from "@/components/ui/select-box";
 import { Card, Stack, HStack, FieldRoot, FieldLabel, NumberInput, InputGroup, Textarea, Link } from "@chakra-ui/react";
-import NextLink from "next/link";
 import { LuArrowRight, LuCalendar } from "react-icons/lu";
+import NextLink from "next/link";
+import { Suspense } from "react";
 
 export const RtrTemplateInfo = () => {
 	return (
@@ -22,7 +23,9 @@ export const RtrTemplateInfo = () => {
 			<Card.Body>
 				<Stack gap={4}>
 					<Stack gap={4} direction={{ base: "column", md: "row" }}>
-						<SelectBox label="RTR Template" items={[]} />
+						<Suspense>
+							<SelectBox label="RTR Template" items={[]} />
+						</Suspense>
 						<FieldRoot id="rtr-expiry-days">
 							<FieldLabel>Expiry Days</FieldLabel>
 							<NumberInput.Root defaultValue="30" size={"lg"} width={"full"}>

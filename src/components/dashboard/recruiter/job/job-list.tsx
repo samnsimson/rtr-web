@@ -3,30 +3,36 @@ import { JobDataTable } from "@/components/dashboard/recruiter/job/job-data-tabl
 import { Card } from "@chakra-ui/react";
 import { useQuery } from "@apollo/client/react";
 import { ListJobsDocument, ListJobsQuery, ListJobsQueryVariables, WorkType, JobType, CompensationType } from "@/graphql/generated/graphql";
-import { FC, useEffect } from "react";
+import { FC, use, useEffect } from "react";
+import { toEnum } from "@/lib/utils";
 
 interface JobListProps {
-	query?: string | null;
-	workType?: WorkType | null;
-	jobType?: JobType | null;
-	compensationType?: CompensationType | null;
-	page?: number | null;
-	limit?: number | null;
+	searchParams: Promise<Record<string, string>>;
 }
 
-export const JobList: FC<JobListProps> = ({ query, workType, jobType, compensationType: compensation, page, limit }) => {
-	const { data, loading, refetch } = useQuery<ListJobsQuery, ListJobsQueryVariables>(ListJobsDocument, {
-		variables: { filters: { query, workType, jobType, compensation, page, limit } },
-	});
+const getFilters = (searchParams: Record<string, string>) => {
+	return {
+		query: searchParams.query,
+		page: parseInt(searchParams.page || "1"),
+		limit: parseInt(searchParams.limit || "10"),
+		workType: toEnum(searchParams.workType, WorkType),
+		jobType: toEnum(searchParams.jobType, JobType),
+		compensation: toEnum(searchParams.compensation, CompensationType),
+	};
+};
+
+export const JobList: FC<JobListProps> = ({ searchParams }) => {
+	const params = use(searchParams);
+	const { data, loading, refetch } = useQuery<ListJobsQuery, ListJobsQueryVariables>(ListJobsDocument, { variables: { filters: getFilters(params) } });
 
 	useEffect(() => {
-		refetch({ filters: { query, workType, jobType, compensation, page, limit } });
-	}, [query, workType, jobType, compensation, page, limit, refetch]);
+		refetch({ filters: getFilters(params) });
+	}, [params, refetch]);
 
 	return (
 		<Card.Root>
 			<Card.Body padding={0}>
-				<JobDataTable jobs={data?.jobs.data} totalCount={data?.jobs.total} currentPage={page ?? 1} limit={limit ?? 10} loading={loading} />
+				<JobDataTable jobs={data?.jobs.data} totalCount={data?.jobs.total} currentPage={parseInt(params.page)} limit={parseInt(params.limit)} loading={loading} />
 			</Card.Body>
 		</Card.Root>
 	);

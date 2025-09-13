@@ -2,6 +2,7 @@ import { SelectBox } from "@/components/ui/select-box";
 import { Link, Card, HStack } from "@chakra-ui/react";
 import { ArrowRightIcon } from "lucide-react";
 import NextLink from "next/link";
+import { Suspense } from "react";
 
 export const RtrPositionDetails = () => {
 	return (
@@ -19,7 +20,9 @@ export const RtrPositionDetails = () => {
 				<Card.Description>Details about the role and company</Card.Description>
 			</Card.Header>
 			<Card.Body gap={6}>
-				<SelectBox label="Choose a job from the list" items={[]} />
+				<Suspense>
+					<SelectBox label="Choose a job from the list" items={[]} />
+				</Suspense>
 			</Card.Body>
 		</Card.Root>
 	);
