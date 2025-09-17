@@ -1,5 +1,5 @@
 "use client";
-import { Stack, HStack, FieldRoot, FieldLabel, InputGroup, Input, Textarea, Button, Card, Heading, Text } from "@chakra-ui/react";
+import { Stack, HStack, FieldRoot, FieldLabel, InputGroup, Input, Textarea, Button, Card, Heading, Text, createListCollection } from "@chakra-ui/react";
 import { Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
 import { WorkType, JobType, CompensationType } from "@/graphql/generated/graphql";
@@ -130,13 +130,15 @@ export const CreateJobForm = () => {
 										name="jobType"
 										label="Job Type"
 										onValueChange={(e) => handleInputChange("jobType", e.value.pop())}
-										items={[
-											{ label: "Full Time", value: JobType.FullTime },
-											{ label: "Part Time", value: JobType.PartTime },
-											{ label: "Contract", value: JobType.Contract },
-											{ label: "Internship", value: JobType.Internship },
-											{ label: "Freelance", value: JobType.Freelance },
-										]}
+										collection={createListCollection({
+											items: [
+												{ name: "Full Time", value: JobType.FullTime },
+												{ name: "Part Time", value: JobType.PartTime },
+												{ name: "Contract", value: JobType.Contract },
+												{ name: "Internship", value: JobType.Internship },
+												{ name: "Freelance", value: JobType.Freelance },
+											],
+										})}
 									/>
 								</Suspense>
 								<Suspense>
@@ -144,11 +146,13 @@ export const CreateJobForm = () => {
 										name="workType"
 										label="Work Type"
 										onValueChange={(e) => handleInputChange("workType", e.value.pop())}
-										items={[
-											{ label: "Remote", value: WorkType.Remote },
-											{ label: "Hybrid", value: WorkType.Hybrid },
-											{ label: "On Site", value: WorkType.OnSite },
-										]}
+										collection={createListCollection({
+											items: [
+												{ name: "Remote", value: WorkType.Remote },
+												{ name: "Hybrid", value: WorkType.Hybrid },
+												{ name: "On Site", value: WorkType.OnSite },
+											],
+										})}
 									/>
 								</Suspense>
 							</Stack>
@@ -157,12 +161,14 @@ export const CreateJobForm = () => {
 									name="compensation"
 									label="Compensation Type"
 									onValueChange={(e) => handleInputChange("compensation", e.value.pop())}
-									items={[
-										{ label: "Salary", value: CompensationType.Salary },
-										{ label: "Hourly", value: CompensationType.Hourly },
-										{ label: "Project Based", value: CompensationType.ProjectBased },
-										{ label: "Commission", value: CompensationType.Commission },
-									]}
+									collection={createListCollection({
+										items: [
+											{ name: "Salary", value: CompensationType.Salary },
+											{ name: "Hourly", value: CompensationType.Hourly },
+											{ name: "Project Based", value: CompensationType.ProjectBased },
+											{ name: "Commission", value: CompensationType.Commission },
+										],
+									})}
 								/>
 							</Suspense>
 						</Stack>

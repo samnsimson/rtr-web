@@ -1,7 +1,7 @@
 "use client";
 import { SelectBox } from "@/components/ui/select-box";
 import { useParamSearch } from "@/hooks/user-search-params";
-import { Box, Card, CardRootProps, Field, Input, InputGroup, Stack } from "@chakra-ui/react";
+import { Box, Card, CardRootProps, createListCollection, Field, Input, InputGroup, Stack } from "@chakra-ui/react";
 import { ChangeEvent, FC, Suspense } from "react";
 import { BiSearch } from "react-icons/bi";
 import { RtrStatus } from "@/graphql/generated/graphql";
@@ -32,16 +32,18 @@ export const RtrSearchFilter: FC<RtrSearchFilterProps> = ({ ...props }) => {
 								name="status"
 								label="Status"
 								updateUrl={true}
-								items={[
-									{ label: "All", value: "" },
-									{ label: "Sent", value: RtrStatus.Sent },
-									{ label: "Draft", value: RtrStatus.Draft },
-									{ label: "Signed", value: RtrStatus.Signed },
-									{ label: "Viewed", value: RtrStatus.Viewed },
-									{ label: "Expired", value: RtrStatus.Expired },
-									{ label: "Rejected", value: RtrStatus.Rejected },
-									{ label: "Pending", value: RtrStatus.Pending },
-								]}
+								collection={createListCollection({
+									items: [
+										{ name: "All", value: "" },
+										{ name: "Sent", value: RtrStatus.Sent },
+										{ name: "Draft", value: RtrStatus.Draft },
+										{ name: "Signed", value: RtrStatus.Signed },
+										{ name: "Viewed", value: RtrStatus.Viewed },
+										{ name: "Expired", value: RtrStatus.Expired },
+										{ name: "Rejected", value: RtrStatus.Rejected },
+										{ name: "Pending", value: RtrStatus.Pending },
+									],
+								})}
 							/>
 						</Suspense>
 					</Box>

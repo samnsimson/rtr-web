@@ -1,7 +1,7 @@
 "use client";
 import { SelectBox } from "@/components/ui/select-box";
 import { useParamSearch } from "@/hooks/user-search-params";
-import { Box, Card, CardRootProps, Field, Input, InputGroup, Stack } from "@chakra-ui/react";
+import { Box, Card, CardRootProps, createListCollection, Field, Input, InputGroup, Stack } from "@chakra-ui/react";
 import { ChangeEvent, FC } from "react";
 import { BiSearch } from "react-icons/bi";
 import { WorkType, JobType, CompensationType } from "@/graphql/generated/graphql";
@@ -9,27 +9,27 @@ import { WorkType, JobType, CompensationType } from "@/graphql/generated/graphql
 type JobSearchFilterProps = CardRootProps;
 
 const workTypeItems = [
-	{ label: "All", value: "" },
-	{ label: "Remote", value: WorkType.Remote },
-	{ label: "Hybrid", value: WorkType.Hybrid },
-	{ label: "On Site", value: WorkType.OnSite },
+	{ name: "All", value: "" },
+	{ name: "Remote", value: WorkType.Remote },
+	{ name: "Hybrid", value: WorkType.Hybrid },
+	{ name: "On Site", value: WorkType.OnSite },
 ];
 
 const jobTypeItems = [
-	{ label: "All", value: "" },
-	{ label: "Full Time", value: JobType.FullTime },
-	{ label: "Part Time", value: JobType.PartTime },
-	{ label: "Contract", value: JobType.Contract },
-	{ label: "Internship", value: JobType.Internship },
-	{ label: "Freelance", value: JobType.Freelance },
+	{ name: "All", value: "" },
+	{ name: "Full Time", value: JobType.FullTime },
+	{ name: "Part Time", value: JobType.PartTime },
+	{ name: "Contract", value: JobType.Contract },
+	{ name: "Internship", value: JobType.Internship },
+	{ name: "Freelance", value: JobType.Freelance },
 ];
 
 const compensationItems = [
-	{ label: "All", value: "" },
-	{ label: "Salary", value: CompensationType.Salary },
-	{ label: "Hourly", value: CompensationType.Hourly },
-	{ label: "Project Based", value: CompensationType.ProjectBased },
-	{ label: "Commission", value: CompensationType.Commission },
+	{ name: "All", value: "" },
+	{ name: "Salary", value: CompensationType.Salary },
+	{ name: "Hourly", value: CompensationType.Hourly },
+	{ name: "Project Based", value: CompensationType.ProjectBased },
+	{ name: "Commission", value: CompensationType.Commission },
 ];
 
 export const JobSearchFilter: FC<JobSearchFilterProps> = ({ ...props }) => {
@@ -52,13 +52,13 @@ export const JobSearchFilter: FC<JobSearchFilterProps> = ({ ...props }) => {
 						</InputGroup>
 					</Field.Root>
 					<Box width={{ base: "full", md: "2/12" }}>
-						<SelectBox name="workType" label="Work Type" updateUrl={true} items={workTypeItems} />
+						<SelectBox name="workType" label="Work Type" updateUrl={true} collection={createListCollection({ items: workTypeItems })} />
 					</Box>
 					<Box width={{ base: "full", md: "2/12" }}>
-						<SelectBox name="jobType" label="Job Type" updateUrl={true} items={jobTypeItems} />
+						<SelectBox name="jobType" label="Job Type" updateUrl={true} collection={createListCollection({ items: jobTypeItems })} />
 					</Box>
 					<Box width={{ base: "full", md: "2/12" }}>
-						<SelectBox name="compensation" label="Compensation" updateUrl={true} items={compensationItems} />
+						<SelectBox name="compensation" label="Compensation" updateUrl={true} collection={createListCollection({ items: compensationItems })} />
 					</Box>
 				</Stack>
 			</Card.Body>
