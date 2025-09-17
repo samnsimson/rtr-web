@@ -5,7 +5,7 @@ import { BiDollar } from "react-icons/bi";
 import { useRtrForm } from "@/store/useRtrForm";
 
 export const RtrPayInformation = () => {
-	const { formData, updateField } = useRtrForm();
+	const { updateField } = useRtrForm();
 	return (
 		<Card.Root bgColor={"bg"} divideY={"1px"} divideColor={"border"}>
 			<Card.Header padding={4} gap={0}>
@@ -16,10 +16,10 @@ export const RtrPayInformation = () => {
 				<Stack gap={4}>
 					<FieldRoot id="compensation">
 						<FieldLabel>Compensation</FieldLabel>
-						<NumberInput.Root size={"lg"} width={"full"} onValueChange={(e) => updateField("compensation", parseInt(e.value))} min={0}>
+						<NumberInput.Root size={"lg"} width={"full"} onValueChange={(e) => updateField("compensation", parseInt(e.value || "0"))} min={0}>
 							<NumberInput.Control />
 							<InputGroup startElement={<BiDollar />}>
-								<NumberInput.Input bgColor={"bg.card"} placeholder="Compensation" value={formData.compensation} />
+								<NumberInput.Input bgColor={"bg.card"} placeholder="Compensation" />
 							</InputGroup>
 						</NumberInput.Root>
 					</FieldRoot>

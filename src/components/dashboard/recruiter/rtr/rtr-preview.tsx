@@ -1,6 +1,16 @@
-import { Card, DataList, Heading, List, Separator, Stack, Text } from "@chakra-ui/react";
+"use client";
+import { Card, DataList, GridItem, Heading, List, Separator, SimpleGrid, Stack, Text } from "@chakra-ui/react";
+import { RtrPreviewJobInfo } from "./rtr-preview-job-info";
+import { useRtrForm } from "@/store/useRtrForm";
+import { useQuery } from "@apollo/client/react";
+import { JobDetailDocument } from "@/graphql/generated/graphql";
+import { AsyncValue } from "./rtr-async-text";
+import { LuCircleCheck } from "react-icons/lu";
+import { AppCardHeadless } from "@/components/ui/app-card";
 
 export const RtrPreview = () => {
+	const { formData } = useRtrForm();
+	const { data, loading } = useQuery(JobDetailDocument, { variables: { id: formData.jobId } });
 	return (
 		<Card.Root bgColor={"bg"} divideY={"1px"} divideColor={"border"}>
 			<Card.Header padding={4} gap={0}>
@@ -9,8 +19,8 @@ export const RtrPreview = () => {
 			</Card.Header>
 			<Card.Body>
 				<Stack>
-					<Stack direction={{ base: "column", md: "row" }} gap={4}>
-						<Stack>
+					<SimpleGrid columns={{ base: 1, md: 2 }} gap={4}>
+						<GridItem spaceY={4}>
 							<Heading size={"md"}>Candidate Infomation</Heading>
 							<DataList.Root orientation={"horizontal"} gap={2}>
 								<DataList.Item>
@@ -26,90 +36,64 @@ export const RtrPreview = () => {
 									<DataList.ItemValue>9049177058</DataList.ItemValue>
 								</DataList.Item>
 							</DataList.Root>
-						</Stack>
-						<Stack>
-							<Heading size={"md"}>Job Information</Heading>
-							<DataList.Root orientation={"horizontal"} gap={2}>
-								<DataList.Item>
-									<DataList.ItemLabel>Title:</DataList.ItemLabel>
-									<DataList.ItemValue>Senior Software Engineer</DataList.ItemValue>
-								</DataList.Item>
-								<DataList.Item>
-									<DataList.ItemLabel>Company:</DataList.ItemLabel>
-									<DataList.ItemValue>Florida Blue (Blue Cross Blue Sheild)</DataList.ItemValue>
-								</DataList.Item>
-								<DataList.Item>
-									<DataList.ItemLabel>Type:</DataList.ItemLabel>
-									<DataList.ItemValue>Remote</DataList.ItemValue>
-								</DataList.Item>
-							</DataList.Root>
-						</Stack>
-					</Stack>
+						</GridItem>
+						<RtrPreviewJobInfo job={data?.job} loading={loading} />
+					</SimpleGrid>
+
 					<Separator marginY={4} />
-					<Stack>
+					<Stack gap={6}>
 						<Stack>
 							<Heading size={"md"}>Candidate RTR</Heading>
-							<Card.Root bgColor={"bg.card"}>
-								<Card.Body>
-									<Text fontSize={"sm"}>
-										I give exclusive permission to VYSystems to represent Sam Nishanth Simson profile and qualifications to Mphasis for the below requirement. I
-										confirm that I have not submitted my resume or application for this specific position to any other recruitment agency or directly with this
-										client within the last 30-60 days. By granting us the Right to Represent, you allow us to present your resume and credentials to our client
-										for their consideration.
-									</Text>
-								</Card.Body>
-							</Card.Root>
+							<AppCardHeadless bgColor={"bg.card"}>
+								<Text>
+									I give exclusive permission to VYSystems to represent Sam Nishanth Simson profile and qualifications to Mphasis for the below requirement. I
+									confirm that I have not submitted my resume or application for this specific position to any other recruitment agency or directly with this
+									client within the last 30-60 days. By granting us the Right to Represent, you allow us to present your resume and credentials to our client for
+									their consideration.
+								</Text>
+							</AppCardHeadless>
 						</Stack>
-						<Separator marginY={4} />
 						<Stack>
 							<Heading size={"md"}>Job Description</Heading>
-							<Card.Root bgColor={"bg.card"}>
-								<Card.Body>
-									<Stack>
-										<Text fontSize={"sm"}>
-											3 years of relevant coding/audit experience. The Coding Quality Auditor will be responsible for validating and reviewing Hierarchical
-											Condition Category (HCC) risk adjustable charts through retrospective chart reviews. The role focuses on ensuring accurate, complete,
-											and compliant ICD-10 coding for risk adjustment submission to CMS. Candidates must apply clinical documentation standards and industry
-											guidelines to support coding decisions. This role contributes to audit accuracy, process improvements, and helps maintain compliance
-											with state/federal regulations and internal policies.
-										</Text>
-										<Stack>
-											<Heading size={"md"}>Job Duties</Heading>
-											<Text fontSize={"sm"}>
-												The Coding Quality Auditor will be responsible for validating and reviewing Hierarchical Condition Category (HCC) risk adjustable
-												charts through retrospective chart reviews. The role focuses on ensuring accurate, complete, and compliant ICD-10 coding for risk
-												adjustment submission to CMS. Candidates must apply clinical documentation standards and industry guidelines to support coding
-												decisions. This role contributes to audit accuracy, process improvements, and helps maintain compliance with state/federal
-												regulations and internal policies.
-											</Text>
-										</Stack>
-										<Stack>
-											<Heading size={"md"}>Qualifications Required</Heading>
-											<List.Root paddingStart={4}>
-												<List.Item>
-													Bachelor&apos;s degree in Computer Science, Software Engineering, or a related field, or equivalent practical experience.
-												</List.Item>
-												<List.Item>Proven professional experience with both React.js and React Native.</List.Item>
-												<List.Item>Strong proficiency in JavaScript (ES6+), HTML5, and CSS3.</List.Item>
-												<List.Item>Experience with state management libraries like Redux, MobX, or the React Context API.</List.Item>
-												<List.Item>Familiarity with modern front-end build pipelines and tools.</List.Item>
-												<List.Item>Knowledge of mobile application development for iOS and Android platforms.</List.Item>
-												<List.Item>Excellent problem-solving skills and the ability to work independently or as part of a team.</List.Item>
-											</List.Root>
-										</Stack>
-										<Stack>
-											<Heading size={"md"}>Preffered Qualifications</Heading>
-											<List.Root paddingStart={4}>
-												<List.Item>Experience with a major retail or e-commerce client.</List.Item>
-												<List.Item>Familiarity with cloud platforms (e.g., AWS, Azure, GCP).</List.Item>
-												<List.Item>Experience with automated testing and continuous integration/continuous deployment (CI/CD).</List.Item>
-												<List.Item>Knowledge of TypeScript.</List.Item>
-												<List.Item>Experience with GraphQL.</List.Item>
-											</List.Root>
-										</Stack>
-									</Stack>
-								</Card.Body>
-							</Card.Root>
+							<AppCardHeadless bgColor={"bg.card"}>
+								<AsyncValue as={Text} loading={loading} skeletonLines={3}>
+									{data?.job?.description}
+								</AsyncValue>
+							</AppCardHeadless>
+						</Stack>
+						<Stack>
+							<Heading size={"md"}>Job Requirements</Heading>
+							<AppCardHeadless bgColor={"bg.card"}>
+								<List.Root listStyleType={"none"} align={"start"}>
+									<AsyncValue as={List.Item} loading={loading} skeletonLines={6}>
+										{data?.job?.requirements.map((requirement) => (
+											<List.Item key={requirement}>
+												<List.Indicator asChild color={"green.500"}>
+													<LuCircleCheck />
+												</List.Indicator>
+												{requirement}
+											</List.Item>
+										))}
+									</AsyncValue>
+								</List.Root>
+							</AppCardHeadless>
+						</Stack>
+						<Stack>
+							<Heading size={"md"}>Job Benefits</Heading>
+							<AppCardHeadless bgColor={"bg.card"}>
+								<List.Root listStyleType={"none"} align={"start"}>
+									<AsyncValue as={List.Item} loading={loading} skeletonLines={6}>
+										{data?.job?.benefits.map((benefit) => (
+											<List.Item key={benefit}>
+												<List.Indicator asChild color={"green.500"}>
+													<LuCircleCheck />
+												</List.Indicator>
+												{benefit}
+											</List.Item>
+										))}
+									</AsyncValue>
+								</List.Root>
+							</AppCardHeadless>
 						</Stack>
 					</Stack>
 				</Stack>
