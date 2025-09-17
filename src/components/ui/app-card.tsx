@@ -5,16 +5,17 @@ interface AppCardProps extends CardRootProps {
 	title: string;
 	description: string;
 	children: React.ReactNode;
+	noPadding?: boolean;
 }
 
-export const AppCard: FC<AppCardProps> = ({ title, description, children, ...props }) => {
+export const AppCard: FC<AppCardProps> = ({ title, description, children, noPadding, ...props }) => {
 	return (
 		<Card.Root bgColor={"bg"} divideY={"1px"} divideColor={"border"} {...props}>
 			<Card.Header padding={4} gap={0}>
 				<Card.Title>{title}</Card.Title>
 				<Card.Description>{description}</Card.Description>
 			</Card.Header>
-			<Card.Body>{children}</Card.Body>
+			<Card.Body padding={noPadding ? 0 : 4}>{children}</Card.Body>
 		</Card.Root>
 	);
 };

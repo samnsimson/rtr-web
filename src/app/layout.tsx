@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Poppins, Quicksand } from "next/font/google";
 import { Provider } from "@/components/ui/provider";
 import { AppProviders } from "@/components/providers";
-import { auth } from "@/lib/auth";
+import "quill/dist/quill.snow.css";
 import "./globals.css";
 
 const poppins = Poppins({
