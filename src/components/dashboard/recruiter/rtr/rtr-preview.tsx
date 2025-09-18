@@ -1,6 +1,5 @@
 "use client";
 import { Box, Card, DataList, GridItem, Heading, List, Separator, SimpleGrid, Stack, Text } from "@chakra-ui/react";
-import { RtrPreviewJobInfo } from "./rtr-preview-job-info";
 import { useRtrForm } from "@/store/useRtrForm";
 import { useQuery } from "@apollo/client/react";
 import { GetCompiledRtrTemplateDocument, JobDetailDocument } from "@/graphql/generated/graphql";
@@ -57,7 +56,7 @@ export const RtrPreview = () => {
 								</DataList.Item>
 							</DataList.Root>
 						</GridItem>
-						<RtrPreviewJobInfo job={jobData?.job} loading={jobLoading} />
+						{/* <RtrPreviewJobInfo job={jobData?.job} loading={jobLoading} /> */}
 					</SimpleGrid>
 
 					<Separator marginY={4} />
