@@ -113,6 +113,23 @@ export enum CompensationType {
   Salary = 'SALARY'
 }
 
+export type CompiledRtrTemplateInput = {
+  candidate?: InputMaybe<RtrTemplateCandidateInput>;
+  jobId: Scalars['String']['input'];
+  templateId: Scalars['String']['input'];
+};
+
+export type CompiledRtrTemplateResponse = {
+  __typename?: 'CompiledRtrTemplateResponse';
+  createdAt: Scalars['DateTime']['output'];
+  description: Scalars['String']['output'];
+  html: Scalars['String']['output'];
+  id: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  text: Scalars['String']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+};
+
 export type CreateCandidateProfileInput = {
   expectedSalary?: InputMaybe<Scalars['Int']['input']>;
   experience?: InputMaybe<Scalars['Int']['input']>;
@@ -222,6 +239,13 @@ export type CreateRecruiterProfileInput = {
   linkedinUrl?: InputMaybe<Scalars['String']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
   userId: Scalars['String']['input'];
+};
+
+export type CreateRtrTemplateInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  html?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
+  text?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CreateSubscriptionInput = {
@@ -476,6 +500,7 @@ export type Mutation = {
   createRTR: Rtr;
   createRTRHistory: RtrHistoryResponse;
   createRecruiterProfile: RecruiterProfileResponse;
+  createRtrTemplate: RtrTemplate;
   createSubscription: Subscription;
   createUser: UserResponse;
   deleteAllDocuments: Scalars['Boolean']['output'];
@@ -504,6 +529,7 @@ export type Mutation = {
   removeRTR: Scalars['Boolean']['output'];
   removeRTRHistory: RtrHistoryResponse;
   removeRecruiterProfile: Scalars['Boolean']['output'];
+  removeRtrTemplate: RtrTemplate;
   removeUser: Scalars['Boolean']['output'];
   removeUserFromOrganization: Scalars['Boolean']['output'];
   updateCandidateProfile: CandidateProfileResponse;
@@ -517,6 +543,7 @@ export type Mutation = {
   updateRTR: Rtr;
   updateRTRHistory: RtrHistoryResponse;
   updateRecruiterProfile: RecruiterProfileResponse;
+  updateRtrTemplate: RtrTemplate;
   updateSubscription: Subscription;
   updateUser: UserResponse;
   updateUserRole: User;
@@ -598,6 +625,11 @@ export type MutationCreateRtrHistoryArgs = {
 
 export type MutationCreateRecruiterProfileArgs = {
   createRecruiterProfileInput: CreateRecruiterProfileInput;
+};
+
+
+export type MutationCreateRtrTemplateArgs = {
+  createRtrTemplateInput: CreateRtrTemplateInput;
 };
 
 
@@ -744,6 +776,11 @@ export type MutationRemoveRecruiterProfileArgs = {
 };
 
 
+export type MutationRemoveRtrTemplateArgs = {
+  id: Scalars['String']['input'];
+};
+
+
 export type MutationRemoveUserArgs = {
   id: Scalars['String']['input'];
 };
@@ -817,6 +854,11 @@ export type MutationUpdateRtrHistoryArgs = {
 export type MutationUpdateRecruiterProfileArgs = {
   id: Scalars['String']['input'];
   updateRecruiterProfileInput: UpdateRecruiterProfileInput;
+};
+
+
+export type MutationUpdateRtrTemplateArgs = {
+  updateRtrTemplateInput: UpdateRtrTemplateInput;
 };
 
 
@@ -903,6 +945,7 @@ export type Organization = {
   payments?: Maybe<Array<Payment>>;
   recruiterProfiles?: Maybe<Array<RecruiterProfile>>;
   rtrHistory?: Maybe<Array<RtrHistory>>;
+  rtrTemplates?: Maybe<Array<RtrTemplate>>;
   rtrs?: Maybe<Array<Rtr>>;
   subscriptions?: Maybe<Array<Subscription>>;
   updatedAt: Scalars['DateTime']['output'];
@@ -976,6 +1019,7 @@ export type Query = {
   applicationStats: Scalars['String']['output'];
   candidateProfile: CandidateProfileResponse;
   candidateProfiles: Array<CandidateProfileResponse>;
+  compiledRtrTemplate: CompiledRtrTemplateResponse;
   document: DocumentResponse;
   documents: Array<DocumentResponse>;
   getActiveJobs: SearchResultType;
@@ -1008,6 +1052,8 @@ export type Query = {
   rtr: Rtr;
   rtrHistories: Array<RtrHistoryResponse>;
   rtrHistory: RtrHistoryResponse;
+  rtrTemplate: RtrTemplate;
+  rtrTemplates: Array<RtrTemplate>;
   rtrs: Array<Rtr>;
   rtrsByCandidate: Array<Rtr>;
   rtrsByJob: Array<Rtr>;
@@ -1033,6 +1079,11 @@ export type Query = {
 
 export type QueryCandidateProfileArgs = {
   id: Scalars['String']['input'];
+};
+
+
+export type QueryCompiledRtrTemplateArgs = {
+  compiledTemplateInput: CompiledRtrTemplateInput;
 };
 
 
@@ -1153,6 +1204,11 @@ export type QueryRtrHistoryArgs = {
 };
 
 
+export type QueryRtrTemplateArgs = {
+  id: Scalars['String']['input'];
+};
+
+
 export type QueryRtrsByCandidateArgs = {
   candidateId: Scalars['String']['input'];
 };
@@ -1258,6 +1314,8 @@ export type Rtr = {
   organizationId?: Maybe<Scalars['String']['output']>;
   recruiter: RecruiterProfile;
   recruiterId: Scalars['String']['output'];
+  rtrTemplate: RtrTemplate;
+  rtrTemplateId: Scalars['String']['output'];
   signedAt?: Maybe<Scalars['DateTime']['output']>;
   status: RtrStatus;
   updatedAt: Scalars['DateTime']['output'];
@@ -1355,6 +1413,27 @@ export enum RemotePreference {
   OnSiteOnly = 'ON_SITE_ONLY',
   RemoteOnly = 'REMOTE_ONLY'
 }
+
+export type RtrTemplate = {
+  __typename?: 'RtrTemplate';
+  author: User;
+  createdAt: Scalars['DateTime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  html?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  organization: Organization;
+  rtrs?: Maybe<Array<Rtr>>;
+  text?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['DateTime']['output'];
+};
+
+export type RtrTemplateCandidateInput = {
+  email?: InputMaybe<Scalars['String']['input']>;
+  firstName?: InputMaybe<Scalars['String']['input']>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
+};
 
 export type SearchOptionsInput = {
   /** Attributes to crop */
@@ -1489,6 +1568,14 @@ export type UpdateRecruiterProfileInput = {
   id: Scalars['String']['input'];
 };
 
+export type UpdateRtrTemplateInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  html?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['String']['input'];
+  name?: InputMaybe<Scalars['String']['input']>;
+  text?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type UpdateSubscriptionInput = {
   autoRenew?: InputMaybe<Scalars['Boolean']['input']>;
   cancellationReason?: InputMaybe<Scalars['String']['input']>;
@@ -1513,6 +1600,7 @@ export type User = {
   createdAt: Scalars['DateTime']['output'];
   createdBy?: Maybe<User>;
   createdById?: Maybe<Scalars['String']['output']>;
+  createdRtrTemplates?: Maybe<Array<RtrTemplate>>;
   createdUsers?: Maybe<Array<User>>;
   email: Scalars['String']['output'];
   id: Scalars['String']['output'];
@@ -1571,6 +1659,13 @@ export type CreateJobMutationVariables = Exact<{
 
 export type CreateJobMutation = { __typename?: 'Mutation', createJob: { __typename?: 'JobResponse', id: string, title: string, company: string, description: string, location: string, workType: WorkType, jobType: JobType, compensation: CompensationType, salaryMin?: number | null, salaryMax?: number | null, benefits: Array<string>, recruiterId: string, organizationId?: string | null, status: JobStatus, expiresAt?: any | null, createdAt: any } };
 
+export type CreateRtrTemplateMutationVariables = Exact<{
+  createRtrTemplateInput: CreateRtrTemplateInput;
+}>;
+
+
+export type CreateRtrTemplateMutation = { __typename?: 'Mutation', createRtrTemplate: { __typename?: 'RtrTemplate', id: string, name: string, description?: string | null, text?: string | null, html?: string | null, createdAt: any, updatedAt: any, organization: { __typename?: 'Organization', id: string }, author: { __typename?: 'User', id: string, name?: string | null } } };
+
 export type LoginMutationVariables = Exact<{
   loginInput: LoginInput;
 }>;
@@ -1592,6 +1687,13 @@ export type RegisterMutationVariables = Exact<{
 
 export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'Auth', accessToken: string, refreshToken: string, user: { __typename?: 'AuthUser', id: string, name: string, role: UserRole, isActive: boolean, isEmailVerified: boolean, organization?: { __typename?: 'Org', id: string } | null } } };
 
+export type GetCompiledRtrTemplateQueryVariables = Exact<{
+  input: CompiledRtrTemplateInput;
+}>;
+
+
+export type GetCompiledRtrTemplateQuery = { __typename?: 'Query', compiledRtrTemplate: { __typename?: 'CompiledRtrTemplateResponse', id: string, name: string, description: string, text: string, html: string, createdAt: any, updatedAt: any } };
+
 export type JobDetailQueryVariables = Exact<{
   id: Scalars['String']['input'];
 }>;
@@ -1606,10 +1708,26 @@ export type ListJobsQueryVariables = Exact<{
 
 export type ListJobsQuery = { __typename?: 'Query', jobs: { __typename?: 'JobResponsePaginated', total: number, page: number, data: Array<{ __typename?: 'JobResponse', id: string, jobId?: string | null, organizationId?: string | null, title: string, description: string, company: string, location: string, workType: WorkType, jobType: JobType, compensation: CompensationType, salaryMin?: number | null, salaryMax?: number | null, recruiterId: string, benefits: Array<string>, requirements: Array<string>, createdAt: any, updatedAt: any, expiresAt?: any | null, status: JobStatus }> } };
 
+export type ListRtrTemplatesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ListRtrTemplatesQuery = { __typename?: 'Query', rtrTemplates: Array<{ __typename?: 'RtrTemplate', id: string, name: string, description?: string | null, text?: string | null, html?: string | null, createdAt: any, updatedAt: any, organization: { __typename?: 'Organization', id: string }, author: { __typename?: 'User', id: string, name?: string | null } }> };
+
+export type RtrTemplateDetailQueryVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+
+export type RtrTemplateDetailQuery = { __typename?: 'Query', rtrTemplate: { __typename?: 'RtrTemplate', id: string, name: string, description?: string | null, text?: string | null, html?: string | null } };
+
 export const JobQueryFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"JobQueryFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"JobResponse"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"jobId"}},{"kind":"Field","name":{"kind":"Name","value":"organizationId"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"company"}},{"kind":"Field","name":{"kind":"Name","value":"location"}},{"kind":"Field","name":{"kind":"Name","value":"workType"}},{"kind":"Field","name":{"kind":"Name","value":"jobType"}},{"kind":"Field","name":{"kind":"Name","value":"compensation"}},{"kind":"Field","name":{"kind":"Name","value":"salaryMin"}},{"kind":"Field","name":{"kind":"Name","value":"salaryMax"}},{"kind":"Field","name":{"kind":"Name","value":"recruiterId"}},{"kind":"Field","name":{"kind":"Name","value":"benefits"}},{"kind":"Field","name":{"kind":"Name","value":"requirements"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]} as unknown as DocumentNode<JobQueryFragmentFragment, unknown>;
 export const CreateJobDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createJob"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"createJobInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateJobInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createJob"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"createJobInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"createJobInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"company"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"location"}},{"kind":"Field","name":{"kind":"Name","value":"workType"}},{"kind":"Field","name":{"kind":"Name","value":"jobType"}},{"kind":"Field","name":{"kind":"Name","value":"compensation"}},{"kind":"Field","name":{"kind":"Name","value":"salaryMin"}},{"kind":"Field","name":{"kind":"Name","value":"salaryMax"}},{"kind":"Field","name":{"kind":"Name","value":"benefits"}},{"kind":"Field","name":{"kind":"Name","value":"recruiterId"}},{"kind":"Field","name":{"kind":"Name","value":"organizationId"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]}}]} as unknown as DocumentNode<CreateJobMutation, CreateJobMutationVariables>;
+export const CreateRtrTemplateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createRtrTemplate"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"createRtrTemplateInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateRtrTemplateInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createRtrTemplate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"createRtrTemplateInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"createRtrTemplateInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"html"}},{"kind":"Field","name":{"kind":"Name","value":"organization"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"author"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}}]} as unknown as DocumentNode<CreateRtrTemplateMutation, CreateRtrTemplateMutationVariables>;
 export const LoginDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"login"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"loginInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"LoginInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"login"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"loginInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"loginInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"tokenType"}},{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"refreshToken"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"role"}},{"kind":"Field","name":{"kind":"Name","value":"isActive"}},{"kind":"Field","name":{"kind":"Name","value":"isEmailVerified"}},{"kind":"Field","name":{"kind":"Name","value":"organization"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]}}]} as unknown as DocumentNode<LoginMutation, LoginMutationVariables>;
 export const RefreshTokenDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"refreshToken"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"refreshTokenInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RefreshTokenInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"refreshToken"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"refreshTokenInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"refreshTokenInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tokenType"}},{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"refreshToken"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"role"}},{"kind":"Field","name":{"kind":"Name","value":"isActive"}},{"kind":"Field","name":{"kind":"Name","value":"isEmailVerified"}},{"kind":"Field","name":{"kind":"Name","value":"organization"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]}}]} as unknown as DocumentNode<RefreshTokenMutation, RefreshTokenMutationVariables>;
 export const RegisterDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"register"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"registerInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RegisterInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"register"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"registerInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"registerInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"refreshToken"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"role"}},{"kind":"Field","name":{"kind":"Name","value":"isActive"}},{"kind":"Field","name":{"kind":"Name","value":"isEmailVerified"}},{"kind":"Field","name":{"kind":"Name","value":"organization"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]}}]} as unknown as DocumentNode<RegisterMutation, RegisterMutationVariables>;
+export const GetCompiledRtrTemplateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getCompiledRtrTemplate"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CompiledRtrTemplateInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"compiledRtrTemplate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"compiledTemplateInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"html"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}}]} as unknown as DocumentNode<GetCompiledRtrTemplateQuery, GetCompiledRtrTemplateQueryVariables>;
 export const JobDetailDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"jobDetail"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"job"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"JobQueryFragment"}},{"kind":"Field","name":{"kind":"Name","value":"recruiter"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"phone"}}]}},{"kind":"Field","name":{"kind":"Name","value":"organization"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"website"}},{"kind":"Field","name":{"kind":"Name","value":"linkedinUrl"}},{"kind":"Field","name":{"kind":"Name","value":"logo"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"JobQueryFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"JobResponse"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"jobId"}},{"kind":"Field","name":{"kind":"Name","value":"organizationId"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"company"}},{"kind":"Field","name":{"kind":"Name","value":"location"}},{"kind":"Field","name":{"kind":"Name","value":"workType"}},{"kind":"Field","name":{"kind":"Name","value":"jobType"}},{"kind":"Field","name":{"kind":"Name","value":"compensation"}},{"kind":"Field","name":{"kind":"Name","value":"salaryMin"}},{"kind":"Field","name":{"kind":"Name","value":"salaryMax"}},{"kind":"Field","name":{"kind":"Name","value":"recruiterId"}},{"kind":"Field","name":{"kind":"Name","value":"benefits"}},{"kind":"Field","name":{"kind":"Name","value":"requirements"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]} as unknown as DocumentNode<JobDetailQuery, JobDetailQueryVariables>;
 export const ListJobsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"listJobs"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"filters"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"JobListFiltersInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"jobs"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filters"},"value":{"kind":"Variable","name":{"kind":"Name","value":"filters"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"total"}},{"kind":"Field","name":{"kind":"Name","value":"page"}},{"kind":"Field","name":{"kind":"Name","value":"data"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"JobQueryFragment"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"JobQueryFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"JobResponse"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"jobId"}},{"kind":"Field","name":{"kind":"Name","value":"organizationId"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"company"}},{"kind":"Field","name":{"kind":"Name","value":"location"}},{"kind":"Field","name":{"kind":"Name","value":"workType"}},{"kind":"Field","name":{"kind":"Name","value":"jobType"}},{"kind":"Field","name":{"kind":"Name","value":"compensation"}},{"kind":"Field","name":{"kind":"Name","value":"salaryMin"}},{"kind":"Field","name":{"kind":"Name","value":"salaryMax"}},{"kind":"Field","name":{"kind":"Name","value":"recruiterId"}},{"kind":"Field","name":{"kind":"Name","value":"benefits"}},{"kind":"Field","name":{"kind":"Name","value":"requirements"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]} as unknown as DocumentNode<ListJobsQuery, ListJobsQueryVariables>;
+export const ListRtrTemplatesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"listRtrTemplates"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"rtrTemplates"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"html"}},{"kind":"Field","name":{"kind":"Name","value":"organization"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"author"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}}]} as unknown as DocumentNode<ListRtrTemplatesQuery, ListRtrTemplatesQueryVariables>;
+export const RtrTemplateDetailDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"rtrTemplateDetail"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"rtrTemplate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"html"}}]}}]}}]} as unknown as DocumentNode<RtrTemplateDetailQuery, RtrTemplateDetailQueryVariables>;

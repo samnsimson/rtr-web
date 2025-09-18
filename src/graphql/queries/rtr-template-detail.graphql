@@ -1,0 +1,9 @@
+query rtrTemplateDetail($id: String!) {
+	rtrTemplate(id: $id) {
+		id
+		name
+		description
+		text
+		html
+	}
+}

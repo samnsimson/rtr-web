@@ -1,6 +1,6 @@
-import { Button, Heading, HStack, Stack, Text } from "@chakra-ui/react";
+import { Heading, HStack, Stack, Text } from "@chakra-ui/react";
 import { TemplateEditor } from "@/components/dashboard/recruiter/rtr/template-editor";
-import { LuSave } from "react-icons/lu";
+import { CreateRtrTemplateButton } from "@/components/dashboard/recruiter/rtr/create-rtr-template-button";
 
 export default function CreateRtrTemplatePage() {
 	return (
@@ -10,9 +10,7 @@ export default function CreateRtrTemplatePage() {
 					<Heading fontSize={"2xl"}>Create RTR Template</Heading>
 					<Text>Create a new RTR template</Text>
 				</Stack>
-				<Button variant={"solid"} colorPalette={"blue"}>
-					<LuSave /> Save Template
-				</Button>
+				<CreateRtrTemplateButton />
 			</HStack>
 			<TemplateEditor />
 		</Stack>

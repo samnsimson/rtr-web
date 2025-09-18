@@ -1,0 +1,11 @@
+query getCompiledRtrTemplate($input: CompiledRtrTemplateInput!) {
+	compiledRtrTemplate(compiledTemplateInput: $input) {
+		id
+		name
+		description
+		text
+		html
+		createdAt
+		updatedAt
+	}
+}

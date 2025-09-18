@@ -1,16 +1,34 @@
 "use client";
-import { Card, DataList, GridItem, Heading, List, Separator, SimpleGrid, Stack, Text } from "@chakra-ui/react";
+import { Box, Card, DataList, GridItem, Heading, List, Separator, SimpleGrid, Stack, Text } from "@chakra-ui/react";
 import { RtrPreviewJobInfo } from "./rtr-preview-job-info";
 import { useRtrForm } from "@/store/useRtrForm";
 import { useQuery } from "@apollo/client/react";
-import { JobDetailDocument } from "@/graphql/generated/graphql";
+import { GetCompiledRtrTemplateDocument, JobDetailDocument } from "@/graphql/generated/graphql";
 import { AsyncValue } from "./rtr-async-text";
 import { LuCircleCheck } from "react-icons/lu";
 import { AppCardHeadless } from "@/components/ui/app-card";
+import { useDebounce } from "use-debounce";
 
 export const RtrPreview = () => {
 	const { formData } = useRtrForm();
-	const { data, loading } = useQuery(JobDetailDocument, { variables: { id: formData.jobId } });
+	const [debouncedFormData] = useDebounce(formData, 500);
+
+	const { data: jobData, loading: jobLoading } = useQuery(JobDetailDocument, {
+		variables: { id: formData.jobId },
+		skip: !formData.jobId,
+	});
+
+	const { data: rtrTemplateData, loading: rtrTemplateLoading } = useQuery(GetCompiledRtrTemplateDocument, {
+		skip: !debouncedFormData.jobId || !debouncedFormData.rtrTemplateId,
+		variables: {
+			input: {
+				jobId: debouncedFormData.jobId,
+				templateId: debouncedFormData.rtrTemplateId,
+				candidate: { firstName: debouncedFormData.firstName, lastName: debouncedFormData.lastName, email: debouncedFormData.email, phone: debouncedFormData.phone },
+			},
+		},
+	});
+
 	return (
 		<Card.Root bgColor={"bg"} divideY={"1px"} divideColor={"border"}>
 			<Card.Header padding={4} gap={0}>
@@ -25,19 +43,21 @@ export const RtrPreview = () => {
 							<DataList.Root orientation={"horizontal"} gap={2}>
 								<DataList.Item>
 									<DataList.ItemLabel>Name:</DataList.ItemLabel>
-									<DataList.ItemValue>Sam Nishanth Simson</DataList.ItemValue>
+									<DataList.ItemValue>
+										{formData.firstName} {formData.lastName}
+									</DataList.ItemValue>
 								</DataList.Item>
 								<DataList.Item>
 									<DataList.ItemLabel>Email:</DataList.ItemLabel>
-									<DataList.ItemValue>samnsimson@gmail.com</DataList.ItemValue>
+									<DataList.ItemValue>{formData.email}</DataList.ItemValue>
 								</DataList.Item>
 								<DataList.Item>
 									<DataList.ItemLabel>Phone:</DataList.ItemLabel>
-									<DataList.ItemValue>9049177058</DataList.ItemValue>
+									<DataList.ItemValue>{formData.phone}</DataList.ItemValue>
 								</DataList.Item>
 							</DataList.Root>
 						</GridItem>
-						<RtrPreviewJobInfo job={data?.job} loading={loading} />
+						<RtrPreviewJobInfo job={jobData?.job} loading={jobLoading} />
 					</SimpleGrid>
 
 					<Separator marginY={4} />
@@ -45,19 +65,14 @@ export const RtrPreview = () => {
 						<Stack>
 							<Heading size={"md"}>Candidate RTR</Heading>
 							<AppCardHeadless bgColor={"bg.card"}>
-								<Text>
-									I give exclusive permission to VYSystems to represent Sam Nishanth Simson profile and qualifications to Mphasis for the below requirement. I
-									confirm that I have not submitted my resume or application for this specific position to any other recruitment agency or directly with this
-									client within the last 30-60 days. By granting us the Right to Represent, you allow us to present your resume and credentials to our client for
-									their consideration.
-								</Text>
+								<AsyncValue as={Box} loading={rtrTemplateLoading} skeletonLines={3} html={rtrTemplateData?.compiledRtrTemplate?.html ?? ""} />
 							</AppCardHeadless>
 						</Stack>
 						<Stack>
 							<Heading size={"md"}>Job Description</Heading>
 							<AppCardHeadless bgColor={"bg.card"}>
-								<AsyncValue as={Text} loading={loading} skeletonLines={3}>
-									{data?.job?.description}
+								<AsyncValue as={Text} loading={jobLoading} skeletonLines={3}>
+									{jobData?.job?.description}
 								</AsyncValue>
 							</AppCardHeadless>
 						</Stack>
@@ -65,8 +80,8 @@ export const RtrPreview = () => {
 							<Heading size={"md"}>Job Requirements</Heading>
 							<AppCardHeadless bgColor={"bg.card"}>
 								<List.Root listStyleType={"none"} align={"start"}>
-									<AsyncValue as={List.Item} loading={loading} skeletonLines={6}>
-										{data?.job?.requirements.map((requirement) => (
+									<AsyncValue as={List.Item} loading={jobLoading} skeletonLines={6}>
+										{jobData?.job?.requirements.map((requirement) => (
 											<List.Item key={requirement}>
 												<List.Indicator asChild color={"green.500"}>
 													<LuCircleCheck />
@@ -82,8 +97,8 @@ export const RtrPreview = () => {
 							<Heading size={"md"}>Job Benefits</Heading>
 							<AppCardHeadless bgColor={"bg.card"}>
 								<List.Root listStyleType={"none"} align={"start"}>
-									<AsyncValue as={List.Item} loading={loading} skeletonLines={6}>
-										{data?.job?.benefits.map((benefit) => (
+									<AsyncValue as={List.Item} loading={jobLoading} skeletonLines={6}>
+										{jobData?.job?.benefits.map((benefit) => (
 											<List.Item key={benefit}>
 												<List.Indicator asChild color={"green.500"}>
 													<LuCircleCheck />

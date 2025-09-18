@@ -1,0 +1,18 @@
+mutation createRtrTemplate($createRtrTemplateInput: CreateRtrTemplateInput!) {
+	createRtrTemplate(createRtrTemplateInput: $createRtrTemplateInput) {
+		id
+		name
+		description
+		text
+		html
+		organization {
+			id
+		}
+		author {
+			id
+			name
+		}
+		createdAt
+		updatedAt
+	}
+}

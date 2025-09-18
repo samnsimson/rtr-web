@@ -1,15 +1,27 @@
 import { Box, Skeleton } from "@chakra-ui/react";
-import { FC, PropsWithChildren } from "react";
+import { FC } from "react";
 
-interface AsyncValueProps extends PropsWithChildren {
+type AsyncValuePropsBase = {
 	loading: boolean;
 	as: React.ElementType;
 	height?: string | number;
 	width?: string | number;
 	skeletonLines?: number;
-}
+};
 
-export const AsyncValue: FC<AsyncValueProps> = ({ children, loading = false, as: Component, skeletonLines = 1, height = "4", width = "full" }) => {
+type AsyncValuePropsWithHtml = AsyncValuePropsBase & {
+	html: string;
+	children?: never;
+};
+
+type AsyncValuePropsWithChildren = AsyncValuePropsBase & {
+	html?: undefined;
+	children: React.ReactNode;
+};
+
+type AsyncValueProps = AsyncValuePropsWithHtml | AsyncValuePropsWithChildren;
+
+export const AsyncValue: FC<AsyncValueProps> = ({ children, loading = false, as: Component, skeletonLines = 1, height = "4", width = "full", html }) => {
 	if (loading)
 		return (
 			<Box spaceY={2} width={width}>
@@ -18,6 +30,7 @@ export const AsyncValue: FC<AsyncValueProps> = ({ children, loading = false, as:
 				))}
 			</Box>
 		);
-	if (children) return <Component>{children}</Component>;
-	return <Component>No data!</Component>;
+	if (html) return <Component dangerouslySetInnerHTML={{ __html: html }} />;
+	else if (children) return <Component>{children}</Component>;
+	else return <Component>No data!</Component>;
 };
