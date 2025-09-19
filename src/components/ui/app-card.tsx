@@ -8,6 +8,11 @@ interface AppCardProps extends CardRootProps {
 	noPadding?: boolean;
 }
 
+interface AppCardHeadlessProps extends CardRootProps {
+	noPadding?: boolean;
+	children: React.ReactNode;
+}
+
 export const AppCard: FC<AppCardProps> = ({ title, description, children, noPadding, ...props }) => {
 	return (
 		<Card.Root bgColor={"bg"} divideY={"1px"} divideColor={"border"} {...props}>
@@ -20,10 +25,10 @@ export const AppCard: FC<AppCardProps> = ({ title, description, children, noPadd
 	);
 };
 
-export const AppCardHeadless: FC<CardRootProps> = ({ children, ...props }) => {
+export const AppCardHeadless: FC<AppCardHeadlessProps> = ({ children, noPadding, ...props }) => {
 	return (
 		<Card.Root bgColor={"bg"} divideY={"1px"} divideColor={"border"} {...props}>
-			<Card.Body>{children}</Card.Body>
+			<Card.Body padding={noPadding ? 0 : 4}>{children}</Card.Body>
 		</Card.Root>
 	);
 };

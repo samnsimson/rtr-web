@@ -2,7 +2,6 @@ import { Button, Card, Flex, Heading, Stack, Text, DataList, Timeline, Icon, Sim
 import { EditIcon, DownloadIcon, ShareIcon } from "lucide-react";
 import { format } from "date-fns";
 import { LuCheck, LuEye, LuFileText, LuSend, LuX, LuClock } from "react-icons/lu";
-import { BackButton } from "@/components/ui/back-button";
 import { RtrStatus, WorkType, CompensationType } from "@/graphql/generated/graphql";
 
 // Mock data - in a real app, this would come from an API call
@@ -142,7 +141,6 @@ const RtrViewPage = async ({ params }: RtrViewPageProps) => {
 	return (
 		<Stack paddingX={4} gap={4}>
 			<Stack gap={2}>
-				<BackButton label="Back" colorPalette={"blue"} alignSelf={"start"} />
 				<Stack direction={{ base: "column", md: "row" }} gap={4} justifyContent={"space-between"}>
 					<Stack gap={0}>
 						<Heading fontSize={{ base: "xl", md: "2xl" }}>RTR #{rtrData.id}</Heading>

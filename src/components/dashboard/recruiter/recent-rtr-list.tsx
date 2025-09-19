@@ -1,6 +1,6 @@
 import { Badge, Button, CardBody, CardDescription, CardHeader, CardRoot, CardTitle, Heading, HStack, Stack, Text } from "@chakra-ui/react";
-import { ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
+import { LuArrowRight } from "react-icons/lu";
 
 const rtrList = [
 	{ name: "John Smith", role: "Senior Software Engineer", company: "TechCorp Inc.", sent: "2024-01-15", signed: "2024-01-15" },
@@ -20,7 +20,7 @@ export const RecentRtrList = () => {
 					</Stack>
 					<Button variant={"solid"} colorPalette={"blue"} asChild>
 						<Link href={"/recruiter/rtr"}>
-							View All <ArrowRightIcon />
+							View All <LuArrowRight />
 						</Link>
 					</Button>
 				</HStack>

@@ -2,12 +2,11 @@
 import { useSidebar } from "@/store/useSidebar";
 import { useAuth } from "@/hooks/use-auth";
 import { AvatarFallback, AvatarRoot, Box, Drawer, Flex, Heading, Icon, IconButton, Portal, Stack, Text, useBreakpoint, Collapsible } from "@chakra-ui/react";
-import { LogOutIcon, ChevronDownIcon, ChevronRightIcon } from "lucide-react";
 import { FC, Fragment, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NavItemProps, SidebarConfig } from "@/lib/types";
-import { LuMenu } from "react-icons/lu";
+import { LuChevronDown, LuChevronRight, LuLogOut, LuMenu } from "react-icons/lu";
 
 export const SidebarToggle = () => {
 	const { toggle } = useSidebar((state) => state);
@@ -40,7 +39,7 @@ const NavItem: FC<NavItemProps> = ({ href, icon, label, children, subItems, isAc
 					<Text fontSize={"sm"} fontWeight={isActive || hasActiveChild ? "semibold" : "normal"} color={"white"} flex={1}>
 						{children || label}
 					</Text>
-					<Icon as={isOpen ? ChevronDownIcon : ChevronRightIcon} size={"sm"} color={"white"} />
+					<Icon as={isOpen ? LuChevronDown : LuChevronRight} size={"sm"} color={"white"} />
 				</Flex>
 				<Collapsible.Root open={isOpen}>
 					<Collapsible.Content bgColor={"bg.card"} rounded={"md"} marginTop={2}>
@@ -134,7 +133,7 @@ export const SidebarContent = ({ config }: { config: SidebarConfig }) => {
 					)}
 					{config.showLogout && (
 						<IconButton rounded={"full"} variant={"ghost"} colorPalette={"white"} onClick={handleLogout}>
-							<LogOutIcon />
+							<LuLogOut />
 						</IconButton>
 					)}
 				</Flex>
