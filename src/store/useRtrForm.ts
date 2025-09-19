@@ -14,11 +14,15 @@ interface RtrFormData {
 	compensationType: CompensationType;
 	rtrTemplateId: string;
 	expiresAt: Date;
+	resumeRequired: boolean;
+	photoIdRequired: boolean;
+	employerDetailsRequired: boolean;
+	referencesRequired: boolean;
+	skillsRequired: boolean;
 }
 
 interface RtrFormStore {
 	formData: RtrFormData;
-	initialData: RtrFormData;
 	updateField: <K extends keyof RtrFormData>(field: K, value: RtrFormData[K]) => void;
 	updateArrayField: <K extends keyof RtrFormData>(field: K, index: number, value: string) => void;
 	addArrayItem: <K extends keyof RtrFormData>(field: K) => void;
@@ -38,13 +42,17 @@ const initialFormData: RtrFormData = {
 	compensationType: CompensationType.Salary,
 	rtrTemplateId: "",
 	expiresAt: add(new Date(), { days: 30 }),
+	resumeRequired: true,
+	photoIdRequired: true,
+	employerDetailsRequired: false,
+	referencesRequired: false,
+	skillsRequired: false,
 };
 
 export const useRtrForm = create<RtrFormStore>()(
 	devtools(
 		(set, get) => ({
 			formData: { ...initialFormData },
-			initialData: { ...initialFormData },
 			updateField: (field, value) => set((state) => ({ formData: { ...state.formData, [field]: value } })),
 			updateArrayField: (field, index, value) => {
 				return set((state) => {
@@ -67,10 +75,10 @@ export const useRtrForm = create<RtrFormStore>()(
 					return { formData: { ...state.formData, [field]: arr.filter((_, i) => i !== index) } };
 				});
 			},
-			resetForm: () => set({ formData: { ...initialFormData }, initialData: { ...initialFormData } }),
+			resetForm: () => set({ formData: { ...initialFormData } }),
 			isDirty: () => {
-				const { formData, initialData } = get();
-				return JSON.stringify(formData) !== JSON.stringify(initialData);
+				const { formData } = get();
+				return JSON.stringify(formData) !== JSON.stringify(initialFormData);
 			},
 		}),
 		{ name: "RtrFormStore" },

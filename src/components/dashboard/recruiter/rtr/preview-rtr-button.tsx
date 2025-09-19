@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Box, Button, DataList, Drawer, GridItem, Heading, IconButton, List, SimpleGrid, VStack, Text } from "@chakra-ui/react";
+import { Box, Button, DataList, Drawer, IconButton, List, SimpleGrid, VStack, Text } from "@chakra-ui/react";
 import { LuCircleCheck, LuEye, LuX } from "react-icons/lu";
 import { useRtrForm } from "@/store/useRtrForm";
 import { useQuery } from "@apollo/client/react";

@@ -1,0 +1,29 @@
+mutation createRtr($input: CreateRtrInput!) {
+	createRtr(createRtrInput: $input) {
+		id
+		status
+		expiresAt
+		signedAt
+		viewedAt
+		createdAt
+		updatedAt
+		resumeRequired
+		photoIdRequired
+		employerDetailsRequired
+		referencesRequired
+		skillsRequired
+		job {
+			id
+			title
+			description
+		}
+		recruiter {
+			id
+		}
+		rtrTemplate {
+			id
+			name
+			description
+		}
+	}
+}

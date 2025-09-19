@@ -1,7 +1,7 @@
-import { Stack, Heading, Text, Button, HStack } from "@chakra-ui/react";
+import { Stack, Heading, Text, HStack } from "@chakra-ui/react";
 import { PreviewRtrButton } from "@/components/dashboard/recruiter/rtr/preview-rtr-button";
 import { FC, PropsWithChildren } from "react";
-import { LuShare } from "react-icons/lu";
+import { RtrSendButton } from "@/components/dashboard/recruiter/rtr/rtr-send-button";
 
 const CreateRtrLayout: FC<PropsWithChildren> = ({ children }) => {
 	return (
@@ -13,9 +13,7 @@ const CreateRtrLayout: FC<PropsWithChildren> = ({ children }) => {
 				</Stack>
 				<HStack gap={2}>
 					<PreviewRtrButton />
-					<Button variant={"solid"} colorPalette={"blue"}>
-						<LuShare /> Send
-					</Button>
+					<RtrSendButton />
 				</HStack>
 			</HStack>
 			{children}

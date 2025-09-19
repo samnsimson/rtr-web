@@ -1,0 +1,27 @@
+query listRtrs {
+	rtrs {
+		id
+		candidateFirstName
+		candidateLastName
+		candidateEmail
+		candidatePhone
+		compensation
+		compensationType
+		status
+		jobId
+		recruiterId
+		rtrTemplateId
+		candidateId
+		createdById
+		expiresAt
+		job {
+			id
+			title
+			company
+		}
+		createdBy {
+			id
+			name
+		}
+	}
+}
