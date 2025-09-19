@@ -2,7 +2,7 @@
 import { Stack, HStack, FieldRoot, FieldLabel, InputGroup, Input, Textarea, Button, Card, Heading, Text, createListCollection } from "@chakra-ui/react";
 import { Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
-import { WorkType, JobType, CompensationType } from "@/graphql/generated/graphql";
+import { WorkType, JobType, CompensationType, ListJobsDocument } from "@/graphql/generated/graphql";
 import { SelectBox } from "../ui/select-box";
 import { useJobForm } from "@/store/useJobForm";
 import { JobFormData } from "@/types/database";
@@ -17,9 +17,11 @@ export const CreateJobForm = () => {
 	const [success, setSuccess] = useState<string | null>(null);
 	const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 	const { formData, updateField, updateArrayField, addArrayItem, removeArrayItem, resetForm } = useJobForm((state) => state);
+
 	const [createJob, { loading: isCreatingJob }] = useMutation(CreateJobDocument, {
 		onCompleted: () => resetForm(),
 		onError: (error) => setValidationErrors({ general: error.message }),
+		refetchQueries: [{ query: ListJobsDocument }],
 	});
 
 	const handleInputChange = (field: keyof JobFormData, value: any) => {

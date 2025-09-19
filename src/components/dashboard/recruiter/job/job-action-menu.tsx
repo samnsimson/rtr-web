@@ -5,7 +5,7 @@ import { LuEllipsisVertical, LuPencil, LuShare, LuTrash2 } from "react-icons/lu"
 export const JobActionMenu = () => {
 	return (
 		<Menu.Root>
-			<Menu.Trigger>
+			<Menu.Trigger asChild>
 				<IconButton variant={"solid"} colorPalette={"blue"}>
 					<LuEllipsisVertical />
 				</IconButton>

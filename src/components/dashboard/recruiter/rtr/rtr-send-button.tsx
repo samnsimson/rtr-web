@@ -1,5 +1,5 @@
 "use client";
-import { CreateRtrDocument } from "@/graphql/generated/graphql";
+import { CreateRtrDocument, ListRtrsDocument } from "@/graphql/generated/graphql";
 import { useRtrForm } from "@/store/useRtrForm";
 import { useMutation } from "@apollo/client/react";
 import { Button } from "@chakra-ui/react";
@@ -14,6 +14,7 @@ export const RtrSendButton = () => {
 			toaster.create({ title: "RTR sent successfully", type: "success", closable: true });
 		},
 		onError: (error) => toaster.create({ title: error.message, type: "error" }),
+		refetchQueries: [{ query: ListRtrsDocument }],
 	});
 
 	const handleSend = async () => {

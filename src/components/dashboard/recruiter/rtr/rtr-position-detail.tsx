@@ -10,7 +10,7 @@ import { Suspense, useEffect } from "react";
 
 export const RtrPositionDetails = () => {
 	const { updateField } = useRtrForm();
-	const { data, loading } = useQuery(ListJobsDocument, { variables: { filters: { page: 1, limit: 10 } } });
+	const { data, loading } = useQuery(ListJobsDocument, { variables: { filters: { page: 1, limit: 10 } }, fetchPolicy: "network-only" });
 	const { collection, set } = useListCollection<SelectBoxItem>({ initialItems: [], itemToString: (item) => item.name, itemToValue: (item) => item.value });
 
 	useEffect(() => {
