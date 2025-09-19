@@ -1,5 +1,5 @@
 import { SidebarConfig } from "@/lib/types";
-import { LuBriefcase, LuFileText, LuHouse } from "react-icons/lu";
+import { LuBriefcase, LuFileText, LuHouse, LuPlus, LuList } from "react-icons/lu";
 
 export const recruiterSidebarConfig: SidebarConfig = {
 	title: "Right to Represent",
@@ -10,20 +10,49 @@ export const recruiterSidebarConfig: SidebarConfig = {
 			label: "Dashboard",
 		},
 		{
-			href: "/recruiter/rtr",
-			icon: LuFileText,
-			label: "RTR Management",
-		},
-		{
 			href: "/recruiter/job",
 			icon: LuBriefcase,
 			label: "Jobs",
+			subItems: [
+				{
+					href: "/recruiter/job",
+					icon: LuList,
+					label: "All Jobs",
+				},
+				{
+					href: "/recruiter/job/create",
+					icon: LuPlus,
+					label: "New Job",
+				},
+			],
+		},
+		{
+			href: "/recruiter/rtr",
+			icon: LuFileText,
+			label: "RTR Management",
+			subItems: [
+				{
+					href: "/recruiter/rtr",
+					icon: LuList,
+					label: "All RTR's",
+				},
+				{
+					href: "/recruiter/rtr/create",
+					icon: LuPlus,
+					label: "New RTR",
+				},
+				{
+					href: "/recruiter/rtr/template",
+					icon: LuList,
+					label: "All Templates",
+				},
+			],
 		},
 	],
 	showUserProfile: true,
 	userProfileConfig: {
 		avatarBgColor: "success",
-		showRole: true,
+		showRole: false,
 	},
 	showLogout: true,
 };

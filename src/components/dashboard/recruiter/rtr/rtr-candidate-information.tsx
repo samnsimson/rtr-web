@@ -1,7 +1,7 @@
 "use client";
 import { useRtrForm } from "@/store/useRtrForm";
 import { Card, Stack, FieldRoot, FieldLabel, InputGroup, Input } from "@chakra-ui/react";
-import { UserIcon, MailIcon, PhoneIcon } from "lucide-react";
+import { LuMail, LuPhone, LuUser } from "react-icons/lu";
 
 export const RtrCandidateInformation = () => {
 	const { formData, updateField } = useRtrForm();
@@ -16,7 +16,7 @@ export const RtrCandidateInformation = () => {
 					<Stack gap={4} direction={{ base: "column", md: "row" }}>
 						<FieldRoot id="candidate-first-name">
 							<FieldLabel>First Name</FieldLabel>
-							<InputGroup startElement={<UserIcon />}>
+							<InputGroup startElement={<LuUser />}>
 								<Input
 									bgColor={"bg.card"}
 									type="text"
@@ -29,7 +29,7 @@ export const RtrCandidateInformation = () => {
 						</FieldRoot>
 						<FieldRoot id="candidate-last-name">
 							<FieldLabel>Last Name</FieldLabel>
-							<InputGroup startElement={<UserIcon />}>
+							<InputGroup startElement={<LuUser />}>
 								<Input
 									bgColor={"bg.card"}
 									type="text"
@@ -44,7 +44,7 @@ export const RtrCandidateInformation = () => {
 					<Stack gap={4} direction={{ base: "column", md: "row" }}>
 						<FieldRoot id="candidate-email">
 							<FieldLabel>Email</FieldLabel>
-							<InputGroup startElement={<MailIcon />}>
+							<InputGroup startElement={<LuMail />}>
 								<Input
 									bgColor={"bg.card"}
 									type="text"
@@ -57,7 +57,7 @@ export const RtrCandidateInformation = () => {
 						</FieldRoot>
 						<FieldRoot id="candidate-phone">
 							<FieldLabel>Phone</FieldLabel>
-							<InputGroup startElement={<PhoneIcon />}>
+							<InputGroup startElement={<LuPhone />}>
 								<Input
 									bgColor={"bg.card"}
 									type="text"

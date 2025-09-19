@@ -1,9 +1,9 @@
 "use client";
 import { useSidebar } from "@/store/useSidebar";
 import { useAuth } from "@/hooks/use-auth";
-import { AvatarFallback, AvatarRoot, Box, Drawer, Flex, Heading, Icon, IconButton, Portal, Stack, Text, useBreakpoint } from "@chakra-ui/react";
-import { LogOutIcon } from "lucide-react";
-import { Fragment, useEffect } from "react";
+import { AvatarFallback, AvatarRoot, Box, Drawer, Flex, Heading, Icon, IconButton, Portal, Stack, Text, useBreakpoint, Collapsible } from "@chakra-ui/react";
+import { LogOutIcon, ChevronDownIcon, ChevronRightIcon } from "lucide-react";
+import { FC, Fragment, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NavItemProps, SidebarConfig } from "@/lib/types";
@@ -18,26 +18,64 @@ export const SidebarToggle = () => {
 	);
 };
 
-const NavItem = ({ href, icon, label, children, isActive = false }: NavItemProps & { isActive?: boolean }) => (
-	<Link href={href as any} style={{ textDecoration: "none" }}>
-		<Flex
-			alignItems={"center"}
-			px={4}
-			py={3}
-			gap={3}
-			cursor={"pointer"}
-			_hover={{ bgColor: isActive ? "info" : "bg.subtle" }}
-			bgColor={isActive ? "info" : "transparent"}
-			transition={"all 0.2s"}
-			borderRadius={"md"}
-		>
-			<Icon as={icon} size={"md"} color={"white"} />
-			<Text fontWeight={isActive ? "semibold" : "normal"} color={"white"}>
-				{children || label}
-			</Text>
-		</Flex>
-	</Link>
-);
+const NavItem: FC<NavItemProps> = ({ href, icon, label, children, subItems, isActive = false, hasActiveChild = false, ...props }) => {
+	const [isOpen, setIsOpen] = useState(hasActiveChild);
+	const hasSubItems = subItems && subItems.length > 0;
+	if (hasSubItems) {
+		return (
+			<Box {...props}>
+				<Flex
+					alignItems={"center"}
+					px={4}
+					py={3}
+					gap={3}
+					cursor={"pointer"}
+					_hover={{ bgColor: isActive || hasActiveChild ? "info" : "bg.subtle" }}
+					bgColor={isActive || hasActiveChild ? "info" : "transparent"}
+					transition={"all 0.2s"}
+					borderRadius={"md"}
+					onClick={() => setIsOpen(!isOpen)}
+				>
+					<Icon as={icon} size={"md"} color={"white"} />
+					<Text fontSize={"sm"} fontWeight={isActive || hasActiveChild ? "semibold" : "normal"} color={"white"} flex={1}>
+						{children || label}
+					</Text>
+					<Icon as={isOpen ? ChevronDownIcon : ChevronRightIcon} size={"sm"} color={"white"} />
+				</Flex>
+				<Collapsible.Root open={isOpen}>
+					<Collapsible.Content bgColor={"bg.card"} rounded={"md"} marginTop={2}>
+						<Stack gap={1} padding={2}>
+							{subItems.map((subItem) => (
+								<NavItem key={subItem.href} {...subItem} borderRadius={0} />
+							))}
+						</Stack>
+					</Collapsible.Content>
+				</Collapsible.Root>
+			</Box>
+		);
+	}
+
+	return (
+		<Link href={href as any} style={{ textDecoration: "none" }}>
+			<Flex
+				alignItems={"center"}
+				px={4}
+				py={3}
+				gap={3}
+				cursor={"pointer"}
+				_hover={{ bgColor: isActive ? "info" : "bg.subtle" }}
+				bgColor={isActive ? "info" : "transparent"}
+				transition={"all 0.2s"}
+				borderRadius={"md"}
+			>
+				<Icon as={icon} size={"md"} color={"white"} />
+				<Text fontWeight={isActive ? "semibold" : "normal"} color={"white"}>
+					{children || label}
+				</Text>
+			</Flex>
+		</Link>
+	);
+};
 
 export const SidebarContent = ({ config }: { config: SidebarConfig }) => {
 	const { user, logout } = useAuth();
@@ -58,6 +96,14 @@ export const SidebarContent = ({ config }: { config: SidebarConfig }) => {
 		return false;
 	};
 
+	const hasActiveChild = (item: NavItemProps): boolean => {
+		if (isLinkActive(item.href)) return true;
+		if (item.subItems) {
+			return item.subItems.some((subItem) => hasActiveChild(subItem));
+		}
+		return false;
+	};
+
 	const handleLogout = () => {
 		if (config.onLogout) config.onLogout();
 		else logout();
@@ -68,11 +114,9 @@ export const SidebarContent = ({ config }: { config: SidebarConfig }) => {
 			<Flex bgColor={"bg"} h={"full"} maxH={"80px"} alignItems={"center"} px={3}>
 				<Heading>{config.title}</Heading>
 			</Flex>
-			<Stack flex={1} overflow={"auto"} gap={4} padding={3}>
+			<Stack flex={1} overflow={"auto"} gap={2} padding={3}>
 				{config.navItems.map((item) => (
-					<NavItem key={item.href} href={item.href} icon={item.icon} label={item.label} isActive={isLinkActive(item.href)}>
-						{item.children || item.label}
-					</NavItem>
+					<NavItem key={item.href} {...item} isActive={isLinkActive(item.href)} hasActiveChild={hasActiveChild(item)} />
 				))}
 			</Stack>
 			{(config.showUserProfile || config.showLogout) && (

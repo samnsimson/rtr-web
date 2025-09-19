@@ -1,8 +1,13 @@
-export interface NavItemProps {
+import { BoxProps } from "@chakra-ui/react";
+
+export interface NavItemProps extends BoxProps {
 	href: string;
 	icon: any;
 	label: string;
 	children?: React.ReactNode;
+	isActive?: boolean;
+	hasActiveChild?: boolean;
+	subItems?: NavItemProps[];
 }
 
 export interface SidebarConfig {
