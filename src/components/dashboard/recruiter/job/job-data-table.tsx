@@ -1,23 +1,21 @@
 "use client";
-import { PaginationComponent } from "@/components/ui/pagination-component";
-import { Badge, For, Heading, HStack, IconButton, Stack, Table, Text } from "@chakra-ui/react";
-import { format } from "date-fns";
-import { LuEye, LuPencil, LuTrash2 } from "react-icons/lu";
-import Link from "next/link";
 import { FC } from "react";
+import { format } from "date-fns";
+import { LuEye, LuPencil, LuTrash2, LuBriefcase } from "react-icons/lu";
+import { Badge, Clipboard, Flex, Heading, Stack, Text } from "@chakra-ui/react";
 import { CompensationType, JobStatus, JobType, ListJobsQuery, WorkType } from "@/graphql/generated/graphql";
-import { TableSkeleton } from "@/components/ui/table-skeleton";
-import { JobDataEmpty } from "./job-data-empty";
+import { DataTable, DataTableColumn, DataTableAction, EmptyStateProps } from "@/components/ui/data-table";
 
 type JobDataTableProps = {
 	jobs?: ListJobsQuery["jobs"]["data"];
 	totalCount?: number;
-	currentPage: number;
 	limit: number;
 	loading?: boolean;
+
+	onPageChange?: (page: number) => void;
 };
 
-export const JobDataTable: FC<JobDataTableProps> = ({ jobs, totalCount, currentPage, limit, loading = false }) => {
+export const JobDataTable: FC<JobDataTableProps> = ({ jobs, totalCount, limit, loading = false, onPageChange }) => {
 	const formatDate = (dateString: Date) => format(dateString, "MMM dd");
 
 	const getStatusColor = (status: string) => {
@@ -80,117 +78,142 @@ export const JobDataTable: FC<JobDataTableProps> = ({ jobs, totalCount, currentP
 		}
 	};
 
+	const emptyState: EmptyStateProps = {
+		icon: LuBriefcase,
+		title: "No jobs found",
+		description: "Create your first job posting to get started with recruiting.",
+	};
+
+	const columns: DataTableColumn<ListJobsQuery["jobs"]["data"][number]>[] = [
+		{
+			key: "jobId",
+			label: "Job ID",
+			render: (job) => (
+				<Flex as={Text} gap={2} alignItems={"center"}>
+					{job.jobId}
+					<Clipboard.Root value={job.jobId ?? ""} cursor={"pointer"}>
+						<Clipboard.Trigger asChild>
+							<Clipboard.Indicator />
+						</Clipboard.Trigger>
+					</Clipboard.Root>
+				</Flex>
+			),
+		},
+
+		{
+			key: "title",
+			label: "Title",
+			render: (job) => (
+				<Stack gap={0}>
+					<Heading size={"sm"}>{job.title}</Heading>
+					<Text fontSize="sm" color="fg.muted">
+						{job.compensation === CompensationType.Salary ? "Annual Salary" : "Rate"}
+					</Text>
+				</Stack>
+			),
+		},
+		{
+			key: "company",
+			label: "Company",
+			render: (job) => (
+				<Stack gap={0}>
+					<Heading size={"sm"}>{job.company}</Heading>
+					<Text fontSize="sm" color="fg.muted">
+						{job.location}
+					</Text>
+				</Stack>
+			),
+		},
+
+		{
+			key: "workType",
+			label: "Work Type",
+			render: (job) => (
+				<Badge variant={"outline"} colorPalette={"blue"}>
+					{getWorkTypeLabel(job.workType)}
+				</Badge>
+			),
+		},
+		{
+			key: "jobType",
+			label: "Job Type",
+			render: (job) => (
+				<Badge variant={"outline"} colorPalette={"purple"}>
+					{getJobTypeLabel(job.jobType)}
+				</Badge>
+			),
+		},
+		{
+			key: "compensation",
+			label: "Compensation",
+			render: (job) => (
+				<Badge variant={"outline"} colorPalette={"green"}>
+					{getCompensationLabel(job.compensation)}
+				</Badge>
+			),
+		},
+		{
+			key: "status",
+			label: "Status",
+			render: (job) => (
+				<Badge variant={"solid"} colorPalette={getStatusColor(job.status)}>
+					{job.status.charAt(0).toUpperCase() + job.status.slice(1)}
+				</Badge>
+			),
+		},
+		{
+			key: "applications",
+			label: "Applications",
+			render: () => <Text fontWeight="medium">0</Text>,
+		},
+		{
+			key: "createdAt",
+			label: "Created",
+			render: (job) => (
+				<Stack gap={0}>
+					<Text>{formatDate(job.createdAt)}</Text>
+					<Text fontSize="sm" color="fg.muted">
+						{job.expiresAt ? `Expires ${formatDate(job.expiresAt)}` : "No expiry"}
+					</Text>
+				</Stack>
+			),
+		},
+	];
+
+	const actions: DataTableAction<ListJobsQuery["jobs"]["data"][number]>[] = [
+		{
+			key: "view",
+			icon: LuEye,
+			href: (job) => `/recruiter/job/${job.id}`,
+		},
+		{
+			key: "edit",
+			icon: LuPencil,
+			href: (job) => `/recruiter/job/${job.id}`,
+		},
+		{
+			key: "delete",
+			icon: LuTrash2,
+			onClick: (job) => console.log("Delete job:", job.id),
+			colorPalette: "red",
+			_hover: { color: "red.500" },
+		},
+	];
+
 	return (
-		<Stack gap={0}>
-			<Table.ScrollArea maxW={{ base: "sm", md: "full" }}>
-				<Table.Root size={"lg"} stickyHeader interactive>
-					<Table.Header>
-						<Table.Row bgColor={"bg.card"}>
-							<Heading as={Table.ColumnHeader} size={"sm"}>
-								Title
-							</Heading>
-							<Heading as={Table.ColumnHeader} size={"sm"}>
-								Company
-							</Heading>
-							<Heading as={Table.ColumnHeader} size={"sm"}>
-								Location
-							</Heading>
-							<Heading as={Table.ColumnHeader} size={"sm"}>
-								Work Type
-							</Heading>
-							<Heading as={Table.ColumnHeader} size={"sm"}>
-								Job Type
-							</Heading>
-							<Heading as={Table.ColumnHeader} size={"sm"}>
-								Compensation
-							</Heading>
-							<Heading as={Table.ColumnHeader} size={"sm"}>
-								Status
-							</Heading>
-							<Heading as={Table.ColumnHeader} size={"sm"}>
-								Applications
-							</Heading>
-							<Heading as={Table.ColumnHeader} size={"sm"}>
-								Created
-							</Heading>
-							<Heading as={Table.ColumnHeader} size={"sm"}>
-								Actions
-							</Heading>
-						</Table.Row>
-					</Table.Header>
-					{loading ? (
-						<TableSkeleton rows={5} columns={10} />
-					) : (
-						<Table.Body>
-							<For each={jobs} fallback={<JobDataEmpty />}>
-								{(job) => (
-									<Table.Row key={job.id}>
-										<Table.Cell>
-											<Stack gap={0}>
-												<Heading size={"sm"}>{job.title}</Heading>
-												<Text fontSize="sm" color="fg.muted">
-													{job.compensation === CompensationType.Salary ? "Annual Salary" : "Rate"}
-												</Text>
-											</Stack>
-										</Table.Cell>
-										<Table.Cell>{job.company}</Table.Cell>
-										<Table.Cell>{job.location}</Table.Cell>
-										<Table.Cell>
-											<Badge variant={"outline"} colorPalette={"blue"}>
-												{getWorkTypeLabel(job.workType)}
-											</Badge>
-										</Table.Cell>
-										<Table.Cell>
-											<Badge variant={"outline"} colorPalette={"purple"}>
-												{getJobTypeLabel(job.jobType)}
-											</Badge>
-										</Table.Cell>
-										<Table.Cell>
-											<Badge variant={"outline"} colorPalette={"green"}>
-												{getCompensationLabel(job.compensation)}
-											</Badge>
-										</Table.Cell>
-										<Table.Cell>
-											<Badge variant={"solid"} colorPalette={getStatusColor(job.status)}>
-												{job.status.charAt(0).toUpperCase() + job.status.slice(1)}
-											</Badge>
-										</Table.Cell>
-										<Table.Cell>
-											<Text fontWeight="medium">job.applications</Text>
-										</Table.Cell>
-										<Table.Cell>
-											<Stack gap={0}>
-												<Text>{formatDate(job.createdAt)}</Text>
-												<Text fontSize="sm" color="fg.muted">
-													{job.expiresAt ? `Expires ${formatDate(job.expiresAt)}` : "No expiry"}
-												</Text>
-											</Stack>
-										</Table.Cell>
-										<Table.Cell>
-											<HStack>
-												<IconButton variant={"ghost"} rounded={"full"} _hover={{ color: "primary" }} asChild>
-													<Link href={`/recruiter/job/${job.id}`}>
-														<LuEye />
-													</Link>
-												</IconButton>
-												<IconButton variant={"ghost"} rounded={"full"} _hover={{ color: "primary" }} asChild>
-													<Link href={`/recruiter/job/${job.id}`}>
-														<LuPencil />
-													</Link>
-												</IconButton>
-												<IconButton variant={"ghost"} rounded={"full"} _hover={{ color: "primary" }}>
-													<LuTrash2 />
-												</IconButton>
-											</HStack>
-										</Table.Cell>
-									</Table.Row>
-								)}
-							</For>
-						</Table.Body>
-					)}
-				</Table.Root>
-			</Table.ScrollArea>
-			<PaginationComponent count={totalCount} page={currentPage} limit={limit} padding={2} bgColor={"bg.card"} display={"flex"} justifyContent={"center"} />
-		</Stack>
+		<DataTable
+			columns={columns}
+			data={jobs || []}
+			loading={loading}
+			actions={actions}
+			emptyState={emptyState}
+			pagination={{
+				limit,
+				count: totalCount || 0,
+				onPageChange: onPageChange || ((page) => console.log("Page changed to:", page)),
+			}}
+			fallbackRows={5}
+			fallbackColumns={columns.length}
+		/>
 	);
 };

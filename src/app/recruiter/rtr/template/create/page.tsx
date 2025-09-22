@@ -1,8 +1,9 @@
 import { Heading, HStack, Stack, Text } from "@chakra-ui/react";
 import { TemplateEditor } from "@/components/dashboard/recruiter/rtr/template-editor";
 import { CreateRtrTemplateButton } from "@/components/dashboard/recruiter/rtr/create-rtr-template-button";
+import { FC } from "react";
 
-export default function CreateRtrTemplatePage() {
+const CreateRtrTemplatePage: FC<PageProps<"/recruiter/rtr/template/create">> = async () => {
 	return (
 		<Stack padding={4} gap={4}>
 			<HStack justify={"space-between"}>
@@ -15,4 +16,6 @@ export default function CreateRtrTemplatePage() {
 			<TemplateEditor />
 		</Stack>
 	);
-}
+};
+
+export default CreateRtrTemplatePage;

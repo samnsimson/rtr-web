@@ -2,10 +2,11 @@ import { RtrDataTable } from "@/components/dashboard/recruiter/rtr/rtr-data-tabl
 import { RtrSearchFilter } from "@/components/dashboard/recruiter/rtr/rtr-search-filter";
 import { Button, Card, Flex, Heading, Stack, Text } from "@chakra-ui/react";
 import { LuPlus } from "react-icons/lu";
-import { Suspense } from "react";
+import { FC } from "react";
 import Link from "next/link";
 
-const RtrListPage = () => {
+const RtrListPage: FC<PageProps<"/recruiter/rtr">> = async ({ searchParams }) => {
+	const params = (await searchParams) as Record<string, string>;
 	return (
 		<Stack padding={4} gap={4}>
 			<Flex alignItems={"center"} justifyContent={"space-between"}>
@@ -19,12 +20,10 @@ const RtrListPage = () => {
 					</Link>
 				</Button>
 			</Flex>
-			<Suspense>
-				<RtrSearchFilter />
-			</Suspense>
+			<RtrSearchFilter />
 			<Card.Root>
 				<Card.Body padding={0}>
-					<RtrDataTable />
+					<RtrDataTable params={params} />
 				</Card.Body>
 			</Card.Root>
 		</Stack>

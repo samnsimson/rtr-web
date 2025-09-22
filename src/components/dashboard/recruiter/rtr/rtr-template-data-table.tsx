@@ -47,12 +47,12 @@ export const RtrTemplateDataTable = () => {
 		{
 			key: "view",
 			icon: LuEye,
-			href: (item) => `/recruiter/rtr-templates/${item.id}`,
+			href: (item) => `/recruiter/rtr/template/${item.id}`,
 		},
 		{
 			key: "edit",
 			icon: LuPencil,
-			href: (item) => `/recruiter/rtr-templates/${item.id}`,
+			href: (item) => `/recruiter/rtr/template/${item.id}`,
 		},
 		{
 			key: "delete",

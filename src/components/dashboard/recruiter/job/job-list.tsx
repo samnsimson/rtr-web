@@ -32,7 +32,7 @@ export const JobList: FC<JobListProps> = ({ searchParams }) => {
 	return (
 		<Card.Root>
 			<Card.Body padding={0}>
-				<JobDataTable jobs={data?.jobs.data} totalCount={data?.jobs.total} currentPage={parseInt(params.page)} limit={parseInt(params.limit)} loading={loading} />
+				<JobDataTable jobs={data?.jobs.data} totalCount={data?.jobs.total} limit={parseInt(params.limit)} loading={loading} />
 			</Card.Body>
 		</Card.Root>
 	);

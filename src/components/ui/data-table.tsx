@@ -97,8 +97,8 @@ export const DataTable = <T extends Record<string, any>>({
 				<Table.Root size={"lg"} stickyHeader interactive {...tableProps}>
 					<Table.Header>
 						<Table.Row bgColor={"bg.card"}>
-							{columns.map((column) => (
-								<Heading key={column.key} as={Table.ColumnHeader} size={"sm"} textAlign={column.align || "left"} width={column.width}>
+							{columns.map((column, idx) => (
+								<Heading key={column.key + idx} as={Table.ColumnHeader} size={"sm"} textAlign={column.align || "left"} width={column.width}>
 									{column.label}
 								</Heading>
 							))}
@@ -125,10 +125,10 @@ export const DataTable = <T extends Record<string, any>>({
 						>
 							{(item) => (
 								<Table.Row key={item.id || JSON.stringify(item)}>
-									{columns.map((column) => {
+									{columns.map((column, idx) => {
 										const value = getValue(item, column.key);
 										return (
-											<Table.Cell key={column.key} textAlign={column.align || "left"}>
+											<Table.Cell key={column.key + idx} textAlign={column.align || "left"}>
 												{column.render ? column.render(item, value) : String(value || "")}
 											</Table.Cell>
 										);

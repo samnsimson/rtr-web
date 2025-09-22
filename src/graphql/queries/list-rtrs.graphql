@@ -1,5 +1,5 @@
-query listRtrs {
-	rtrs {
+query listRtrs($filters: RtrFiltersInput) {
+	rtrs(filters: $filters) {
 		id
 		candidateFirstName
 		candidateLastName
