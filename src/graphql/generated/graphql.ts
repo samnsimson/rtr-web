@@ -1426,6 +1426,8 @@ export type RtrFiltersInput = {
   candidateName?: InputMaybe<Scalars['String']['input']>;
   company?: InputMaybe<Scalars['String']['input']>;
   jobTitle?: InputMaybe<Scalars['String']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
   status?: InputMaybe<RtrStatus>;
 };
 

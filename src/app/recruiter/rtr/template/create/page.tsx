@@ -1,7 +1,7 @@
-import { Heading, HStack, Stack, Text } from "@chakra-ui/react";
-import { TemplateEditor } from "@/components/dashboard/recruiter/rtr/template-editor";
-import { CreateRtrTemplateButton } from "@/components/dashboard/recruiter/rtr/create-rtr-template-button";
 import { FC } from "react";
+import { Heading, HStack, Stack, Text } from "@chakra-ui/react";
+import { CreateRtrTemplateButton } from "@/components/dashboard/recruiter/rtr/create-rtr-template-button";
+import { TemplateEditorDynamic } from "@/components/dashboard/recruiter/rtr/template-editor-dynamic";
 
 const CreateRtrTemplatePage: FC<PageProps<"/recruiter/rtr/template/create">> = async () => {
 	return (
@@ -13,7 +13,7 @@ const CreateRtrTemplatePage: FC<PageProps<"/recruiter/rtr/template/create">> = a
 				</Stack>
 				<CreateRtrTemplateButton />
 			</HStack>
-			<TemplateEditor />
+			<TemplateEditorDynamic />
 		</Stack>
 	);
 };
