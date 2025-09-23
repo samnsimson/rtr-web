@@ -1,6 +1,5 @@
 "use client";
 import { JobDataTable } from "@/components/dashboard/recruiter/job/job-data-table";
-import { Card } from "@chakra-ui/react";
 import { useQuery } from "@apollo/client/react";
 import { ListJobsDocument, ListJobsQuery, ListJobsQueryVariables, WorkType, JobType, CompensationType } from "@/graphql/generated/graphql";
 import { FC, use, useEffect } from "react";
@@ -29,11 +28,5 @@ export const JobList: FC<JobListProps> = ({ searchParams }) => {
 		refetch({ filters: getFilters(params) });
 	}, [params, refetch]);
 
-	return (
-		<Card.Root>
-			<Card.Body padding={0}>
-				<JobDataTable jobs={data?.jobs.data} totalCount={data?.jobs.total} limit={parseInt(params.limit)} loading={loading} />
-			</Card.Body>
-		</Card.Root>
-	);
+	return <JobDataTable jobs={data?.jobs.data} totalCount={data?.jobs.total} limit={parseInt(params.limit)} loading={loading} />;
 };

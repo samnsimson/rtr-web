@@ -4,7 +4,6 @@ import { format } from "date-fns";
 import { LuCheck, LuEye, LuFileText, LuSend, LuX, LuClock } from "react-icons/lu";
 import { RtrStatus, WorkType, CompensationType } from "@/graphql/generated/graphql";
 
-// Mock data - in a real app, this would come from an API call
 const getRtrData = (id: string) => {
 	const dataTableItems = [
 		{
@@ -116,8 +115,6 @@ const getRtrData = (id: string) => {
 
 	return dataTableItems.find((item) => item.id.toString() === id);
 };
-
-// Make this a server component by removing "use client"
 interface RtrViewPageProps {
 	params: Promise<{ id: string }>;
 }

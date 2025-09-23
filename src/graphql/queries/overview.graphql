@@ -1,0 +1,27 @@
+query overview($query: OverviewQueryInput) {
+	overview(query: $query) {
+		id
+		organizationId
+		totalRtrs
+		pendingRtrs
+		signedRtrs
+		expiredRtrs
+		rejectedRtrs
+		totalCandidates
+		totalRecruiters
+		totalRecruiters
+		totalOrganizations
+		totalJobs
+		activeJobs
+		closedJobs
+		totalJobApplications
+		reviewingApplications
+		interviewingApplications
+		acceptedApplications
+		rejectedApplications
+		rtrsThisMonth
+		jobsThisMonth
+		applicationsThisMonth
+		totalUsers
+	}
+}

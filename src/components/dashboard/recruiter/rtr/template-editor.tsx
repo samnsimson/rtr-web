@@ -61,6 +61,7 @@ export const TemplateEditor = () => {
 									colorPalette={"blue"}
 									key={idx}
 									borderRadius={"full"}
+									cursor={"pointer"}
 									onClick={() => handleTemplateContextChange(templateContext[key])}
 								>
 									{key}

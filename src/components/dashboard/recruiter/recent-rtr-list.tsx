@@ -1,51 +1,48 @@
-import { Badge, Button, CardBody, CardDescription, CardHeader, CardRoot, CardTitle, Heading, HStack, Stack, Text } from "@chakra-ui/react";
+"use client";
+import { RecentRtrsQuery } from "@/graphql/generated/graphql";
+import { Badge, For, Heading, HStack, Icon, Span, Stack, Text } from "@chakra-ui/react";
 import Link from "next/link";
-import { LuArrowRight } from "react-icons/lu";
+import { FC } from "react";
+import { format } from "date-fns";
+import { color, statusIcon } from "@/lib/constants";
+import { AppCard, AppCardHeadless } from "@/components/ui/app-card";
+import { ViewAllButton } from "@/components/ui/view-all-button";
 
-const rtrList = [
-	{ name: "John Smith", role: "Senior Software Engineer", company: "TechCorp Inc.", sent: "2024-01-15", signed: "2024-01-15" },
-	{ name: "Sarah Johnson", role: "Product Manager", company: "StartupXYZ", sent: "2024-01-15", signed: "2024-01-15" },
-	{ name: "Mike Chen", role: "Data Scientist", company: "DataFlow Ltd", sent: "2024-01-15", signed: "2024-01-15" },
-	{ name: "Emily Davis", role: "UX Designer", company: "DesignStudio", sent: "2024-01-15", signed: "2024-01-15" },
-];
+interface RecentRtrListProps {
+	recentRtrs: RecentRtrsQuery["rtrs"];
+}
 
-export const RecentRtrList = () => {
+export const RecentRtrList: FC<RecentRtrListProps> = ({ recentRtrs }) => {
 	return (
-		<CardRoot border={0} bgColor={"bg"}>
-			<CardHeader>
-				<HStack justify={"space-between"}>
-					<Stack gap={0}>
-						<CardTitle>Recent RTR&apos;s</CardTitle>
-						<CardDescription>Your latest RTR activity and status updates</CardDescription>
-					</Stack>
-					<Button variant={"solid"} colorPalette={"blue"} asChild>
-						<Link href={"/recruiter/rtr"}>
-							View All <LuArrowRight />
-						</Link>
-					</Button>
-				</HStack>
-			</CardHeader>
-			<CardBody spaceY={4}>
-				{rtrList.map((rtr, idx) => (
-					<CardRoot key={idx} bg={"transparent"} borderColor={"gray.700"}>
-						<CardBody p={4}>
-							<HStack justify={"space-between"}>
-								<Stack gap={0}>
-									<Heading fontSize={"md"}>{rtr.name}</Heading>
-									<Text fontSize={"sm"}>
-										{rtr.role} at {rtr.company}
-									</Text>
-									<HStack>
-										<Text fontSize={"sm"}>Sent: {rtr.sent}</Text>
-										<Text fontSize={"sm"}>Signed: {rtr.signed}</Text>
-									</HStack>
-								</Stack>
-								<Badge colorPalette={"green"}>signed</Badge>
-							</HStack>
-						</CardBody>
-					</CardRoot>
-				))}
-			</CardBody>
-		</CardRoot>
+		<AppCard title="Recent RTRs" description="Your latest RTRs" action={<ViewAllButton href={"/recruiter/rtr"} />}>
+			<Stack gap={4}>
+				<For each={recentRtrs} fallback={<Text>No recent RTRs found</Text>}>
+					{(rtr) => (
+						<AppCardHeadless asChild key={rtr.id} bgColor={"bg.card"}>
+							<Link href={`/recruiter/rtr/${rtr.id}`}>
+								<HStack justify={"space-between"}>
+									<Stack gap={0}>
+										<Heading fontSize={"md"}>
+											{rtr.candidateFirstName} {rtr.candidateLastName}
+										</Heading>
+										<Text fontSize={"sm"}>
+											{rtr.job?.title} at{" "}
+											<Span fontWeight={"bold"} color={"primary"}>
+												{rtr.job?.company}
+											</Span>
+										</Text>
+										<Text fontSize={"sm"}>Sent: {rtr.expiresAt ? format(rtr.expiresAt, "PPP") : "N/A"}</Text>
+									</Stack>
+									<Badge variant={"solid"} colorPalette={color[rtr.status]}>
+										<Icon as={statusIcon[rtr.status]} />
+										{rtr.status.charAt(0).toUpperCase() + rtr.status.slice(1)}
+									</Badge>
+								</HStack>
+							</Link>
+						</AppCardHeadless>
+					)}
+				</For>
+			</Stack>
+		</AppCard>
 	);
 };

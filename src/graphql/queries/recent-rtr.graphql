@@ -1,0 +1,27 @@
+query recentRtrs($filters: RtrFiltersInput) {
+	rtrs(filters: $filters) {
+		id
+		candidateFirstName
+		candidateLastName
+		candidateEmail
+		candidatePhone
+		compensation
+		compensationType
+		status
+		recruiterId
+		rtrTemplateId
+		candidateId
+		createdById
+		expiresAt
+		signedAt
+		job {
+			id
+			title
+			company
+		}
+		createdBy {
+			id
+			name
+		}
+	}
+}

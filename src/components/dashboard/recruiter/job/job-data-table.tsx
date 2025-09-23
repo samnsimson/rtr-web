@@ -2,7 +2,7 @@
 import { FC } from "react";
 import { format } from "date-fns";
 import { LuEye, LuPencil, LuTrash2, LuBriefcase } from "react-icons/lu";
-import { Badge, Clipboard, Flex, Heading, Stack, Text } from "@chakra-ui/react";
+import { Badge, Box, Clipboard, Flex, Heading, Link, Stack, Text } from "@chakra-ui/react";
 import { CompensationType, JobStatus, JobType, ListJobsQuery, WorkType } from "@/graphql/generated/graphql";
 import { DataTable, DataTableColumn, DataTableAction, EmptyStateProps } from "@/components/ui/data-table";
 
@@ -90,7 +90,9 @@ export const JobDataTable: FC<JobDataTableProps> = ({ jobs, totalCount, limit, l
 			label: "Job ID",
 			render: (job) => (
 				<Flex as={Text} gap={2} alignItems={"center"}>
-					{job.jobId}
+					<Box asChild cursor={"pointer"} _hover={{ color: "primary" }}>
+						<Link href={`/recruiter/job/${job.id}`}>{job.jobId}</Link>
+					</Box>
 					<Clipboard.Root value={job.jobId ?? ""} cursor={"pointer"}>
 						<Clipboard.Trigger asChild>
 							<Clipboard.Indicator />
@@ -213,7 +215,7 @@ export const JobDataTable: FC<JobDataTableProps> = ({ jobs, totalCount, limit, l
 				onPageChange: onPageChange || ((page) => console.log("Page changed to:", page)),
 			}}
 			fallbackRows={5}
-			fallbackColumns={columns.length}
+			fallbackColumns={columns.length + 1}
 		/>
 	);
 };

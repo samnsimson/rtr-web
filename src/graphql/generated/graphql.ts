@@ -195,6 +195,15 @@ export type CreateOrganizationUserInput = {
   role?: InputMaybe<UserRole>;
 };
 
+export type CreateOverviewInput = {
+  /** Include detailed breakdowns */
+  includeDetailedBreakdowns?: Scalars['Boolean']['input'];
+  /** Include monthly metrics */
+  includeMonthlyMetrics?: Scalars['Boolean']['input'];
+  /** Organization ID */
+  organizationId: Scalars['String']['input'];
+};
+
 export type CreatePaymentInput = {
   amount: Scalars['Float']['input'];
   currency: Scalars['String']['input'];
@@ -494,6 +503,7 @@ export type Mutation = {
   createNotification: NotificationResponse;
   createOrganization: Organization;
   createOrganizationUser: User;
+  createOverview: Overview;
   createPayment: Payment;
   createRTRHistory: RtrHistoryResponse;
   createRecruiterProfile: RecruiterProfileResponse;
@@ -504,6 +514,7 @@ export type Mutation = {
   deleteAllDocuments: Scalars['Boolean']['output'];
   deleteDocuments: Scalars['Boolean']['output'];
   deleteIndex: Scalars['Boolean']['output'];
+  deleteOverview: Scalars['Boolean']['output'];
   indexCandidateProfiles: Scalars['Boolean']['output'];
   indexJobs: Scalars['Boolean']['output'];
   indexRecruiterProfiles: Scalars['Boolean']['output'];
@@ -512,6 +523,7 @@ export type Mutation = {
   login: Auth;
   markRtrAsViewed: RtrResponse;
   processPayment: Payment;
+  refreshOverview: Overview;
   refreshToken: Auth;
   register: Auth;
   reindex: Scalars['Boolean']['output'];
@@ -524,6 +536,7 @@ export type Mutation = {
   removeJobFromIndex: Scalars['Boolean']['output'];
   removeNotification: NotificationResponse;
   removeOrganization: Scalars['Boolean']['output'];
+  removeOverview: Overview;
   removeRTRHistory: RtrHistoryResponse;
   removeRecruiterProfile: Scalars['Boolean']['output'];
   removeRtr: Scalars['Boolean']['output'];
@@ -538,6 +551,7 @@ export type Mutation = {
   updateJobInIndex: Scalars['Boolean']['output'];
   updateNotification: NotificationResponse;
   updateOrganization: Organization;
+  updateOverview: Overview;
   updateRTR: RtrResponse;
   updateRTRHistory: RtrHistoryResponse;
   updateRecruiterProfile: RecruiterProfileResponse;
@@ -603,6 +617,11 @@ export type MutationCreateOrganizationArgs = {
 export type MutationCreateOrganizationUserArgs = {
   createUserInput: CreateOrganizationUserInput;
   organizationId: Scalars['String']['input'];
+};
+
+
+export type MutationCreateOverviewArgs = {
+  createOverviewInput: CreateOverviewInput;
 };
 
 
@@ -759,6 +778,11 @@ export type MutationRemoveOrganizationArgs = {
 };
 
 
+export type MutationRemoveOverviewArgs = {
+  id: Scalars['String']['input'];
+};
+
+
 export type MutationRemoveRtrHistoryArgs = {
   id: Scalars['Int']['input'];
 };
@@ -834,6 +858,11 @@ export type MutationUpdateNotificationArgs = {
 export type MutationUpdateOrganizationArgs = {
   id: Scalars['String']['input'];
   updateOrganizationInput: UpdateOrganizationInput;
+};
+
+
+export type MutationUpdateOverviewArgs = {
+  updateOverviewInput: UpdateOverviewInput;
 };
 
 
@@ -951,6 +980,64 @@ export type Organization = {
   website?: Maybe<Scalars['String']['output']>;
 };
 
+export type Overview = {
+  __typename?: 'Overview';
+  /** Number of accepted applications */
+  acceptedApplications: Scalars['Int']['output'];
+  /** Number of active jobs */
+  activeJobs: Scalars['Int']['output'];
+  /** Applications this month */
+  applicationsThisMonth: Scalars['Int']['output'];
+  /** Number of closed jobs */
+  closedJobs: Scalars['Int']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  /** Number of expired RTRs */
+  expiredRtrs: Scalars['Int']['output'];
+  id: Scalars['ID']['output'];
+  /** Number of applications in interview stage */
+  interviewingApplications: Scalars['Int']['output'];
+  /** Jobs created this month */
+  jobsThisMonth: Scalars['Int']['output'];
+  organization: Organization;
+  organizationId: Scalars['String']['output'];
+  /** Number of pending RTRs */
+  pendingRtrs: Scalars['Int']['output'];
+  /** Number of rejected applications */
+  rejectedApplications: Scalars['Int']['output'];
+  /** Number of rejected RTRs */
+  rejectedRtrs: Scalars['Int']['output'];
+  /** Number of applications under review */
+  reviewingApplications: Scalars['Int']['output'];
+  /** RTRs created this month */
+  rtrsThisMonth: Scalars['Int']['output'];
+  /** Number of signed RTRs */
+  signedRtrs: Scalars['Int']['output'];
+  /** Total number of candidates */
+  totalCandidates: Scalars['Int']['output'];
+  /** Total number of job applications */
+  totalJobApplications: Scalars['Int']['output'];
+  /** Total number of jobs */
+  totalJobs: Scalars['Int']['output'];
+  /** Total number of organizations */
+  totalOrganizations: Scalars['Int']['output'];
+  /** Total number of recruiters */
+  totalRecruiters: Scalars['Int']['output'];
+  /** Total number of RTRs */
+  totalRtrs: Scalars['Int']['output'];
+  /** Total number of users */
+  totalUsers: Scalars['Int']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+};
+
+export type OverviewQueryInput = {
+  includeApplicationMetrics?: InputMaybe<Scalars['Boolean']['input']>;
+  includeDetailedBreakdowns?: InputMaybe<Scalars['Boolean']['input']>;
+  includeJobMetrics?: InputMaybe<Scalars['Boolean']['input']>;
+  includeMonthlyMetrics?: InputMaybe<Scalars['Boolean']['input']>;
+  includeRtrMetrics?: InputMaybe<Scalars['Boolean']['input']>;
+  includeUserMetrics?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
 export type PaginationDto = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
@@ -1043,6 +1130,12 @@ export type Query = {
   organizationSubscriptions: Array<Subscription>;
   organizationUsers: Array<User>;
   organizations: Array<Organization>;
+  overview: Overview;
+  overviewById: Overview;
+  overviewByOrganization: Overview;
+  overviewDashboard: Overview;
+  overviewMetrics: Overview;
+  overviews: Array<Overview>;
   payment: Payment;
   payments: Array<Payment>;
   recruiterProfile: RecruiterProfileResponse;
@@ -1179,6 +1272,16 @@ export type QueryOrganizationSubscriptionsArgs = {
 
 export type QueryOrganizationUsersArgs = {
   organizationId: Scalars['String']['input'];
+};
+
+
+export type QueryOverviewArgs = {
+  query?: InputMaybe<OverviewQueryInput>;
+};
+
+
+export type QueryOverviewByIdArgs = {
+  id: Scalars['String']['input'];
 };
 
 
@@ -1623,6 +1726,17 @@ export type UpdateOrganizationInput = {
   website?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type UpdateOverviewInput = {
+  /** Overview ID */
+  id: Scalars['String']['input'];
+  /** Include detailed breakdowns */
+  includeDetailedBreakdowns?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Include monthly metrics */
+  includeMonthlyMetrics?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Organization ID */
+  organizationId?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type UpdateRtrInput = {
   id: Scalars['String']['input'];
 };
@@ -1790,6 +1904,20 @@ export type ListRtrsQueryVariables = Exact<{
 
 export type ListRtrsQuery = { __typename?: 'Query', rtrs: Array<{ __typename?: 'RtrResponse', id: string, candidateFirstName: string, candidateLastName: string, candidateEmail: string, candidatePhone: string, compensation: number, compensationType: CompensationType, status: RtrStatus, jobId: string, recruiterId: string, rtrTemplateId: string, candidateId?: string | null, createdById: string, expiresAt?: any | null, job?: { __typename?: 'JobResponse', id: string, title: string, company: string } | null, createdBy?: { __typename?: 'User', id: string, name?: string | null } | null }> };
 
+export type OverviewQueryVariables = Exact<{
+  query?: InputMaybe<OverviewQueryInput>;
+}>;
+
+
+export type OverviewQuery = { __typename?: 'Query', overview: { __typename?: 'Overview', id: string, organizationId: string, totalRtrs: number, pendingRtrs: number, signedRtrs: number, expiredRtrs: number, rejectedRtrs: number, totalCandidates: number, totalRecruiters: number, totalOrganizations: number, totalJobs: number, activeJobs: number, closedJobs: number, totalJobApplications: number, reviewingApplications: number, interviewingApplications: number, acceptedApplications: number, rejectedApplications: number, rtrsThisMonth: number, jobsThisMonth: number, applicationsThisMonth: number, totalUsers: number } };
+
+export type RecentRtrsQueryVariables = Exact<{
+  filters?: InputMaybe<RtrFiltersInput>;
+}>;
+
+
+export type RecentRtrsQuery = { __typename?: 'Query', rtrs: Array<{ __typename?: 'RtrResponse', id: string, candidateFirstName: string, candidateLastName: string, candidateEmail: string, candidatePhone: string, compensation: number, compensationType: CompensationType, status: RtrStatus, recruiterId: string, rtrTemplateId: string, candidateId?: string | null, createdById: string, expiresAt?: any | null, signedAt?: any | null, job?: { __typename?: 'JobResponse', id: string, title: string, company: string } | null, createdBy?: { __typename?: 'User', id: string, name?: string | null } | null }> };
+
 export type RtrTemplateDetailQueryVariables = Exact<{
   id: Scalars['String']['input'];
 }>;
@@ -1809,4 +1937,6 @@ export const JobDetailDocument = {"kind":"Document","definitions":[{"kind":"Oper
 export const ListJobsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"listJobs"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"filters"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"JobListFiltersInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"jobs"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filters"},"value":{"kind":"Variable","name":{"kind":"Name","value":"filters"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"total"}},{"kind":"Field","name":{"kind":"Name","value":"page"}},{"kind":"Field","name":{"kind":"Name","value":"data"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"JobQueryFragment"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"JobQueryFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"JobResponse"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"jobId"}},{"kind":"Field","name":{"kind":"Name","value":"organizationId"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"company"}},{"kind":"Field","name":{"kind":"Name","value":"location"}},{"kind":"Field","name":{"kind":"Name","value":"workType"}},{"kind":"Field","name":{"kind":"Name","value":"jobType"}},{"kind":"Field","name":{"kind":"Name","value":"compensation"}},{"kind":"Field","name":{"kind":"Name","value":"salaryMin"}},{"kind":"Field","name":{"kind":"Name","value":"salaryMax"}},{"kind":"Field","name":{"kind":"Name","value":"recruiterId"}},{"kind":"Field","name":{"kind":"Name","value":"benefits"}},{"kind":"Field","name":{"kind":"Name","value":"requirements"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]} as unknown as DocumentNode<ListJobsQuery, ListJobsQueryVariables>;
 export const ListRtrTemplatesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"listRtrTemplates"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"rtrTemplates"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"html"}},{"kind":"Field","name":{"kind":"Name","value":"organization"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"author"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}}]} as unknown as DocumentNode<ListRtrTemplatesQuery, ListRtrTemplatesQueryVariables>;
 export const ListRtrsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"listRtrs"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"filters"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"RtrFiltersInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"rtrs"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filters"},"value":{"kind":"Variable","name":{"kind":"Name","value":"filters"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"candidateFirstName"}},{"kind":"Field","name":{"kind":"Name","value":"candidateLastName"}},{"kind":"Field","name":{"kind":"Name","value":"candidateEmail"}},{"kind":"Field","name":{"kind":"Name","value":"candidatePhone"}},{"kind":"Field","name":{"kind":"Name","value":"compensation"}},{"kind":"Field","name":{"kind":"Name","value":"compensationType"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"jobId"}},{"kind":"Field","name":{"kind":"Name","value":"recruiterId"}},{"kind":"Field","name":{"kind":"Name","value":"rtrTemplateId"}},{"kind":"Field","name":{"kind":"Name","value":"candidateId"}},{"kind":"Field","name":{"kind":"Name","value":"createdById"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"job"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"company"}}]}},{"kind":"Field","name":{"kind":"Name","value":"createdBy"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]} as unknown as DocumentNode<ListRtrsQuery, ListRtrsQueryVariables>;
+export const OverviewDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"overview"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"query"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"OverviewQueryInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"overview"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"query"},"value":{"kind":"Variable","name":{"kind":"Name","value":"query"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"organizationId"}},{"kind":"Field","name":{"kind":"Name","value":"totalRtrs"}},{"kind":"Field","name":{"kind":"Name","value":"pendingRtrs"}},{"kind":"Field","name":{"kind":"Name","value":"signedRtrs"}},{"kind":"Field","name":{"kind":"Name","value":"expiredRtrs"}},{"kind":"Field","name":{"kind":"Name","value":"rejectedRtrs"}},{"kind":"Field","name":{"kind":"Name","value":"totalCandidates"}},{"kind":"Field","name":{"kind":"Name","value":"totalRecruiters"}},{"kind":"Field","name":{"kind":"Name","value":"totalRecruiters"}},{"kind":"Field","name":{"kind":"Name","value":"totalOrganizations"}},{"kind":"Field","name":{"kind":"Name","value":"totalJobs"}},{"kind":"Field","name":{"kind":"Name","value":"activeJobs"}},{"kind":"Field","name":{"kind":"Name","value":"closedJobs"}},{"kind":"Field","name":{"kind":"Name","value":"totalJobApplications"}},{"kind":"Field","name":{"kind":"Name","value":"reviewingApplications"}},{"kind":"Field","name":{"kind":"Name","value":"interviewingApplications"}},{"kind":"Field","name":{"kind":"Name","value":"acceptedApplications"}},{"kind":"Field","name":{"kind":"Name","value":"rejectedApplications"}},{"kind":"Field","name":{"kind":"Name","value":"rtrsThisMonth"}},{"kind":"Field","name":{"kind":"Name","value":"jobsThisMonth"}},{"kind":"Field","name":{"kind":"Name","value":"applicationsThisMonth"}},{"kind":"Field","name":{"kind":"Name","value":"totalUsers"}}]}}]}}]} as unknown as DocumentNode<OverviewQuery, OverviewQueryVariables>;
+export const RecentRtrsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"recentRtrs"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"filters"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"RtrFiltersInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"rtrs"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filters"},"value":{"kind":"Variable","name":{"kind":"Name","value":"filters"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"candidateFirstName"}},{"kind":"Field","name":{"kind":"Name","value":"candidateLastName"}},{"kind":"Field","name":{"kind":"Name","value":"candidateEmail"}},{"kind":"Field","name":{"kind":"Name","value":"candidatePhone"}},{"kind":"Field","name":{"kind":"Name","value":"compensation"}},{"kind":"Field","name":{"kind":"Name","value":"compensationType"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"recruiterId"}},{"kind":"Field","name":{"kind":"Name","value":"rtrTemplateId"}},{"kind":"Field","name":{"kind":"Name","value":"candidateId"}},{"kind":"Field","name":{"kind":"Name","value":"createdById"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"signedAt"}},{"kind":"Field","name":{"kind":"Name","value":"job"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"company"}}]}},{"kind":"Field","name":{"kind":"Name","value":"createdBy"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]} as unknown as DocumentNode<RecentRtrsQuery, RecentRtrsQueryVariables>;
 export const RtrTemplateDetailDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"rtrTemplateDetail"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"rtrTemplate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"html"}}]}}]}}]} as unknown as DocumentNode<RtrTemplateDetailQuery, RtrTemplateDetailQueryVariables>;

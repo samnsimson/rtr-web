@@ -1,38 +1,18 @@
 "use client";
 import { Badge, HStack, Heading, VStack, Text, Icon } from "@chakra-ui/react";
 import { format } from "date-fns";
-import { LuCheck, LuClock, LuEye, LuPencil, LuSend, LuX } from "react-icons/lu";
+import { LuEye } from "react-icons/lu";
 import { CgMoreAlt } from "react-icons/cg";
 import { DataTable, DataTableColumn, DataTableAction } from "@/components/ui/data-table";
 import { calculateExpiry, toEnum } from "@/lib/utils";
 import { CompensationType, ListRtrsDocument, ListRtrsQuery, ListRtrsQueryVariables, RtrFiltersInput, RtrStatus } from "@/graphql/generated/graphql";
 import { useQuery } from "@apollo/client/react";
-import { IconType } from "react-icons/lib";
 import { FC, useEffect } from "react";
+import { color, statusIcon } from "@/lib/constants";
 
 interface RtrDataTableProps {
 	params: Record<string, string>;
 }
-
-const color: Record<string, string> = {
-	[RtrStatus.Pending]: "yellow",
-	[RtrStatus.Signed]: "green",
-	[RtrStatus.Rejected]: "red",
-	[RtrStatus.Expired]: "gray",
-	[RtrStatus.Viewed]: "blue",
-	[RtrStatus.Sent]: "purple",
-	[RtrStatus.Draft]: "orange",
-};
-
-const statusIcon: Record<string, IconType> = {
-	[RtrStatus.Pending]: LuClock,
-	[RtrStatus.Signed]: LuCheck,
-	[RtrStatus.Rejected]: LuX,
-	[RtrStatus.Expired]: LuClock,
-	[RtrStatus.Viewed]: LuEye,
-	[RtrStatus.Sent]: LuSend,
-	[RtrStatus.Draft]: LuPencil,
-};
 
 const getFilters = (searchParams: Record<string, string>): RtrFiltersInput => {
 	return {

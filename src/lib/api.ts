@@ -14,6 +14,12 @@ import {
 	LoginDocument,
 	LoginMutation,
 	LoginMutationVariables,
+	OverviewDocument,
+	OverviewQuery,
+	OverviewQueryVariables,
+	RecentRtrsDocument,
+	RecentRtrsQuery,
+	RecentRtrsQueryVariables,
 	RefreshTokenDocument,
 	RefreshTokenMutation,
 	RefreshTokenMutationVariables,
@@ -66,6 +72,30 @@ class Api extends ApiHelper {
 		if (!data || !data.refreshToken) throw new Error("Token refresh failed");
 		const { accessToken, refreshToken: newRefreshToken, user, expiresAt } = data.refreshToken;
 		return { accessToken, refreshToken: newRefreshToken, user: this.getUserObject(user as AuthUser), expiresAt };
+	}
+
+	async getOverview() {
+		const client = getClient();
+		const { data, error } = await client.query<OverviewQuery, OverviewQueryVariables>({ query: OverviewDocument });
+		if (error) throw new Error(error.message);
+		if (!data || !data.overview) throw new Error("Get overview failed");
+		return data.overview;
+	}
+
+	async getRecentRtrs() {
+		const client = getClient();
+		const { data, error } = await client.query<RecentRtrsQuery, RecentRtrsQueryVariables>({ query: RecentRtrsDocument });
+		if (error) throw new Error(error.message);
+		if (!data || !data.rtrs) throw new Error("Get recent RTRs failed");
+		return data.rtrs;
+	}
+
+	async getRecentJobs() {
+		const client = getClient();
+		const { data, error } = await client.query<ListJobsQuery, ListJobsQueryVariables>({ query: ListJobsDocument, variables: { filters: { page: 1, limit: 5 } } });
+		if (error) throw new Error(error.message);
+		if (!data || !data.jobs) throw new Error("Get recent jobs failed");
+		return data.jobs;
 	}
 }
 
