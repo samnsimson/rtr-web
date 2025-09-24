@@ -1,56 +1,34 @@
 "use client";
-import { For, HStack, Heading, Icon, IconButton, Table, Stack, EmptyState, VStack } from "@chakra-ui/react";
-import Link from "next/link";
-import { TableSkeleton } from "./table-skeleton";
-import { PaginationComponent } from "./pagination-component";
-import { FC } from "react";
+import { EmptyState, For, Heading, Icon, Stack, Table, VStack } from "@chakra-ui/react";
+import { ColumnDef, flexRender, getCoreRowModel, getSortedRowModel, SortingState, useReactTable } from "@tanstack/react-table";
+import { FC, useState } from "react";
 import { IconType } from "react-icons/lib";
+import { TableSkeleton } from "./table-skeleton";
 import { LuFolderOpen } from "react-icons/lu";
-
-export interface DataTableColumn<T = any> {
-	key: string;
-	label: string;
-	render?: (item: T, value: any) => React.ReactNode;
-	width?: string;
-	align?: "left" | "center" | "right";
-}
-
-export interface DataTableAction<T = any> {
-	key: string;
-	icon: any;
-	href?: (item: T) => string;
-	onClick?: (item: T) => void;
-	variant?: "ghost" | "solid" | "outline";
-	colorPalette?: string;
-	_hover?: any;
-}
-
-export interface DataTableProps<T = any> {
-	columns: DataTableColumn<T>[];
-	data: T[];
-	loading?: boolean;
-	actions?: DataTableAction<T>[];
-	pagination?: { count: number; limit?: number; onPageChange?: (page: number) => void };
-	fallbackRows?: number;
-	fallbackColumns?: number;
-	tableProps?: any;
-	scrollAreaProps?: any;
-	emptyState?: EmptyStateProps;
-}
-
-export interface DataTableFallbackProps {
-	columns: DataTableColumn<any>[];
-	fallbackRows: number;
-	fallbackColumns: number;
-	loading: boolean;
-	emptyState?: EmptyStateProps;
-	data: any[];
-}
+import { PaginationComponent } from "./pagination-component";
 
 export interface EmptyStateProps {
 	title?: string;
 	description?: string;
 	icon?: IconType;
+}
+
+interface DataTableProps<Data extends object> {
+	data: Data[];
+	columns: ColumnDef<Data, any>[];
+	fallbackRows: number;
+	fallbackColumns: number;
+	loading: boolean;
+	emptyState?: EmptyStateProps;
+}
+
+interface DataTableFallbackProps {
+	columns: any[];
+	fallbackRows: number;
+	fallbackColumns: number;
+	loading: boolean;
+	emptyState?: EmptyStateProps;
+	data: any[];
 }
 
 const DataTableFallback: FC<DataTableFallbackProps> = ({ columns, fallbackRows, fallbackColumns, loading, data, emptyState }) => {
@@ -75,43 +53,32 @@ const DataTableFallback: FC<DataTableFallbackProps> = ({ columns, fallbackRows, 
 	) : null;
 };
 
-export const DataTable = <T extends Record<string, any>>({
-	columns,
-	data,
-	loading = false,
-	actions = [],
-	pagination,
-	fallbackRows = 6,
-	fallbackColumns = 5,
-	tableProps = {},
-	scrollAreaProps = {},
-	emptyState,
-}: DataTableProps<T>) => {
-	const getValue = (item: T, key: string) => {
-		return key.split(".").reduce((obj, k) => obj?.[k], item);
-	};
+export function DataTable<Data extends object>({ data, columns, fallbackRows, fallbackColumns, loading, emptyState }: DataTableProps<Data>) {
+	const [sorting, setSorting] = useState<SortingState>([]);
+	const table = useReactTable({ data, columns, getCoreRowModel: getCoreRowModel(), getSortedRowModel: getSortedRowModel(), onSortingChange: setSorting, state: { sorting } });
 
 	return (
 		<Stack gap={0}>
-			<Table.ScrollArea maxW={{ base: "sm", md: "full" }} {...scrollAreaProps}>
-				<Table.Root size={"lg"} stickyHeader interactive {...tableProps}>
+			<Table.ScrollArea maxW={{ base: "sm", md: "full" }}>
+				<Table.Root size={"lg"} stickyHeader interactive>
 					<Table.Header>
-						<Table.Row bgColor={"bg.card"}>
-							{columns.map((column, idx) => (
-								<Heading key={column.key + idx} as={Table.ColumnHeader} size={"sm"} textAlign={column.align || "left"} width={column.width}>
-									{column.label}
-								</Heading>
-							))}
-							{actions.length > 0 && (
-								<Heading as={Table.ColumnHeader} size={"sm"} textAlign={"right"}>
-									Action
-								</Heading>
+						<For each={table.getHeaderGroups()}>
+							{(headerGroup) => (
+								<Table.Row key={headerGroup.id} bgColor={"bg.card"}>
+									<For each={headerGroup.headers}>
+										{(header) => (
+											<Heading as={Table.ColumnHeader} size={"sm"} key={header.id}>
+												{flexRender(header.column.columnDef.header, header.getContext())}
+											</Heading>
+										)}
+									</For>
+								</Table.Row>
 							)}
-						</Table.Row>
+						</For>
 					</Table.Header>
 					<Table.Body>
 						<For
-							each={data}
+							each={table.getRowModel().rows}
 							fallback={
 								<DataTableFallback
 									columns={columns}
@@ -123,62 +90,18 @@ export const DataTable = <T extends Record<string, any>>({
 								/>
 							}
 						>
-							{(item) => (
-								<Table.Row key={item.id || JSON.stringify(item)}>
-									{columns.map((column, idx) => {
-										const value = getValue(item, column.key);
-										return (
-											<Table.Cell key={column.key + idx} textAlign={column.align || "left"}>
-												{column.render ? column.render(item, value) : String(value || "")}
-											</Table.Cell>
-										);
-									})}
-									{actions.length > 0 && (
-										<Table.Cell textAlign={"right"}>
-											<HStack justify={"flex-end"}>
-												{actions.map((action) => {
-													const href = action.href?.(item);
-													const content = (
-														<IconButton
-															key={action.key}
-															variant={action.variant || "ghost"}
-															rounded={"full"}
-															colorPalette={action.colorPalette}
-															_hover={action._hover || { color: "primary" }}
-															onClick={() => action.onClick?.(item)}
-														>
-															<Icon as={action.icon} />
-														</IconButton>
-													);
-
-													return href ? (
-														<Link key={action.key} href={href as any} style={{ textDecoration: "none" }}>
-															{content}
-														</Link>
-													) : (
-														content
-													);
-												})}
-											</HStack>
-										</Table.Cell>
-									)}
+							{(row) => (
+								<Table.Row key={row.id}>
+									<For each={row.getVisibleCells()}>
+										{(cell) => <Table.Cell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</Table.Cell>}
+									</For>
 								</Table.Row>
 							)}
 						</For>
 					</Table.Body>
 				</Table.Root>
 			</Table.ScrollArea>
-			{pagination && (
-				<PaginationComponent
-					count={pagination.count}
-					padding={2}
-					bgColor={"bg.card"}
-					display={"flex"}
-					justifyContent={"center"}
-					limit={pagination.limit || 10}
-					onPageChange={(details) => pagination.onPageChange?.(details.page)}
-				/>
-			)}
+			<PaginationComponent count={data.length} padding={2} bgColor={"bg.card"} display={"flex"} justifyContent={"center"} limit={10} />
 		</Stack>
 	);
-};
+}

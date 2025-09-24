@@ -1,77 +1,45 @@
 "use client";
-import { Badge, Heading, VStack, Text } from "@chakra-ui/react";
+import { Heading, Text } from "@chakra-ui/react";
 import { format } from "date-fns";
-import { LuEye, LuPencil, LuTrash2 } from "react-icons/lu";
-import { DataTable, DataTableColumn, DataTableAction } from "@/components/ui/data-table";
+import { LuFileText } from "react-icons/lu";
+import { DataTable, EmptyStateProps } from "@/components/ui/data-table";
 import { ListRtrTemplatesDocument, ListRtrTemplatesQuery } from "@/graphql/generated/graphql";
 import { useQuery } from "@apollo/client/react";
+import { createColumnHelper } from "@tanstack/react-table";
+
+interface RtrTemplateTable {
+	id: string;
+	name: string;
+	description: string;
+	createdAt: Date;
+	updatedAt: Date;
+}
 
 export const RtrTemplateDataTable = () => {
-	const { data, loading } = useQuery(ListRtrTemplatesDocument);
+	const { data, loading } = useQuery<ListRtrTemplatesQuery>(ListRtrTemplatesDocument);
+	const columnHelper = createColumnHelper<RtrTemplateTable>();
+	const { rtrTemplates = [] } = data || {};
 
-	const columns: DataTableColumn<ListRtrTemplatesQuery["rtrTemplates"][number]>[] = [
-		{
-			key: "name",
-			label: "Template Name",
-			render: (item) => (
-				<VStack align={"flex-start"} gap={0}>
-					<Heading size={"sm"}>{item.name}</Heading>
-					<Text fontSize={"sm"} color={"gray.500"}>
-						{item.description}
-					</Text>
-				</VStack>
-			),
-		},
-		{
-			key: "isActive",
-			label: "Status",
-			render: () => (
-				<Badge variant={"solid"} colorPalette={"green"}>
-					Active
-				</Badge>
-			),
-		},
-		{
-			key: "createdAt",
-			label: "Created",
-			render: (item) => format(new Date(item.createdAt), "PPP"),
-		},
-		{
-			key: "updatedAt",
-			label: "Last Updated",
-			render: (item) => format(new Date(item.updatedAt), "PPP"),
-		},
+	const tableData: RtrTemplateTable[] = rtrTemplates.map((rtrTemplate) => ({
+		id: rtrTemplate.id,
+		name: rtrTemplate.name,
+		description: rtrTemplate.description || "",
+		createdAt: rtrTemplate.createdAt,
+		updatedAt: rtrTemplate.updatedAt,
+	}));
+
+	const tableColumns = [
+		columnHelper.accessor("name", { header: "Template Name", cell: ({ row }) => <Heading size={"sm"}>{row.original.name}</Heading> }),
+		columnHelper.accessor("description", { header: "Description", cell: ({ row }) => <Text fontSize={"sm"}>{row.original.description}</Text> }),
+		columnHelper.accessor("createdAt", { header: "Created", cell: ({ row }) => format(new Date(row.original.createdAt), "PPP") }),
+		columnHelper.accessor("updatedAt", { header: "Last Updated", cell: ({ row }) => format(new Date(row.original.updatedAt), "PPP") }),
 	];
 
-	const actions: DataTableAction<ListRtrTemplatesQuery["rtrTemplates"][number]>[] = [
-		{
-			key: "view",
-			icon: LuEye,
-			href: (item) => `/recruiter/rtr/template/${item.id}`,
-		},
-		{
-			key: "edit",
-			icon: LuPencil,
-			href: (item) => `/recruiter/rtr/template/${item.id}`,
-		},
-		{
-			key: "delete",
-			icon: LuTrash2,
-			onClick: (item) => console.log(item),
-			colorPalette: "red",
-			_hover: { color: "red.500" },
-		},
-	];
+	const emptyState: EmptyStateProps = {
+		icon: LuFileText,
+		title: "No RTR templates found",
+		description: "Create your first RTR template to get started with recruiting.",
+	};
 
-	return (
-		<DataTable
-			columns={columns}
-			data={data?.rtrTemplates || []}
-			loading={loading}
-			actions={actions}
-			pagination={{ count: data?.rtrTemplates.length || 0, limit: 10 }}
-			fallbackRows={5}
-			fallbackColumns={5}
-		/>
-	);
+	return <DataTable columns={tableColumns} data={tableData} fallbackRows={5} fallbackColumns={tableColumns.length} loading={loading} emptyState={emptyState} />;
 };

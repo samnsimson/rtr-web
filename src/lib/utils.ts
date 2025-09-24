@@ -1,3 +1,4 @@
+import { CompensationType, JobStatus, JobType, WorkType } from "@/graphql/generated/graphql";
 import { isBefore, formatDistanceStrict } from "date-fns";
 
 export function removeUndefinedValues<T extends Record<string, any>>(obj: T): Partial<T> {
@@ -22,4 +23,64 @@ export const calculateExpiry = (date: Date | string): string => {
 	const dateObj = new Date(date);
 	if (isBefore(dateObj, now)) return "Expired";
 	return formatDistanceStrict(dateObj, now, { roundingMethod: "floor" });
+};
+
+export const getStatusColor = (status: JobStatus) => {
+	switch (status) {
+		case JobStatus.Active:
+			return "green";
+		case JobStatus.Inactive:
+			return "yellow";
+		case JobStatus.Closed:
+			return "red";
+		case JobStatus.Draft:
+			return "gray";
+		default:
+			return "blue";
+	}
+};
+
+export const getWorkTypeLabel = (workType: WorkType) => {
+	switch (workType) {
+		case WorkType.Remote:
+			return "Remote";
+		case WorkType.Hybrid:
+			return "Hybrid";
+		case WorkType.OnSite:
+			return "On Site";
+		default:
+			return workType;
+	}
+};
+
+export const getJobTypeLabel = (jobType: JobType) => {
+	switch (jobType) {
+		case JobType.FullTime:
+			return "Full Time";
+		case JobType.PartTime:
+			return "Part Time";
+		case JobType.Contract:
+			return "Contract";
+		case JobType.Internship:
+			return "Internship";
+		case JobType.Freelance:
+			return "Freelance";
+		default:
+			return jobType;
+	}
+};
+
+export const getCompensationLabel = (compensation: CompensationType) => {
+	switch (compensation) {
+		case CompensationType.Salary:
+			return "Salary";
+		case CompensationType.Hourly:
+			return "Hourly";
+		case CompensationType.ProjectBased:
+			return "Project Based";
+		case CompensationType.Commission:
+			return "Commission";
+		default:
+			return compensation;
+	}
 };
