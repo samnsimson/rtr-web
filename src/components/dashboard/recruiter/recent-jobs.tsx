@@ -1,8 +1,9 @@
 import { AppCard, AppCardHeadless } from "@/components/ui/app-card";
 import { ViewAllButton } from "@/components/ui/view-all-button";
 import { JobStatus, ListJobsQuery } from "@/graphql/generated/graphql";
-import { Badge, For, Heading, HStack, Link, Stack, Text, Box } from "@chakra-ui/react";
+import { Badge, For, Heading, HStack, Stack, Text, Box } from "@chakra-ui/react";
 import { format } from "date-fns";
+import Link from "next/link";
 import { FC } from "react";
 
 interface RecentJobsProps {
@@ -32,7 +33,7 @@ export const RecentJobs: FC<RecentJobsProps> = ({ recentJobs }) => {
 					{(job) => (
 						<AppCardHeadless asChild key={job.id} bgColor={"bg.card"}>
 							<Link href={`/recruiter/job/${job.id}`}>
-								<HStack justify={"space-between"} width={"full"}>
+								<HStack justify={"space-between"}>
 									<Stack gap={0}>
 										<Heading fontSize={"md"}>{job.title}</Heading>
 										<Text fontSize={"sm"}>{job.company}</Text>
