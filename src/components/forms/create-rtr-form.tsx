@@ -5,9 +5,9 @@ import { RtrPositionDetails } from "../dashboard/recruiter/rtr/rtr-position-deta
 import { RtrPayInformation } from "../dashboard/recruiter/rtr/rtr-pay-information";
 import { RtrTemplateInfo } from "../dashboard/recruiter/rtr/rtr-template-info";
 import { RtrNotes } from "../dashboard/recruiter/rtr/rtr-notes";
-import { useRtrForm } from "@/store/useRtrForm";
 import { GridItem, SimpleGrid } from "@chakra-ui/react";
 import { RtrExtraInfo } from "../dashboard/recruiter/rtr/rtr-extra-info";
+import { useRtrForm } from "@/store";
 
 export const CreateRtrForm = () => {
 	const { resetForm } = useRtrForm();

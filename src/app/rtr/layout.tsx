@@ -1,5 +1,6 @@
 import { Box, Container, Flex, Heading, Stack, Text, VStack } from "@chakra-ui/react";
 import { FC, PropsWithChildren } from "react";
+import { Toaster } from "@/components/ui/toaster";
 
 const RtrLayout: FC<PropsWithChildren> = ({ children }) => {
 	return (
@@ -18,6 +19,7 @@ const RtrLayout: FC<PropsWithChildren> = ({ children }) => {
 					</Stack>
 				</Flex>
 			</Container>
+			<Toaster />
 		</Box>
 	);
 };

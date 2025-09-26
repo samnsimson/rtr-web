@@ -1,5 +1,5 @@
 "use client";
-import { useSidebar } from "@/store/useSidebar";
+import { useSidebar } from "@/store";
 import { useAuth } from "@/hooks/use-auth";
 import { AvatarFallback, AvatarRoot, Box, Drawer, Flex, Heading, Icon, IconButton, Portal, Stack, Text, useBreakpoint, Collapsible } from "@chakra-ui/react";
 import { FC, Fragment, useEffect, useState } from "react";

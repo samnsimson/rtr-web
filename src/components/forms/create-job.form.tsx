@@ -4,7 +4,7 @@ import { Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
 import { WorkType, JobType, CompensationType, ListJobsDocument } from "@/graphql/generated/graphql";
 import { SelectBox } from "../ui/select-box";
-import { useJobForm } from "@/store/useJobForm";
+import { useJobForm } from "@/store";
 import { JobFormData } from "@/types/database";
 import { ValidationAlert } from "../ui/validation-alert";
 import { AlertDialog } from "../ui/alert";

@@ -2,7 +2,7 @@
 import React from "react";
 import { Box, Button, DataList, Drawer, IconButton, List, SimpleGrid, VStack, Text } from "@chakra-ui/react";
 import { LuCircleCheck, LuEye, LuX } from "react-icons/lu";
-import { useRtrForm } from "@/store/useRtrForm";
+import { useRtrForm } from "@/store";
 import { useQuery } from "@apollo/client/react";
 import { GetCompiledRtrTemplateDocument, JobDetailDocument } from "@/graphql/generated/graphql";
 import { AsyncValue } from "./rtr-async-text";

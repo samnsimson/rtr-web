@@ -46,3 +46,13 @@ export const createJobSchema = z
 			path: ["salaryMax"],
 		},
 	);
+
+export const rtrEmployerDetailFormSchema = z.object({
+	employerName: z.string().min(1, "Employer name is required"),
+	contactPersonName: z.string().min(1, "Contact person name is required"),
+	employerEmail: z.email("Invalid email address"),
+	employerPhone: z
+		.string()
+		.min(1, "Employer phone is required")
+		.regex(/^\d{10}$/, "Invalid phone number"),
+});

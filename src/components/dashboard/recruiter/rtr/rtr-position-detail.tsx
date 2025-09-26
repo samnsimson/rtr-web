@@ -1,7 +1,7 @@
 "use client";
 import { SelectBox, SelectBoxItem } from "@/components/ui/select-box";
 import { ListJobsDocument } from "@/graphql/generated/graphql";
-import { useRtrForm } from "@/store/useRtrForm";
+import { useRtrForm } from "@/store";
 import { useQuery } from "@apollo/client/react";
 import { Link, Card, HStack, useListCollection } from "@chakra-ui/react";
 import { ArrowRightIcon } from "lucide-react";

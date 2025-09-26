@@ -1,7 +1,7 @@
 "use client";
 import { AppCard } from "@/components/ui/app-card";
 import { Box, CheckboxCard, CheckboxGroup, For } from "@chakra-ui/react";
-import { useRtrForm } from "@/store/useRtrForm";
+import { useRtrForm } from "@/store";
 import { useState } from "react";
 
 interface Item {

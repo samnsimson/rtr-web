@@ -1,6 +1,6 @@
 "use client";
 import { RadioCard, Stack } from "@chakra-ui/react";
-import { useRtrForm } from "@/store/useRtrForm";
+import { useRtrForm } from "@/store";
 import { CompensationType } from "@/graphql/generated/graphql";
 import { FC } from "react";
 

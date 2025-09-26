@@ -3,7 +3,7 @@ import Quill from "quill";
 import { useCallback, useEffect, useRef } from "react";
 import { Badge, Box, For, GridItem, SimpleGrid, Flex, FieldLabel, Input, FieldRoot, Stack } from "@chakra-ui/react";
 import { AppCard } from "@/components/ui/app-card";
-import { useRtrTemplate } from "@/store/useRtrTemplate";
+import { useRtrTemplate } from "@/store";
 
 const templateContext: Record<string, string> = {
 	"Candidate first name": "{{context.candidate.firstName}}",

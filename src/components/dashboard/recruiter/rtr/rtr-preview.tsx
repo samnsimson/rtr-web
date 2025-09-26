@@ -1,6 +1,6 @@
 "use client";
 import { Box, Card, DataList, GridItem, Heading, List, Separator, SimpleGrid, Stack, Text } from "@chakra-ui/react";
-import { useRtrForm } from "@/store/useRtrForm";
+import { useRtrForm } from "@/store";
 import { useQuery } from "@apollo/client/react";
 import { GetCompiledRtrTemplateDocument, JobDetailDocument } from "@/graphql/generated/graphql";
 import { AsyncValue } from "./rtr-async-text";

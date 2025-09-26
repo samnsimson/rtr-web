@@ -1,6 +1,6 @@
 "use client";
 import { Stack, Heading, Text, HStack, VStack, List, For, Card, CardRootProps } from "@chakra-ui/react";
-import { useJobForm } from "@/store/useJobForm";
+import { useJobForm } from "@/store";
 import { CompensationType } from "@/graphql/generated/graphql";
 import { FC } from "react";
 

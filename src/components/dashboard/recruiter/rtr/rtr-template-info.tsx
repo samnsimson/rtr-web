@@ -5,7 +5,7 @@ import NextLink from "next/link";
 import { Suspense, useEffect } from "react";
 import { useQuery } from "@apollo/client/react";
 import { ListRtrTemplatesDocument } from "@/graphql/generated/graphql";
-import { useRtrForm } from "@/store/useRtrForm";
+import { useRtrForm } from "@/store";
 
 export const RtrTemplateInfo = () => {
 	const { updateField } = useRtrForm();

@@ -2,7 +2,7 @@
 import { Card, Stack, FieldRoot, FieldLabel, InputGroup, NumberInput } from "@chakra-ui/react";
 import { RtrCompensationType } from "./rtr-compensation-type";
 import { BiDollar } from "react-icons/bi";
-import { useRtrForm } from "@/store/useRtrForm";
+import { useRtrForm } from "@/store";
 
 export const RtrPayInformation = () => {
 	const { updateField } = useRtrForm();

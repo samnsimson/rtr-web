@@ -1,5 +1,5 @@
 "use client";
-import { useRtrForm } from "@/store/useRtrForm";
+import { useRtrForm } from "@/store";
 import { Card, Stack, FieldRoot, FieldLabel, InputGroup, Input } from "@chakra-ui/react";
 import { LuMail, LuPhone, LuUser } from "react-icons/lu";
 

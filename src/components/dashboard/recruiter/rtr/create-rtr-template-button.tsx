@@ -1,5 +1,5 @@
 "use client";
-import { useRtrTemplate } from "@/store/useRtrTemplate";
+import { useRtrTemplate } from "@/store";
 import { useMutation } from "@apollo/client/react";
 import { Button } from "@chakra-ui/react";
 import { LuSave } from "react-icons/lu";

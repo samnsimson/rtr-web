@@ -1,6 +1,6 @@
 "use client";
 import { CreateRtrDocument, ListRtrsDocument } from "@/graphql/generated/graphql";
-import { useRtrForm } from "@/store/useRtrForm";
+import { useRtrForm } from "@/store";
 import { useMutation } from "@apollo/client/react";
 import { Button } from "@chakra-ui/react";
 import { LuShare } from "react-icons/lu";
