@@ -1,10 +1,14 @@
 import { getClient, getPublicClient } from "./apollo-client";
 import {
 	AuthUser,
+	CompiledRtrTemplateInput,
 	CreateJobDocument,
 	CreateJobInput,
 	CreateJobMutation,
 	CreateJobMutationVariables,
+	GetCompiledRtrTemplateDocument,
+	GetCompiledRtrTemplateQuery,
+	GetCompiledRtrTemplateQueryVariables,
 	JobDetailDocument,
 	JobDetailQuery,
 	JobDetailQueryVariables,
@@ -23,6 +27,9 @@ import {
 	RefreshTokenDocument,
 	RefreshTokenMutation,
 	RefreshTokenMutationVariables,
+	RtrDetailDocument,
+	RtrDetailQuery,
+	RtrDetailQueryVariables,
 } from "@/graphql/generated/graphql";
 import { ApiHelper } from "./api-helper";
 
@@ -96,6 +103,24 @@ class Api extends ApiHelper {
 		if (error) throw new Error(error.message);
 		if (!data || !data.jobs) throw new Error("Get recent jobs failed");
 		return data.jobs;
+	}
+
+	async getRtrDetail(id: string) {
+		const client = getClient();
+		const { data, error } = await client.query<RtrDetailQuery, RtrDetailQueryVariables>({ query: RtrDetailDocument, variables: { id } });
+		if (error) throw new Error(error.message);
+		if (!data || !data.rtr) throw new Error("Get RTR detail failed");
+		return data.rtr;
+	}
+
+	async getCompiledRtrTemplateDetail(input: CompiledRtrTemplateInput) {
+		const client = getClient();
+		const query = GetCompiledRtrTemplateDocument;
+		const variables = { input };
+		const { data, error } = await client.query<GetCompiledRtrTemplateQuery, GetCompiledRtrTemplateQueryVariables>({ query, variables });
+		if (error) throw new Error(error.message);
+		if (!data || !data.compiledRtrTemplate) throw new Error("Get RTR template detail failed");
+		return data.compiledRtrTemplate;
 	}
 }
 

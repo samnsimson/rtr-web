@@ -1,22 +1,24 @@
-import { Container, Flex, Heading, Stack, Text } from "@chakra-ui/react";
+import { Box, Container, Flex, Heading, Stack, Text, VStack } from "@chakra-ui/react";
 import { FC, PropsWithChildren } from "react";
 
 const RtrLayout: FC<PropsWithChildren> = ({ children }) => {
 	return (
-		<Container maxW={"4xl"} height={"100vh"} padding={0}>
-			<Flex height={"full"} direction={"column"} divideY={"1px"} divideColor={"border"}>
-				<Stack padding={4}>
-					<Heading fontSize={"2xl"}>RTR</Heading>
-					<Text>Manage all your Right to Represent forms</Text>
-				</Stack>
-				<Stack flex={1} overflow={"auto"}>
-					{children}
-				</Stack>
-				<Stack alignItems={"center"} justifyContent={"center"} padding={4}>
-					<Text>© {new Date().getFullYear()} Right To Represent. All rights reserved.</Text>
-				</Stack>
-			</Flex>
-		</Container>
+		<Box height={"100vh"} bgColor={"bg.panel"}>
+			<Container maxW={"4xl"} height={"full"} padding={0}>
+				<Flex height={"full"} direction={"column"} divideY={"1px"} divideColor={"border"}>
+					<VStack padding={4}>
+						<Heading fontSize={"2xl"}>Right to Represent Agreement</Heading>
+						<Text>Please review and sign the RTR agreement below</Text>
+					</VStack>
+					<Stack flex={1} overflow={"auto"}>
+						{children}
+					</Stack>
+					<Stack alignItems={"center"} justifyContent={"center"} padding={4}>
+						<Text>© {new Date().getFullYear()} Right To Represent. All rights reserved.</Text>
+					</Stack>
+				</Flex>
+			</Container>
+		</Box>
 	);
 };
 export default RtrLayout;

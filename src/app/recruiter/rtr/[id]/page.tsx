@@ -1,4 +1,4 @@
-import { Button, Card, Flex, Heading, Stack, Text, DataList, Timeline, Icon, SimpleGrid, GridItem } from "@chakra-ui/react";
+import { Button, Card, Flex, Heading, Stack, Text, DataList, Timeline, Icon, SimpleGrid, GridItem, FormatNumber } from "@chakra-ui/react";
 import { EditIcon, DownloadIcon, ShareIcon } from "lucide-react";
 import { format } from "date-fns";
 import { LuCheck, LuEye, LuFileText, LuSend, LuX, LuClock } from "react-icons/lu";
@@ -216,7 +216,9 @@ const RtrViewPage = async ({ params }: RtrViewPageProps) => {
 								</DataList.Item>
 								<DataList.Item>
 									<DataList.ItemLabel>Pay Range:</DataList.ItemLabel>
-									<DataList.ItemValue>{rtrData.pay}</DataList.ItemValue>
+									<DataList.ItemValue>
+										<FormatNumber value={parseInt(rtrData.pay)} style="currency" currency="USD" />
+									</DataList.ItemValue>
 								</DataList.Item>
 							</DataList.Root>
 						</Card.Body>

@@ -1,0 +1,36 @@
+query RtrDetail($id: String!) {
+	rtr(id: $id) {
+		id
+		candidateFirstName
+		candidateLastName
+		candidateEmail
+		candidatePhone
+		compensation
+		compensationType
+		status
+		recruiterId
+		rtrTemplateId
+		candidateId
+		createdById
+		expiresAt
+		signedAt
+		resumeRequired
+		photoIdRequired
+		referencesRequired
+		employerDetailsRequired
+		skillsRequired
+		job {
+			id
+			title
+			company
+			location
+			description
+			requirements
+			benefits
+		}
+		createdBy {
+			id
+			name
+		}
+	}
+}

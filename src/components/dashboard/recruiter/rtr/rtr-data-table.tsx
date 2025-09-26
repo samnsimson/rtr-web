@@ -1,5 +1,5 @@
 "use client";
-import { Badge, HStack, Heading, VStack, Text, Icon, IconButton } from "@chakra-ui/react";
+import { Badge, HStack, Heading, VStack, Text, Icon, IconButton, FormatNumber } from "@chakra-ui/react";
 import { format } from "date-fns";
 import { LuBriefcase, LuEye, LuPencil, LuTrash2 } from "react-icons/lu";
 import { DataTable, EmptyStateProps } from "@/components/ui/data-table";
@@ -64,7 +64,7 @@ const RtrCompensationCell: FC<{ row: Row<RtrTable> }> = ({ row }) => {
 	return (
 		<HStack justify={"flex-start"} align={"center"} gap={2}>
 			<Heading fontSize={"md"} color={"primary"}>
-				${row.original.compensation}
+				<FormatNumber value={row.original.compensation} style="currency" currency="USD" />
 			</Heading>
 			<Text fontSize={"sm"}>{row.original.compensationType === CompensationType.Hourly ? "Per Hour" : "Yearly"}</Text>
 		</HStack>

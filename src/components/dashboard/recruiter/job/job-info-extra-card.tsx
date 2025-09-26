@@ -1,5 +1,5 @@
 import { JobDetailQuery } from "@/graphql/generated/graphql";
-import { Badge, CardRootProps, DataList, Stack } from "@chakra-ui/react";
+import { Badge, CardRootProps, DataList, FormatNumber, Stack } from "@chakra-ui/react";
 import { Card } from "@chakra-ui/react";
 import { format } from "date-fns";
 import { FC } from "react";
@@ -20,11 +20,15 @@ export const JobInfoExtraCard: FC<JobInfoExtraCardProps> = ({ job }) => {
 					<DataList.Root orientation={"horizontal"} gap={2} flex={1}>
 						<DataList.Item alignItems={"flex-start"} gap={{ base: 0, md: 2 }}>
 							<DataList.ItemLabel>Min Salary:</DataList.ItemLabel>
-							<DataList.ItemValue>${job.salaryMin}</DataList.ItemValue>
+							<DataList.ItemValue>
+								<FormatNumber value={job.salaryMin ?? 0} style="currency" currency="USD" />
+							</DataList.ItemValue>
 						</DataList.Item>
 						<DataList.Item alignItems={"flex-start"} gap={{ base: 0, md: 2 }}>
 							<DataList.ItemLabel>Max Salary:</DataList.ItemLabel>
-							<DataList.ItemValue>${job.salaryMax}</DataList.ItemValue>
+							<DataList.ItemValue>
+								<FormatNumber value={job.salaryMax ?? 0} style="currency" currency="USD" />
+							</DataList.ItemValue>
 						</DataList.Item>
 						<DataList.Item alignItems={"flex-start"} gap={{ base: 0, md: 2 }}>
 							<DataList.ItemLabel>Compensation:</DataList.ItemLabel>
