@@ -6,8 +6,8 @@ export const RtrFileUploadList = () => {
 		<FileUpload.ItemGroup>
 			<FileUpload.Context>
 				{({ acceptedFiles }) =>
-					acceptedFiles.map((file) => (
-						<FileUpload.Item key={file.name} file={file} bgColor={"bg.card"}>
+					acceptedFiles.map((file, index) => (
+						<FileUpload.Item key={file.name + index} file={file} bgColor={"bg.card"}>
 							<HStack key={file.name} width={"full"} justify={"space-between"} align={"center"}>
 								<Flex gap={4} alignItems={"center"}>
 									<FileUpload.ItemPreview />

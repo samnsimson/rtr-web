@@ -22,7 +22,7 @@ const generateSteps = (rtrTemplateData: GetCompiledRtrTemplateQuery["compiledRtr
 };
 
 export const RtrSteps: FC<RtrStepsProps> = ({ rtrTemplateData, rtrData }) => {
-	const { updateField } = useRtrAcceptance();
+	const { formData, updateField, updateFormField } = useRtrAcceptance();
 	const items = useMemo(() => generateSteps(rtrTemplateData, rtrData), [rtrTemplateData, rtrData]);
 	const steps = useSteps({ defaultStep: 0, count: items.length });
 
@@ -32,7 +32,10 @@ export const RtrSteps: FC<RtrStepsProps> = ({ rtrTemplateData, rtrData }) => {
 		updateField("employerDetailsRequired", rtrData.employerDetailsRequired);
 		updateField("referencesRequired", rtrData.referencesRequired);
 		updateField("skillsRequired", rtrData.skillsRequired);
-	}, [rtrData, updateField]);
+		if (rtrData.referencesRequired && formData.references.length === 0) {
+			updateFormField("references", [{ name: "", email: "", phone: "" }]);
+		}
+	}, [rtrData, updateField, updateFormField, formData.references]);
 
 	return (
 		<Stack flex={1} direction={"column"} gap={6}>

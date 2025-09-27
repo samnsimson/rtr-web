@@ -1,6 +1,6 @@
 "use client";
 import { useRtrAcceptance } from "@/store";
-import { Button, FileUpload, FileUploadFileAcceptDetails, FileUploadFileRejectDetails, Heading, HStack, Stack, Text } from "@chakra-ui/react";
+import { Alert, Button, FileUpload, FileUploadFileAcceptDetails, FileUploadFileRejectDetails, Heading, HStack, Show, Stack, Text } from "@chakra-ui/react";
 import { HiUpload } from "react-icons/hi";
 import { RtrFileUploadList } from "../rtr/rtr-file-upload-list";
 import { RtrFileUploadError } from "../rtr/rtr-file-upload-error";
@@ -9,7 +9,7 @@ import { config } from "@/config/config";
 
 export const RtrCandidatePhotoIdForm = () => {
 	const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
-	const { updateFormField } = useRtrAcceptance();
+	const { photoIdFieldValid, updateFormField } = useRtrAcceptance();
 
 	const handleFileAccept = ({ files }: FileUploadFileAcceptDetails) => {
 		setValidationErrors({});
@@ -34,6 +34,15 @@ export const RtrCandidatePhotoIdForm = () => {
 			<FileUpload.HiddenInput />
 			<RtrFileUploadList />
 			<RtrFileUploadError errors={validationErrors} />
+			<Show when={photoIdFieldValid === false}>
+				<Alert.Root variant={"surface"} status="error" rounded="lg">
+					<Alert.Indicator />
+					<Alert.Content>
+						<Alert.Title>Photo ID is required</Alert.Title>
+						<Alert.Description>Please upload your photo ID to the system</Alert.Description>
+					</Alert.Content>
+				</Alert.Root>
+			</Show>
 			<HStack width={"full"} justify={"space-between"}>
 				<Stack gap={0}>
 					<Heading size={"sm"}>Photo ID</Heading>
