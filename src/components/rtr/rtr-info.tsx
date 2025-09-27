@@ -10,7 +10,7 @@ interface RtrInfoProps {
 }
 
 export const RtrInfo: FC<RtrInfoProps> = ({ rtr }) => {
-	const { updateField } = useRtrAcceptance();
+	const { updateFormField } = useRtrAcceptance();
 	return (
 		<Stack gap={6}>
 			<AppCard title="RTR Info" bgColor={"bg"}>
@@ -19,7 +19,7 @@ export const RtrInfo: FC<RtrInfoProps> = ({ rtr }) => {
 			<AppCard title="Note from Recruiter" bgColor={"bg"}>
 				<Text>{rtr.description}</Text>
 			</AppCard>
-			<CheckboxCard.Root variant={"surface"} colorPalette={"blue"} onCheckedChange={({ checked }) => updateField("rtrAccepted", Boolean(checked))}>
+			<CheckboxCard.Root variant={"surface"} colorPalette={"blue"} onCheckedChange={({ checked }) => updateFormField("rtrAccepted", Boolean(checked))}>
 				<CheckboxCard.HiddenInput />
 				<CheckboxCard.Control spaceX={4}>
 					<CheckboxCard.Indicator />

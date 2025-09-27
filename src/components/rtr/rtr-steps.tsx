@@ -1,11 +1,12 @@
 "use client";
 import { GetCompiledRtrTemplateQuery, RtrDetailQuery } from "@/graphql/generated/graphql";
 import { Field, For, Heading, Input, InputGroup, Separator, SimpleGrid, Stack, Steps, Text, useSteps } from "@chakra-ui/react";
-import { FC, useMemo } from "react";
+import { FC, useEffect, useMemo } from "react";
 import { RtrJobInfo } from "./rtr-job-info";
 import { RtrStepsAction } from "./rtr-steps-action";
 import { RtrInfo } from "./rtr-info";
 import { RtrDocumentStep } from "./rtr-document-step";
+import { useRtrAcceptance } from "@/store";
 
 interface RtrStepsProps {
 	rtrTemplateData: GetCompiledRtrTemplateQuery["compiledRtrTemplate"];
@@ -21,8 +22,18 @@ const generateSteps = (rtrTemplateData: GetCompiledRtrTemplateQuery["compiledRtr
 };
 
 export const RtrSteps: FC<RtrStepsProps> = ({ rtrTemplateData, rtrData }) => {
+	const { updateField } = useRtrAcceptance();
 	const items = useMemo(() => generateSteps(rtrTemplateData, rtrData), [rtrTemplateData, rtrData]);
-	const steps = useSteps({ defaultStep: 0, count: items.length, onStepChange: (e) => console.log(e) });
+	const steps = useSteps({ defaultStep: 0, count: items.length });
+
+	useEffect(() => {
+		updateField("resumeRequired", rtrData.resumeRequired);
+		updateField("photoIdRequired", rtrData.photoIdRequired);
+		updateField("employerDetailsRequired", rtrData.employerDetailsRequired);
+		updateField("referencesRequired", rtrData.referencesRequired);
+		updateField("skillsRequired", rtrData.skillsRequired);
+	}, [rtrData, updateField]);
+
 	return (
 		<Stack flex={1} direction={"column"} gap={6}>
 			<RtrStepsAction steps={steps} />

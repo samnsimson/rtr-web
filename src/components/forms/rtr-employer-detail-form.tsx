@@ -8,19 +8,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { RtrEmployerDetailFormType, rtrEmployerDetailFormSchema } from "@/zod";
 
 export const RtrEmployerDetailForm = () => {
-	const { updateField } = useRtrAcceptance();
+	const { updateFormField } = useRtrAcceptance();
 	const { register, watch, formState } = useForm<RtrEmployerDetailFormType>({ resolver: zodResolver(rtrEmployerDetailFormSchema), mode: "onBlur" });
 
 	useEffect(() => {
-		const subscription = watch((value) => {
-			updateField("employerName", value.employerName);
-			updateField("contactPersonName", value.contactPersonName);
-			updateField("employerPhone", value.employerPhone);
-			updateField("employerEmail", value.employerEmail);
+		const subscription = watch((value, { name }) => {
+			if (name) updateFormField(name, value[name]);
 		});
 
 		return () => subscription.unsubscribe();
-	}, [updateField, watch]);
+	}, [updateFormField, watch]);
 
 	return (
 		<SimpleGrid columns={{ base: 1, md: 2 }} gap={4}>

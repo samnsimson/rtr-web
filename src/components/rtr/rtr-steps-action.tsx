@@ -8,10 +8,13 @@ import { toaster } from "../ui/toaster";
 export const RtrStepsAction: FC<{ steps: UseStepsReturn }> = ({ steps }) => {
 	const { isStepValid } = useRtrAcceptance();
 
-	const handleNext = () => {
-		if (isStepValid(steps.value)) steps.goToNextStep();
-		else toaster.create({ title: "Please fill out all required fields", type: "error" });
+	const validateStep = (cb: () => void) => {
+		if (!isStepValid(steps.value)) toaster.create({ title: "Please fill out all required fields", type: "error" });
+		else cb();
 	};
+
+	const handleNext = () => validateStep(() => steps.goToNextStep());
+
 	return (
 		<HStack justify={"space-between"} width={"full"}>
 			<Button variant={"plain"} colorPalette={"teal"} disabled={!steps.hasPrevStep} onClick={() => steps.goToPrevStep()}>
