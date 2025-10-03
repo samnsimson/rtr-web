@@ -1,13 +1,25 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import { FileUpload, HStack, Stack, Button, Text, Heading, FileUploadFileAcceptDetails, FileUploadFileRejectDetails } from "@chakra-ui/react";
 import { HiUpload } from "react-icons/hi";
 import { RtrFileUploadList } from "../rtr/rtr-file-upload-list";
 import { useRtrAcceptance } from "@/store";
-import { useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { RtrFileUploadError } from "../rtr/rtr-file-upload-error";
 import { config } from "@/config/config";
+import { RtrDetailQuery } from "@/graphql/generated/graphql";
+import { UseFormReturn } from "react-hook-form";
+import { getFormSchema } from "@/lib/utils";
+import { z } from "zod";
 
-export const RtrCandidateResumeForm = () => {
+interface RtrCandidateResumeFormProps {
+	rtr: RtrDetailQuery["rtr"];
+	form: UseFormReturn<any>;
+}
+
+export const RtrCandidateResumeForm: FC<RtrCandidateResumeFormProps> = ({ rtr, form }) => {
+	const formSchema = useMemo(() => getFormSchema(rtr), [rtr]);
+	const resumeForm = useMemo<UseFormReturn<z.infer<typeof formSchema>>>(() => form, [form]);
 	const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 	const { updateFormField } = useRtrAcceptance();
 

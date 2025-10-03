@@ -56,3 +56,25 @@ export const rtrEmployerDetailFormSchema = z.object({
 		.min(1, "Employer phone is required")
 		.regex(/^\d{10}$/, "Invalid phone number"),
 });
+
+export const rtrReferenceSchema = z.object({
+	name: z.string().min(1, "Reference name is required"),
+	email: z.email("Invalid email address"),
+	phone: z
+		.string()
+		.min(1, "Reference phone is required")
+		.regex(/^\d{10}$/, "Invalid phone number"),
+});
+
+export const rtrFormStepTwoSchema = (resumeRequired: boolean, photoIdRequired: boolean, employerDetailsRequired: boolean, referencesRequired: boolean, skillsRequired: boolean) => {
+	return z.object({
+		resume: resumeRequired ? z.instanceof(File, { message: "Resume is required" }) : z.instanceof(File).optional(),
+		photoId: photoIdRequired ? z.instanceof(File, { message: "Photo ID is required" }) : z.instanceof(File).optional(),
+		employerName: employerDetailsRequired ? z.string().min(1, "Employer name is required") : z.string().optional(),
+		contactPersonName: employerDetailsRequired ? z.string().min(1, "Contact person name is required") : z.string().optional(),
+		employerEmail: employerDetailsRequired ? z.email("Invalid email address") : z.string().optional(),
+		employerPhone: employerDetailsRequired ? z.string().regex(/^\d{10}$/, "Invalid phone number") : z.string().optional(),
+		references: referencesRequired ? rtrReferenceSchema.array().min(1, "References are required") : rtrReferenceSchema.array().optional(),
+		skills: skillsRequired ? z.array(z.string()).min(1, "Skills are required") : z.array(z.string()).optional(),
+	});
+};

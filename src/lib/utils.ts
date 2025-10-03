@@ -1,4 +1,5 @@
-import { CompensationType, JobStatus, JobType, WorkType } from "@/graphql/generated/graphql";
+import { CompensationType, JobStatus, JobType, RtrDetailQuery, WorkType } from "@/graphql/generated/graphql";
+import { rtrFormStepTwoSchema } from "@/zod";
 import { isBefore, formatDistanceStrict } from "date-fns";
 
 export function removeUndefinedValues<T extends Record<string, any>>(obj: T): Partial<T> {
@@ -83,4 +84,8 @@ export const getCompensationLabel = (compensation: CompensationType) => {
 		default:
 			return compensation;
 	}
+};
+
+export const getFormSchema = (rtr: RtrDetailQuery["rtr"]) => {
+	return rtrFormStepTwoSchema(rtr.resumeRequired, rtr.photoIdRequired, rtr.employerDetailsRequired, rtr.referencesRequired, rtr.skillsRequired);
 };

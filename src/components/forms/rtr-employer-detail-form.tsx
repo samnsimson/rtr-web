@@ -1,19 +1,30 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import { FieldErrorText, FieldLabel, FieldRoot, Input, InputGroup, SimpleGrid } from "@chakra-ui/react";
 import { LuMail, LuPhone, LuUser } from "react-icons/lu";
-import { useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { UseFormReturn } from "react-hook-form";
+import { FC, useEffect, useMemo } from "react";
 import { useRtrAcceptance } from "@/store";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { RtrEmployerDetailFormType, rtrEmployerDetailFormSchema } from "@/zod";
+import { RtrDetailQuery } from "@/graphql/generated/graphql";
+import { getFormSchema } from "@/lib/utils";
+import { z } from "zod";
 
-export const RtrEmployerDetailForm = () => {
+interface RtrEmployerDetailFormProps {
+	rtr: RtrDetailQuery["rtr"];
+	form: UseFormReturn<any>;
+}
+
+export const RtrEmployerDetailForm: FC<RtrEmployerDetailFormProps> = ({ rtr, form }) => {
+	const formSchema = useMemo(() => getFormSchema(rtr), [rtr]);
+	const { register, formState, watch } = useMemo(() => form as UseFormReturn<z.infer<typeof formSchema>>, [form]);
 	const { updateFormField } = useRtrAcceptance();
-	const { register, watch, formState } = useForm<RtrEmployerDetailFormType>({ resolver: zodResolver(rtrEmployerDetailFormSchema), mode: "onBlur" });
 
 	useEffect(() => {
 		const subscription = watch((value, { name }) => {
-			if (name) updateFormField(name, value[name]);
+			if (name == "employerName") updateFormField("employerName", value[name]);
+			if (name == "contactPersonName") updateFormField("contactPersonName", value[name]);
+			if (name == "employerPhone") updateFormField("employerPhone", value[name]);
+			if (name == "employerEmail") updateFormField("employerEmail", value[name]);
 		});
 
 		return () => subscription.unsubscribe();
