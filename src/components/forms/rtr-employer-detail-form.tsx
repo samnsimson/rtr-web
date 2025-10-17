@@ -1,66 +1,60 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-import { FieldErrorText, FieldLabel, FieldRoot, Input, InputGroup, SimpleGrid } from "@chakra-ui/react";
+import { FC, useMemo } from "react";
+import { Field, Input, InputGroup, SimpleGrid } from "@chakra-ui/react";
 import { LuMail, LuPhone, LuUser } from "react-icons/lu";
 import { UseFormReturn } from "react-hook-form";
-import { FC, useEffect, useMemo } from "react";
-import { useRtrAcceptance } from "@/store";
 import { RtrDetailQuery } from "@/graphql/generated/graphql";
-import { getFormSchema } from "@/lib/utils";
-import { z } from "zod";
+import { RtrAcceptanceFormType } from "@/zod";
 
 interface RtrEmployerDetailFormProps {
 	rtr: RtrDetailQuery["rtr"];
-	form: UseFormReturn<any>;
+	form: UseFormReturn<RtrAcceptanceFormType>;
 }
 
-export const RtrEmployerDetailForm: FC<RtrEmployerDetailFormProps> = ({ rtr, form }) => {
-	const formSchema = useMemo(() => getFormSchema(rtr), [rtr]);
-	const { register, formState, watch } = useMemo(() => form as UseFormReturn<z.infer<typeof formSchema>>, [form]);
-	const { updateFormField } = useRtrAcceptance();
-
-	useEffect(() => {
-		const subscription = watch((value, { name }) => {
-			if (name == "employerName") updateFormField("employerName", value[name]);
-			if (name == "contactPersonName") updateFormField("contactPersonName", value[name]);
-			if (name == "employerPhone") updateFormField("employerPhone", value[name]);
-			if (name == "employerEmail") updateFormField("employerEmail", value[name]);
-		});
-
-		return () => subscription.unsubscribe();
-	}, [updateFormField, watch]);
-
+export const RtrEmployerDetailForm: FC<RtrEmployerDetailFormProps> = ({ form }) => {
+	const { register } = form;
+	const formValues = useMemo(() => form.getValues(), [form]);
 	return (
 		<SimpleGrid columns={{ base: 1, md: 2 }} gap={4}>
-			<FieldRoot id="employer-name" invalid={!!formState.errors.employerName}>
-				<FieldLabel>Employer Name</FieldLabel>
+			<Field.Root required={formValues.employerDetailsRequired} invalid={!!form.formState.errors.employerName}>
+				<Field.Label>
+					Employer Name <Field.RequiredIndicator fontSize={20} />
+				</Field.Label>
 				<InputGroup startElement={<LuUser />}>
 					<Input bgColor={"bg.card"} type="text" size={"lg"} placeholder="Your employer name" {...register("employerName")} />
 				</InputGroup>
-				<FieldErrorText>{formState.errors.employerName?.message}</FieldErrorText>
-			</FieldRoot>
-			<FieldRoot id="employer-name" invalid={!!formState.errors.contactPersonName}>
-				<FieldLabel>Contact Person Name</FieldLabel>
+				<Field.ErrorText>{form.formState.errors.employerName?.message}</Field.ErrorText>
+			</Field.Root>
+
+			<Field.Root required={formValues.employerDetailsRequired} invalid={!!form.formState.errors.contactPersonName}>
+				<Field.Label>
+					Contact Person Name <Field.RequiredIndicator fontSize={20} />
+				</Field.Label>
 				<InputGroup startElement={<LuUser />}>
 					<Input bgColor={"bg.card"} type="text" size={"lg"} placeholder="Your contact person name" {...register("contactPersonName")} />
 				</InputGroup>
-				<FieldErrorText>{formState.errors.contactPersonName?.message}</FieldErrorText>
-			</FieldRoot>
-			<FieldRoot id="employer-phone" invalid={!!formState.errors.employerPhone}>
-				<FieldLabel>Employer Phone</FieldLabel>
+				<Field.ErrorText>{form.formState.errors.contactPersonName?.message}</Field.ErrorText>
+			</Field.Root>
+
+			<Field.Root required={formValues.employerDetailsRequired} invalid={!!form.formState.errors.employerPhone}>
+				<Field.Label>
+					Employer Phone <Field.RequiredIndicator fontSize={20} />
+				</Field.Label>
 				<InputGroup startElement={<LuPhone />}>
 					<Input bgColor={"bg.card"} type="text" size={"lg"} placeholder="Your employer phone" {...register("employerPhone")} />
 				</InputGroup>
-				<FieldErrorText>{formState.errors.employerPhone?.message}</FieldErrorText>
-			</FieldRoot>
+				<Field.ErrorText>{form.formState.errors.employerPhone?.message}</Field.ErrorText>
+			</Field.Root>
 
-			<FieldRoot id="employer-email" invalid={!!formState.errors.employerEmail}>
-				<FieldLabel>Employer Email</FieldLabel>
+			<Field.Root required={formValues.employerDetailsRequired} invalid={!!form.formState.errors.employerEmail}>
+				<Field.Label>
+					Employer Email <Field.RequiredIndicator fontSize={20} />
+				</Field.Label>
 				<InputGroup startElement={<LuMail />}>
 					<Input bgColor={"bg.card"} type="text" size={"lg"} placeholder="Your employer email" {...register("employerEmail")} />
 				</InputGroup>
-				<FieldErrorText>{formState.errors.employerEmail?.message}</FieldErrorText>
-			</FieldRoot>
+				<Field.ErrorText>{form.formState.errors.employerEmail?.message}</Field.ErrorText>
+			</Field.Root>
 		</SimpleGrid>
 	);
 };

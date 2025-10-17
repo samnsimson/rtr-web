@@ -1,45 +1,51 @@
 "use client";
 import { GetCompiledRtrTemplateQuery, RtrDetailQuery } from "@/graphql/generated/graphql";
-import { Field, For, Heading, Input, InputGroup, Separator, SimpleGrid, Stack, Steps, Text, useSteps } from "@chakra-ui/react";
-import { FC, useEffect, useMemo } from "react";
+import { For, Heading, Separator, Stack, Steps, Text, useSteps } from "@chakra-ui/react";
+import { FC, useMemo } from "react";
 import { RtrJobInfo } from "./rtr-job-info";
 import { RtrStepsAction } from "./rtr-steps-action";
 import { RtrInfo } from "./rtr-info";
 import { RtrDocumentStep } from "./rtr-document-step";
-import { useRtrAcceptance } from "@/store";
+import { RtrAcceptanceFormType, rtrAcceptanceSchema } from "@/zod";
+import { useForm, UseFormReturn } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { RtrSignatureForm } from "../forms/rtr-signature-form";
 
 interface RtrStepsProps {
 	rtrTemplateData: GetCompiledRtrTemplateQuery["compiledRtrTemplate"];
 	rtrData: RtrDetailQuery["rtr"];
 }
 
-const generateSteps = (rtrTemplateData: GetCompiledRtrTemplateQuery["compiledRtrTemplate"], rtrData: RtrDetailQuery["rtr"]) => {
+const generateSteps = (rtrTemplateData: GetCompiledRtrTemplateQuery["compiledRtrTemplate"], rtrData: RtrDetailQuery["rtr"], form: UseFormReturn<RtrAcceptanceFormType>) => {
 	return [
-		{ title: "Job Info", children: <RtrJobInfo rtr={rtrData} /> },
-		{ title: "RTR Info", children: <RtrInfo rtr={rtrTemplateData} /> },
-		{ title: "Documents", children: <RtrDocumentStep rtr={rtrData} /> },
+		{ title: "Job Info", children: <RtrJobInfo rtr={rtrData} form={form} /> },
+		{ title: "RTR Info", children: <RtrInfo rtr={rtrTemplateData} form={form} /> },
+		{ title: "Documents", children: <RtrDocumentStep rtr={rtrData} form={form} /> },
 	];
 };
 
 export const RtrSteps: FC<RtrStepsProps> = ({ rtrTemplateData, rtrData }) => {
-	const { formData, updateField, updateFormField } = useRtrAcceptance();
-	const items = useMemo(() => generateSteps(rtrTemplateData, rtrData), [rtrTemplateData, rtrData]);
+	const form = useForm<RtrAcceptanceFormType>({
+		mode: "onBlur",
+		resolver: zodResolver(rtrAcceptanceSchema),
+		defaultValues: {
+			resumeRequired: rtrData.resumeRequired,
+			photoIdRequired: rtrData.photoIdRequired,
+			employerDetailsRequired: rtrData.employerDetailsRequired,
+			referencesRequired: rtrData.referencesRequired,
+			skillsRequired: rtrData.skillsRequired,
+			signatureDate: new Date(),
+			termsAccepted: true,
+			references: [],
+			skills: [],
+		},
+	});
+	const items = useMemo(() => generateSteps(rtrTemplateData, rtrData, form), [rtrTemplateData, rtrData, form]);
 	const steps = useSteps({ defaultStep: 0, count: items.length });
-
-	useEffect(() => {
-		updateField("resumeRequired", rtrData.resumeRequired);
-		updateField("photoIdRequired", rtrData.photoIdRequired);
-		updateField("employerDetailsRequired", rtrData.employerDetailsRequired);
-		updateField("referencesRequired", rtrData.referencesRequired);
-		updateField("skillsRequired", rtrData.skillsRequired);
-		if (rtrData.referencesRequired && formData.references.length === 0) {
-			updateFormField("references", [{ name: "", email: "", phone: "" }]);
-		}
-	}, [rtrData, updateField, updateFormField, formData.references]);
 
 	return (
 		<Stack flex={1} direction={"column"} gap={6}>
-			<RtrStepsAction steps={steps} />
+			<RtrStepsAction steps={steps} form={form} />
 			<Steps.RootProvider value={steps} flex={1}>
 				<Steps.List marginY={4}>
 					<For each={items}>
@@ -77,23 +83,10 @@ export const RtrSteps: FC<RtrStepsProps> = ({ rtrTemplateData, rtrData }) => {
 							consectetur adipisicing elit. Eveniet saepe quasi vitae quisquam unde inventore soluta laudantium totam nisi dolorum numquam
 						</Text>
 					</Stack>
-					<SimpleGrid columns={{ base: 1, md: 2 }} gap={4} marginY={4}>
-						<Field.Root>
-							<Field.Label>Name</Field.Label>
-							<InputGroup>
-								<Input bgColor={"bg.card"} type="text" size={"lg"} placeholder="Your name" onChange={console.log} />
-							</InputGroup>
-						</Field.Root>
-						<Field.Root>
-							<Field.Label>Date</Field.Label>
-							<InputGroup>
-								<Input bgColor={"bg.card"} type="text" size={"lg"} placeholder="Select date" onChange={console.log} />
-							</InputGroup>
-						</Field.Root>
-					</SimpleGrid>
+					<RtrSignatureForm rtr={rtrData} form={form} />
 				</Steps.CompletedContent>
 			</Steps.RootProvider>
-			<RtrStepsAction steps={steps} />
+			<RtrStepsAction steps={steps} form={form} />
 		</Stack>
 	);
 };

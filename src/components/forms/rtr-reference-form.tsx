@@ -1,30 +1,19 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import { Box, FieldErrorText, FieldLabel, FieldRoot, IconButton, Input, InputGroup, Show, SimpleGrid, Stack } from "@chakra-ui/react";
 import { LuMail, LuPhone, LuUser, LuX } from "react-icons/lu";
 import { FC, useMemo } from "react";
-import { useRtrAcceptance } from "@/store";
 import { RtrDetailQuery } from "@/graphql/generated/graphql";
 import { UseFormReturn } from "react-hook-form";
-import { getFormSchema } from "@/lib/utils";
-import { z } from "zod";
-
-interface ReferenceData {
-	name: string;
-	email: string;
-	phone: string;
-}
+import { RtrAcceptanceFormType } from "@/zod";
 
 interface RtrReferenceFormProps {
 	rtr: RtrDetailQuery["rtr"];
-	form: UseFormReturn<any>;
+	form: UseFormReturn<RtrAcceptanceFormType>;
 }
 
-export const RtrReferenceForm: FC<RtrReferenceFormProps> = ({ rtr, form }) => {
-	const formSchema = useMemo(() => getFormSchema(rtr), [rtr]);
-	const { register, formState, watch } = useMemo(() => form as UseFormReturn<z.infer<typeof formSchema>>, [form]);
-	const { formData, updateFormField } = useRtrAcceptance();
-	const references: ReferenceData[] = useMemo(() => formData.references, [formData.references]);
+export const RtrReferenceForm: FC<RtrReferenceFormProps> = ({ form }) => {
+	const { register, formState } = form;
+	const { references = [] } = useMemo(() => form.getValues(), [form]);
 
 	return (
 		<Stack gap={4} divideY={"1px"} divideColor={"border"}>

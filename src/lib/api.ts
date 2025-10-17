@@ -32,11 +32,20 @@ import {
 	RtrDetailQueryVariables,
 } from "@/graphql/generated/graphql";
 import { ApiHelper } from "./api-helper";
+import { ApolloClient } from "@apollo/client";
 
 class Api extends ApiHelper {
+	private readonly client: ApolloClient;
+	private readonly publicClient: ApolloClient;
+
+	constructor() {
+		super();
+		this.client = getClient();
+		this.publicClient = getPublicClient();
+	}
+
 	async login(email: string, password: string) {
-		const client = getPublicClient();
-		const { data } = await client.mutate<LoginMutation, LoginMutationVariables>({ mutation: LoginDocument, variables: { loginInput: { email, password } } });
+		const { data } = await this.publicClient.mutate<LoginMutation, LoginMutationVariables>({ mutation: LoginDocument, variables: { loginInput: { email, password } } });
 		if (!data || !data.login) throw new Error("Login failed");
 		const { accessToken, refreshToken, tokenType, expiresAt, user } = data.login;
 		return { accessToken, refreshToken, tokenType, expiresAt, user: this.getUserObject(user as AuthUser) };
@@ -44,8 +53,7 @@ class Api extends ApiHelper {
 
 	async createJob(job: CreateJobInput) {
 		try {
-			const client = getClient();
-			const { data } = await client.mutate<CreateJobMutation, CreateJobMutationVariables>({ mutation: CreateJobDocument, variables: { createJobInput: job } });
+			const { data } = await this.client.mutate<CreateJobMutation, CreateJobMutationVariables>({ mutation: CreateJobDocument, variables: { createJobInput: job } });
 			if (!data || !data.createJob) throw new Error("Create job failed");
 			return data.createJob;
 		} catch (error: any) {
@@ -55,23 +63,20 @@ class Api extends ApiHelper {
 	}
 
 	async listJobs(page: number, limit: number) {
-		const client = getClient();
-		const { data } = await client.query<ListJobsQuery, ListJobsQueryVariables>({ query: ListJobsDocument, variables: { filters: { page, limit } } });
+		const { data } = await this.client.query<ListJobsQuery, ListJobsQueryVariables>({ query: ListJobsDocument, variables: { filters: { page, limit } } });
 		if (!data || !data.jobs) throw new Error("List jobs failed");
 		return data.jobs;
 	}
 
 	async getJobDetail(id: string) {
-		const client = getClient();
-		const { data, error } = await client.query<JobDetailQuery, JobDetailQueryVariables>({ query: JobDetailDocument, variables: { id } });
+		const { data, error } = await this.client.query<JobDetailQuery, JobDetailQueryVariables>({ query: JobDetailDocument, variables: { id } });
 		if (error) throw new Error(error.message);
 		if (!data || !data.job) throw new Error("Get job detail failed");
 		return data.job;
 	}
 
 	async refreshToken(refreshToken: string) {
-		const client = getPublicClient();
-		const { data, error } = await client.mutate<RefreshTokenMutation, RefreshTokenMutationVariables>({
+		const { data, error } = await this.publicClient.mutate<RefreshTokenMutation, RefreshTokenMutationVariables>({
 			mutation: RefreshTokenDocument,
 			variables: { refreshTokenInput: { refreshToken } },
 		});
@@ -82,42 +87,37 @@ class Api extends ApiHelper {
 	}
 
 	async getOverview() {
-		const client = getClient();
-		const { data, error } = await client.query<OverviewQuery, OverviewQueryVariables>({ query: OverviewDocument });
+		const { data, error } = await this.client.query<OverviewQuery, OverviewQueryVariables>({ query: OverviewDocument });
 		if (error) throw new Error(error.message);
 		if (!data || !data.overview) throw new Error("Get overview failed");
 		return data.overview;
 	}
 
 	async getRecentRtrs() {
-		const client = getClient();
-		const { data, error } = await client.query<RecentRtrsQuery, RecentRtrsQueryVariables>({ query: RecentRtrsDocument });
+		const { data, error } = await this.client.query<RecentRtrsQuery, RecentRtrsQueryVariables>({ query: RecentRtrsDocument });
 		if (error) throw new Error(error.message);
 		if (!data || !data.rtrs) throw new Error("Get recent RTRs failed");
 		return data.rtrs;
 	}
 
 	async getRecentJobs() {
-		const client = getClient();
-		const { data, error } = await client.query<ListJobsQuery, ListJobsQueryVariables>({ query: ListJobsDocument, variables: { filters: { page: 1, limit: 5 } } });
+		const { data, error } = await this.client.query<ListJobsQuery, ListJobsQueryVariables>({ query: ListJobsDocument, variables: { filters: { page: 1, limit: 5 } } });
 		if (error) throw new Error(error.message);
 		if (!data || !data.jobs) throw new Error("Get recent jobs failed");
 		return data.jobs;
 	}
 
 	async getRtrDetail(id: string) {
-		const client = getClient();
-		const { data, error } = await client.query<RtrDetailQuery, RtrDetailQueryVariables>({ query: RtrDetailDocument, variables: { id } });
+		const { data, error } = await this.client.query<RtrDetailQuery, RtrDetailQueryVariables>({ query: RtrDetailDocument, variables: { id } });
 		if (error) throw new Error(error.message);
 		if (!data || !data.rtr) throw new Error("Get RTR detail failed");
 		return data.rtr;
 	}
 
 	async getCompiledRtrTemplateDetail(input: CompiledRtrTemplateInput) {
-		const client = getClient();
 		const query = GetCompiledRtrTemplateDocument;
 		const variables = { input };
-		const { data, error } = await client.query<GetCompiledRtrTemplateQuery, GetCompiledRtrTemplateQueryVariables>({ query, variables });
+		const { data, error } = await this.client.query<GetCompiledRtrTemplateQuery, GetCompiledRtrTemplateQueryVariables>({ query, variables });
 		if (error) throw new Error(error.message);
 		if (!data || !data.compiledRtrTemplate) throw new Error("Get RTR template detail failed");
 		return data.compiledRtrTemplate;

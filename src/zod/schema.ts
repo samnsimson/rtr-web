@@ -78,3 +78,39 @@ export const rtrFormStepTwoSchema = (resumeRequired: boolean, photoIdRequired: b
 		skills: skillsRequired ? z.array(z.string()).min(1, "Skills are required") : z.array(z.string()).optional(),
 	});
 };
+
+export const rtrAcceptanceSchema = z
+	.object({
+		resumeRequired: z.boolean(),
+		photoIdRequired: z.boolean(),
+		employerDetailsRequired: z.boolean(),
+		referencesRequired: z.boolean(),
+		skillsRequired: z.boolean(),
+		termsAccepted: z.boolean({ error: "You must accept the terms and conditions" }),
+		resume: z.instanceof(File).optional(),
+		photoId: z.instanceof(File).optional(),
+		employerName: z.string().optional(),
+		contactPersonName: z.string().optional(),
+		employerEmail: z.string().optional(),
+		employerPhone: z.string().optional(),
+		references: rtrReferenceSchema.array().optional(),
+		skills: z.array(z.string()).optional(),
+		signatureName: z.string().min(1, "Signature is required"),
+		signatureDate: z.date().min(new Date(), "Invalid date"),
+	})
+	.superRefine((data, ctx) => {
+		const refErrMsg = "At least one reference is required";
+		const skillErrMsg = "At least one skill is required";
+		if (!data.termsAccepted) ctx.addIssue({ code: "custom", message: "You must accept the terms and conditions", input: data.termsAccepted, path: ["termsAccepted"] });
+		if (data.resumeRequired && !(data.resume instanceof File)) ctx.addIssue({ code: "custom", message: "Resume is required", input: data.resume, path: ["resume"] });
+		if (data.photoIdRequired && !(data.photoId instanceof File)) ctx.addIssue({ code: "custom", message: "Photo ID is required", input: data.photoId, path: ["photoId"] });
+		if (data.employerDetailsRequired) {
+			if (!data.employerName) ctx.addIssue({ code: "custom", message: "Employer name is required", input: data.employerName, path: ["employerName"] });
+			if (!data.contactPersonName) ctx.addIssue({ code: "custom", message: "Contact person name is required", input: data.contactPersonName, path: ["contactPersonName"] });
+			if (!data.employerEmail) ctx.addIssue({ code: "custom", message: "Employer email is required", input: data.employerEmail, path: ["employerEmail"] });
+			if (!data.employerPhone) ctx.addIssue({ code: "custom", message: "Employer phone is required", input: data.employerPhone, path: ["employerPhone"] });
+		}
+		if (data.referencesRequired && (!data.references || data.references.length === 0))
+			ctx.addIssue({ code: "custom", message: refErrMsg, input: data.references, path: ["references"] });
+		if (data.skillsRequired && (!data.skills || data.skills.length === 0)) ctx.addIssue({ code: "custom", message: skillErrMsg, input: data.skills, path: ["skills"] });
+	});

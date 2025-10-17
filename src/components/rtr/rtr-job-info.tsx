@@ -3,9 +3,12 @@ import { AppCard } from "../ui/app-card";
 import { DataList, For, FormatNumber, Icon, List, SimpleGrid, Stack, Text } from "@chakra-ui/react";
 import { FC } from "react";
 import { LuCircleCheck } from "react-icons/lu";
+import { UseFormReturn } from "react-hook-form";
+import { RtrAcceptanceFormType } from "@/zod";
 
 interface RtrJobInfoProps {
 	rtr: RtrDetailQuery["rtr"];
+	form: UseFormReturn<RtrAcceptanceFormType>;
 }
 
 export const RtrJobInfo: FC<RtrJobInfoProps> = ({ rtr }) => {

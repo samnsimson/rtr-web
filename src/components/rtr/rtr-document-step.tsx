@@ -9,19 +9,15 @@ import { RtrReferenceForm } from "../forms/rtr-reference-form";
 import { RtrSkillListForm } from "../forms/rtr-skill-list-form";
 import { RtrCandidateResumeForm } from "../forms/rtr-candidate-resume-form";
 import { RtrCandidatePhotoIdForm } from "../forms/rtr-candidate-photoid-form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { getFormSchema } from "@/lib/utils";
+import { UseFormReturn } from "react-hook-form";
+import { RtrAcceptanceFormType } from "@/zod";
 
 interface RtrDocumentStepProps {
 	rtr: RtrDetailQuery["rtr"];
+	form: UseFormReturn<RtrAcceptanceFormType>;
 }
 
-export const RtrDocumentStep: FC<RtrDocumentStepProps> = ({ rtr }) => {
-	const formSchema = getFormSchema(rtr);
-	const form = useForm<z.infer<typeof formSchema>>({ resolver: zodResolver(formSchema), mode: "onBlur" });
-
+export const RtrDocumentStep: FC<RtrDocumentStepProps> = ({ rtr, form }) => {
 	return (
 		<Stack gap={6}>
 			<Show when={rtr.resumeRequired}>
