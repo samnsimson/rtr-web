@@ -28,5 +28,5 @@ export const JobList: FC<JobListProps> = ({ searchParams }) => {
 		refetch({ filters: getFilters(params) });
 	}, [params, refetch]);
 
-	return <JobDataTable jobs={data?.jobs.data} totalCount={data?.jobs.total} limit={parseInt(params.limit)} loading={loading} />;
+	return <JobDataTable jobs={data?.jobs.data} loading={loading} />;
 };

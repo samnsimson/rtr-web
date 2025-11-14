@@ -8,9 +8,10 @@ import { api } from "@/lib/api";
 import { LuPlus } from "react-icons/lu";
 
 const RecruitedDashboardPage = async () => {
-	const overviewData = await api.getOverview();
-	const recentRtrsData = await api.getRecentRtrs();
-	const recentJobsData = await api.getRecentJobs();
+	const overviewDataPromise = api.getOverview();
+	const recentRtrsDataPromise = api.getRecentRtrs();
+	const recentJobsDataPromise = api.getRecentJobs();
+	const [overviewData, recentRtrsData, recentJobsData] = await Promise.all([overviewDataPromise, recentRtrsDataPromise, recentJobsDataPromise]);
 	const counts = [
 		{ label: "Total RTRs", count: overviewData.totalRtrs, color: "primary" },
 		{ label: "Total Jobs", count: overviewData.totalJobs, color: "secondary" },

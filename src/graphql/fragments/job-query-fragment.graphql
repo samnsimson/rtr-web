@@ -1,6 +1,7 @@
 fragment JobQueryFragment on JobResponse {
 	id
 	jobId
+	starred
 	organizationId
 	title
 	description

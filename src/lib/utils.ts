@@ -89,3 +89,14 @@ export const getCompensationLabel = (compensation: CompensationType) => {
 export const getFormSchema = (rtr: RtrDetailQuery["rtr"]) => {
 	return rtrFormStepTwoSchema(rtr.resumeRequired, rtr.photoIdRequired, rtr.employerDetailsRequired, rtr.referencesRequired, rtr.skillsRequired);
 };
+
+export const isExpired = (expiryDate: Date | string) => {
+	const now = new Date();
+	const dateObj = new Date(expiryDate);
+	if (isBefore(dateObj, now)) return true;
+	return false;
+};
+
+export const isExpiredStatus = (status: JobStatus, expiryDate: Date | string) => {
+	return isExpired(expiryDate) && status !== JobStatus.Closed;
+};

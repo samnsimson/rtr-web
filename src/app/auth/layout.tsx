@@ -1,7 +1,7 @@
-import { Box, Container, Heading, IconButton, Separator, Text } from "@chakra-ui/react";
+import { Box, Container, Heading, IconButton, Separator, Spinner, Text, VStack } from "@chakra-ui/react";
 import { HomeIcon } from "lucide-react";
 import Link from "next/link";
-import { FC, PropsWithChildren } from "react";
+import { FC, PropsWithChildren, Suspense } from "react";
 
 const AuthLayout: FC<PropsWithChildren> = ({ children }) => {
 	return (
@@ -15,7 +15,9 @@ const AuthLayout: FC<PropsWithChildren> = ({ children }) => {
 				</IconButton>
 			</Box>
 			<Separator />
-			{children}
+			<VStack flex={1} justifyContent={"center"}>
+				<Suspense fallback={<Spinner size={"xl"} />}>{children}</Suspense>
+			</VStack>
 			<Separator />
 			<Box py={8} textAlign={"center"}>
 				<Text>Right To Represent</Text>

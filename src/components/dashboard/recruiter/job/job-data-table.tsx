@@ -2,15 +2,28 @@
 import { FC } from "react";
 import { format } from "date-fns";
 import { LuBriefcase } from "react-icons/lu";
-import { Badge, Box, Clipboard, Flex, Heading, Link, Stack, Text } from "@chakra-ui/react";
-import { CompensationType, JobStatus, JobType, ListJobsQuery, WorkType } from "@/graphql/generated/graphql";
+import { Badge, Box, Button, Clipboard, Flex, Heading, Icon, Link, Stack, Text } from "@chakra-ui/react";
+import {
+	CompensationType,
+	JobStatus,
+	JobType,
+	ListJobsDocument,
+	ListJobsQuery,
+	UpdateJobDocument,
+	UpdateJobMutation,
+	UpdateJobMutationVariables,
+	WorkType,
+} from "@/graphql/generated/graphql";
 import { EmptyStateProps } from "@/components/ui/data-table";
 import { createColumnHelper, Row } from "@tanstack/react-table";
 import { DataTable } from "@/components/ui/data-table";
-import { getWorkTypeLabel, getJobTypeLabel, getCompensationLabel, getStatusColor } from "@/lib/utils";
+import { getWorkTypeLabel, getJobTypeLabel, getCompensationLabel, getStatusColor, isExpiredStatus } from "@/lib/utils";
+import { BsStar, BsStarFill } from "react-icons/bs";
+import { useMutation } from "@apollo/client/react";
 
 interface JobTable {
 	id: string;
+	starred: boolean;
 	jobId: string;
 	title: string;
 	company: string;
@@ -105,9 +118,20 @@ const JobCreatedAtCell: FC<{ row: Row<JobTable> }> = ({ row }) => {
 		<Stack gap={0}>
 			<Text>{formatDate(row.original.createdAt)}</Text>
 			<Text fontSize="sm" color="fg.muted">
-				{row.original.expiresAt ? `Expires ${formatDate(row.original.expiresAt)}` : "No expiry"}
+				{isExpiredStatus(row.original.status, row.original.expiresAt) ? `Expired` : `Expires ${formatDate(row.original.expiresAt)}`}
 			</Text>
 		</Stack>
+	);
+};
+
+const StarredCell: FC<{ row: Row<JobTable> }> = ({ row }) => {
+	const [updateJob, { loading }] = useMutation<UpdateJobMutation, UpdateJobMutationVariables>(UpdateJobDocument, { refetchQueries: [{ query: ListJobsDocument }] });
+	const handleStarClick = async () => await updateJob({ variables: { updateJobInput: { id: row.original.id, starred: !row.original.starred } } });
+
+	return (
+		<Button size={"md"} variant={"ghost"} onClick={handleStarClick} loading={loading} disabled={loading}>
+			{row.original.starred ? <Icon as={BsStarFill} color={"yellow"} /> : <BsStar />}
+		</Button>
 	);
 };
 
@@ -122,6 +146,7 @@ export const JobDataTable: FC<JobDataTableProps> = ({ jobs = [], loading = false
 
 	const tableData: JobTable[] = jobs.map((job) => ({
 		id: job.id,
+		starred: job.starred,
 		jobId: job.jobId ?? "",
 		title: job.title,
 		company: job.company,
@@ -129,13 +154,14 @@ export const JobDataTable: FC<JobDataTableProps> = ({ jobs = [], loading = false
 		workType: job.workType,
 		jobType: job.jobType,
 		compensation: job.compensation,
-		status: job.status,
+		status: isExpiredStatus(job.status, job.expiresAt) ? JobStatus.Active : job.status,
 		applications: 0,
 		createdAt: job.createdAt,
 		expiresAt: job.expiresAt,
 	}));
 
 	const tableColumns = [
+		columnHelper.accessor("starred", { header: "Starred", cell: ({ row }) => <StarredCell row={row} /> }),
 		columnHelper.accessor("jobId", { header: "Job ID", cell: ({ row }) => <JobIdCell row={row} /> }),
 		columnHelper.accessor("title", { header: "Title", cell: ({ row }) => <JobTitleCell row={row} /> }),
 		columnHelper.accessor("company", { header: "Company", cell: ({ row }) => <JobCompanyCell row={row} /> }),

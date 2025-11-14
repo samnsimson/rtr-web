@@ -4,6 +4,7 @@ import { auth } from "./lib/auth";
 
 export default async function middlewareHandler(req: NextRequest) {
 	const session = await auth();
+	console.log("🚀 ~ middlewareHandler ~ session:", session);
 	if (!session) return NextResponse.redirect(new URL("/auth/login", req.url));
 	return NextResponse.next();
 }

@@ -1,0 +1,7 @@
+#import "../fragments/job-query-fragment.graphql"
+
+mutation UpdateJob($updateJobInput: UpdateJobInput!) {
+	updateJob(updateJobInput: $updateJobInput) {
+		...JobQueryFragment
+	}
+}
