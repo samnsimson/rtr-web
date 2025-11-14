@@ -11,6 +11,7 @@ import { AlertDialog } from "../ui/alert";
 import { CreateJobDocument } from "@/graphql/generated/graphql";
 import { useMutation } from "@apollo/client/react";
 import { LuDollarSign, LuUser, LuGlobe, LuCalendar } from "react-icons/lu";
+import { JobSkillsCard } from "../dashboard/recruiter/job/job-skills-card";
 
 export const CreateJobForm = () => {
 	const router = useRouter();
@@ -288,6 +289,8 @@ export const CreateJobForm = () => {
 						</Stack>
 					</Card.Body>
 				</Card.Root>
+
+				<JobSkillsCard />
 
 				{/* Job Description Card */}
 				<Card.Root bgColor={"bg"} divideY={"1px"} divideColor={"border"}>

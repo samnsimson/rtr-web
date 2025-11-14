@@ -11,8 +11,8 @@ interface StarredJobsOverviewProps {
 
 export const StarredJobsOverview: FC<StarredJobsOverviewProps> = ({ starredJobs }) => {
 	return (
-		<AppCard title="Starred Jobs" description="Manage all your starred jobs" noPadding action={<ViewAllButton href={"/recruiter/job/starred"} />}>
-			<Stack padding={4} gap={4}>
+		<AppCard title="Starred Jobs" description="Manage all your starred jobs" action={<ViewAllButton href={"/recruiter/job/starred"} />}>
+			<Stack gap={4}>
 				<For each={starredJobs} fallback={<Text>No starred jobs found</Text>}>
 					{(job) => (
 						<AppCardHeadless asChild key={job.id} bgColor={"bg.card"}>
