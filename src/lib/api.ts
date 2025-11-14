@@ -122,6 +122,17 @@ class Api extends ApiHelper {
 		if (!data || !data.compiledRtrTemplate) throw new Error("Get RTR template detail failed");
 		return data.compiledRtrTemplate;
 	}
+
+	async getStarredJobs() {
+		const { data, error } = await this.client.query<ListJobsQuery, ListJobsQueryVariables>({
+			query: ListJobsDocument,
+			variables: { filters: { starred: true } },
+			fetchPolicy: "network-only",
+		});
+		if (error) throw new Error(error.message);
+		if (!data || !data.jobs) throw new Error("Get starred jobs failed");
+		return data.jobs;
+	}
 }
 
 export const api = new Api();
