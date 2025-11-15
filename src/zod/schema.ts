@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { WorkType, JobType, CompensationType } from "@/graphql/generated/graphql";
+import { WorkType, JobType, CompensationType, ExperiencePeriod } from "@/graphql/generated/graphql";
 
 // Zod schema for GET query parameters
 export const getJobsQuerySchema = z.object({
@@ -17,35 +17,28 @@ export const getJobsQuerySchema = z.object({
 	compensation: z.enum(CompensationType).optional(),
 });
 
+export const JobSkillsSchema = z.object({
+	skill: z.string().min(1, "Skill is required"),
+	experience: z.number().positive().optional(),
+	experiencePeriod: z.enum(ExperiencePeriod).optional(),
+});
+
 // Zod schema for POST body
-export const createJobSchema = z
-	.object({
-		title: z.string().min(1, "Title is required"),
-		company: z.string().min(1, "Company is required"),
-		description: z.string().min(1, "Description is required"),
-		requirements: z.array(z.string()).default([]),
-		location: z.string().min(1, "Location is required"),
-		workType: z.array(z.string()).transform((val) => val[0]),
-		jobType: z.array(z.string()).transform((val) => val[0]),
-		compensation: z.array(z.string()).transform((val) => val[0]),
-		salaryMin: z.number().positive().optional(),
-		salaryMax: z.number().positive().optional(),
-		benefits: z.array(z.string()).default([]).nullable(),
-		expiresAt: z
-			.string()
-			.optional()
-			.transform((val) => (val ? new Date(val) : undefined)),
-	})
-	.refine(
-		(data: any) => {
-			if (data.salaryMin && data.salaryMax && data.salaryMax <= data.salaryMin) return false;
-			return true;
-		},
-		{
-			message: "Maximum salary must be greater than minimum salary",
-			path: ["salaryMax"],
-		},
-	);
+export const createJobSchema = z.object({
+	title: z.string().min(1, "Title is required"),
+	companyName: z.string().min(1, "Company name is required"),
+	location: z.string().min(1, "Location is required"),
+	expiresAt: z.date().min(new Date(), "Invalid date"),
+	workType: z.enum(WorkType),
+	jobType: z.enum(JobType),
+	compensation: z.enum(CompensationType),
+	salaryMin: z.number().positive(),
+	salaryMax: z.number().positive(),
+	benefits: z.array(z.string()),
+	description: z.string().min(1, "Description is required"),
+	requirements: z.array(z.string()),
+	skills: JobSkillsSchema.array().min(1, "Skills are required"),
+});
 
 export const rtrEmployerDetailFormSchema = z.object({
 	employerName: z.string().min(1, "Employer name is required"),

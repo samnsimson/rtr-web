@@ -1,5 +1,5 @@
 import { JobPreview } from "@/components/dashboard/job/job-preview";
-import { CreateJobForm } from "@/components/forms/create-job.form";
+import { CreateJobForm } from "@/components/forms/job/create-job.form";
 import { GridItem, Heading, SimpleGrid, Stack, Text } from "@chakra-ui/react";
 
 const CreateJobPage = () => {

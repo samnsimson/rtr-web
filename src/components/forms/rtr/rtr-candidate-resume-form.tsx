@@ -1,19 +1,31 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-import { useRtrAcceptance } from "@/store";
-import { Alert, Button, FileUpload, FileUploadFileAcceptDetails, FileUploadFileRejectDetails, Heading, HStack, Show, Stack, Text } from "@chakra-ui/react";
+import { FileUpload, HStack, Stack, Button, Text, Heading, FileUploadFileAcceptDetails, FileUploadFileRejectDetails } from "@chakra-ui/react";
 import { HiUpload } from "react-icons/hi";
-import { RtrFileUploadList } from "../rtr/rtr-file-upload-list";
-import { RtrFileUploadError } from "../rtr/rtr-file-upload-error";
-import { useState } from "react";
+import { RtrFileUploadList } from "../../rtr/rtr-file-upload-list";
+import { useRtrAcceptance } from "@/store";
+import { FC, useMemo, useState } from "react";
+import { RtrFileUploadError } from "../../rtr/rtr-file-upload-error";
 import { config } from "@/config/config";
+import { RtrDetailQuery } from "@/graphql/generated/graphql";
+import { UseFormReturn } from "react-hook-form";
+import { getFormSchema } from "@/lib/utils";
+import { z } from "zod";
 
-export const RtrCandidatePhotoIdForm = () => {
+interface RtrCandidateResumeFormProps {
+	rtr: RtrDetailQuery["rtr"];
+	form: UseFormReturn<any>;
+}
+
+export const RtrCandidateResumeForm: FC<RtrCandidateResumeFormProps> = ({ rtr, form }) => {
+	const formSchema = useMemo(() => getFormSchema(rtr), [rtr]);
+	const resumeForm = useMemo<UseFormReturn<z.infer<typeof formSchema>>>(() => form, [form]);
 	const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
-	const { photoIdFieldValid, updateFormField } = useRtrAcceptance();
+	const { updateFormField } = useRtrAcceptance();
 
 	const handleFileAccept = ({ files }: FileUploadFileAcceptDetails) => {
 		setValidationErrors({});
-		updateFormField("photoId", files);
+		updateFormField("resume", files[0] ?? null);
 	};
 
 	const handleFileReject = ({ files }: FileUploadFileRejectDetails) => {
@@ -30,23 +42,14 @@ export const RtrCandidatePhotoIdForm = () => {
 	};
 
 	return (
-		<FileUpload.Root maxFiles={2} maxFileSize={config.maxFileSize} accept={config.acceptedPhotoIdFileTypes} onFileAccept={handleFileAccept} onFileReject={handleFileReject}>
+		<FileUpload.Root maxFiles={1} maxFileSize={config.maxFileSize} accept={config.acceptedResumeFileTypes} onFileAccept={handleFileAccept} onFileReject={handleFileReject}>
 			<FileUpload.HiddenInput />
 			<RtrFileUploadList />
 			<RtrFileUploadError errors={validationErrors} />
-			<Show when={photoIdFieldValid === false}>
-				<Alert.Root variant={"surface"} status="error" rounded="lg">
-					<Alert.Indicator />
-					<Alert.Content>
-						<Alert.Title>Photo ID is required</Alert.Title>
-						<Alert.Description>Please upload your photo ID to the system</Alert.Description>
-					</Alert.Content>
-				</Alert.Root>
-			</Show>
 			<HStack width={"full"} justify={"space-between"}>
 				<Stack gap={0}>
-					<Heading size={"sm"}>Photo ID</Heading>
-					<Text fontSize={"sm"}>Upload your photo ID to the system</Text>
+					<Heading size={"sm"}>Resume</Heading>
+					<Text fontSize={"sm"}>Upload your resume to the system</Text>
 				</Stack>
 				<FileUpload.Trigger asChild>
 					<Button variant="surface" size="lg" colorPalette={"teal"}>

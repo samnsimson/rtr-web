@@ -9,7 +9,7 @@ import { RtrDocumentStep } from "./rtr-document-step";
 import { RtrAcceptanceFormType, rtrAcceptanceSchema } from "@/zod";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RtrSignatureForm } from "../forms/rtr-signature-form";
+import { RtrSignatureForm } from "../forms/rtr/rtr-signature-form";
 
 interface RtrStepsProps {
 	rtrTemplateData: GetCompiledRtrTemplateQuery["compiledRtrTemplate"];

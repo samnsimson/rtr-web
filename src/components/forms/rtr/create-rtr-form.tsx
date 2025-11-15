@@ -1,12 +1,12 @@
 "use client";
 import { useEffect } from "react";
-import { RtrCandidateInformation } from "../dashboard/recruiter/rtr/rtr-candidate-information";
-import { RtrPositionDetails } from "../dashboard/recruiter/rtr/rtr-position-detail";
-import { RtrPayInformation } from "../dashboard/recruiter/rtr/rtr-pay-information";
-import { RtrTemplateInfo } from "../dashboard/recruiter/rtr/rtr-template-info";
-import { RtrNotes } from "../dashboard/recruiter/rtr/rtr-notes";
+import { RtrCandidateInformation } from "../../dashboard/recruiter/rtr/rtr-candidate-information";
+import { RtrPositionDetails } from "../../dashboard/recruiter/rtr/rtr-position-detail";
+import { RtrPayInformation } from "../../dashboard/recruiter/rtr/rtr-pay-information";
+import { RtrTemplateInfo } from "../../dashboard/recruiter/rtr/rtr-template-info";
+import { RtrNotes } from "../../dashboard/recruiter/rtr/rtr-notes";
 import { GridItem, SimpleGrid } from "@chakra-ui/react";
-import { RtrExtraInfo } from "../dashboard/recruiter/rtr/rtr-extra-info";
+import { RtrExtraInfo } from "../../dashboard/recruiter/rtr/rtr-extra-info";
 import { useRtrForm } from "@/store";
 
 export const CreateRtrForm = () => {

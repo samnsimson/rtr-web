@@ -5,8 +5,8 @@ import { useRtrForm } from "@/store";
 import { useQuery } from "@apollo/client/react";
 import { Link, Card, HStack, useListCollection } from "@chakra-ui/react";
 import { ArrowRightIcon } from "lucide-react";
-import NextLink from "next/link";
 import { Suspense, useEffect } from "react";
+import NextLink from "next/link";
 
 export const RtrPositionDetails = () => {
 	const { updateField } = useRtrForm();

@@ -1,5 +1,5 @@
 import { Stack } from "@chakra-ui/react";
-import { CreateRtrForm } from "@/components/forms/create-rtr-form";
+import { CreateRtrForm } from "@/components/forms/rtr/create-rtr-form";
 
 const CreateRtr = () => {
 	return (

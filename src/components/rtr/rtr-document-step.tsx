@@ -4,11 +4,11 @@ import { AppCard } from "../ui/app-card";
 import { RtrDetailQuery } from "@/graphql/generated/graphql";
 import { Button, Show, Stack } from "@chakra-ui/react";
 import { HiPlus } from "react-icons/hi";
-import { RtrEmployerDetailForm } from "../forms/rtr-employer-detail-form";
-import { RtrReferenceForm } from "../forms/rtr-reference-form";
-import { RtrSkillListForm } from "../forms/rtr-skill-list-form";
-import { RtrCandidateResumeForm } from "../forms/rtr-candidate-resume-form";
-import { RtrCandidatePhotoIdForm } from "../forms/rtr-candidate-photoid-form";
+import { RtrEmployerDetailForm } from "../forms/rtr/rtr-employer-detail-form";
+import { RtrReferenceForm } from "../forms/rtr/rtr-reference-form";
+import { RtrSkillListForm } from "../forms/rtr/rtr-skill-list-form";
+import { RtrCandidateResumeForm } from "../forms/rtr/rtr-candidate-resume-form";
+import { RtrCandidatePhotoIdForm } from "../forms/rtr/rtr-candidate-photoid-form";
 import { UseFormReturn } from "react-hook-form";
 import { RtrAcceptanceFormType } from "@/zod";
 
