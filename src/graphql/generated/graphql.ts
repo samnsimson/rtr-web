@@ -111,6 +111,11 @@ export type CandidateProfileResponse = {
   willingToRelocate: Scalars['Boolean']['output'];
 };
 
+export type CompanyResponse = {
+  __typename?: 'CompanyResponse';
+  name: Scalars['String']['output'];
+};
+
 /** The size of the company */
 export enum CompanySize {
   Enterprise = 'ENTERPRISE',
@@ -186,6 +191,7 @@ export type CreateJobInput = {
   requirements: Array<Scalars['String']['input']>;
   salaryMax?: InputMaybe<Scalars['Int']['input']>;
   salaryMin?: InputMaybe<Scalars['Int']['input']>;
+  skillsRequired: Array<SkillRequirementInput>;
   starred?: InputMaybe<Scalars['Boolean']['input']>;
   status?: InputMaybe<JobStatus>;
   title: Scalars['String']['input'];
@@ -424,6 +430,7 @@ export type Job = {
   rtrs?: Maybe<Array<Rtr>>;
   salaryMax?: Maybe<Scalars['Float']['output']>;
   salaryMin?: Maybe<Scalars['Float']['output']>;
+  skillsRequired?: Maybe<Array<SkillRequirement>>;
   starred: Scalars['Boolean']['output'];
   status: JobStatus;
   title: Scalars['String']['output'];
@@ -476,6 +483,7 @@ export type JobResponse = {
   requirements: Array<Scalars['String']['output']>;
   salaryMax?: Maybe<Scalars['Int']['output']>;
   salaryMin?: Maybe<Scalars['Int']['output']>;
+  skillsRequired?: Maybe<Array<SkillRequirement>>;
   starred: Scalars['Boolean']['output'];
   status: JobStatus;
   title: Scalars['String']['output'];
@@ -1182,6 +1190,7 @@ export type Query = {
   applicationStats: Scalars['String']['output'];
   candidateProfile: CandidateProfileResponse;
   candidateProfiles: Array<CandidateProfileResponse>;
+  companies: Array<CompanyResponse>;
   compiledRtrTemplate: RtrTemplateResponse;
   document: DocumentResponse;
   documents: Array<DocumentResponse>;
@@ -1731,6 +1740,19 @@ export type SearchResultType = {
   query: Scalars['String']['output'];
 };
 
+export type SkillRequirement = {
+  __typename?: 'SkillRequirement';
+  experience: Scalars['Float']['output'];
+  experiencePeriod: ExperiencePeriod;
+  skill: Scalars['String']['output'];
+};
+
+export type SkillRequirementInput = {
+  experience: Scalars['Float']['input'];
+  experiencePeriod?: ExperiencePeriod;
+  skill: Scalars['String']['input'];
+};
+
 export type Subscription = {
   __typename?: 'Subscription';
   amount: Scalars['Float']['output'];
@@ -1995,6 +2017,11 @@ export type UpdateJobMutationVariables = Exact<{
 
 export type UpdateJobMutation = { __typename?: 'Mutation', updateJob: { __typename?: 'JobResponse', id: string, jobId?: string | null, starred: boolean, organizationId?: string | null, title: string, description: string, company: string, location: string, workType: WorkType, jobType: JobType, compensation: CompensationType, salaryMin?: number | null, salaryMax?: number | null, recruiterId: string, benefits: Array<string>, requirements: Array<string>, createdAt: any, updatedAt: any, expiresAt?: any | null, status: JobStatus } };
 
+export type CompaniesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CompaniesQuery = { __typename?: 'Query', companies: Array<{ __typename?: 'CompanyResponse', name: string }> };
+
 export type GetCompiledRtrTemplateQueryVariables = Exact<{
   input: CompiledRtrTemplateInput;
 }>;
@@ -2064,6 +2091,7 @@ export const LoginDocument = {"kind":"Document","definitions":[{"kind":"Operatio
 export const RefreshTokenDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"refreshToken"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"refreshTokenInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RefreshTokenInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"refreshToken"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"refreshTokenInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"refreshTokenInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tokenType"}},{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"refreshToken"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"role"}},{"kind":"Field","name":{"kind":"Name","value":"isActive"}},{"kind":"Field","name":{"kind":"Name","value":"isEmailVerified"}},{"kind":"Field","name":{"kind":"Name","value":"organization"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]}}]} as unknown as DocumentNode<RefreshTokenMutation, RefreshTokenMutationVariables>;
 export const RegisterDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"register"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"registerInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RegisterInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"register"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"registerInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"registerInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"refreshToken"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"role"}},{"kind":"Field","name":{"kind":"Name","value":"isActive"}},{"kind":"Field","name":{"kind":"Name","value":"isEmailVerified"}},{"kind":"Field","name":{"kind":"Name","value":"organization"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]}}]} as unknown as DocumentNode<RegisterMutation, RegisterMutationVariables>;
 export const UpdateJobDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateJob"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"updateJobInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateJobInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateJob"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"updateJobInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"updateJobInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"JobQueryFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"JobQueryFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"JobResponse"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"jobId"}},{"kind":"Field","name":{"kind":"Name","value":"starred"}},{"kind":"Field","name":{"kind":"Name","value":"organizationId"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"company"}},{"kind":"Field","name":{"kind":"Name","value":"location"}},{"kind":"Field","name":{"kind":"Name","value":"workType"}},{"kind":"Field","name":{"kind":"Name","value":"jobType"}},{"kind":"Field","name":{"kind":"Name","value":"compensation"}},{"kind":"Field","name":{"kind":"Name","value":"salaryMin"}},{"kind":"Field","name":{"kind":"Name","value":"salaryMax"}},{"kind":"Field","name":{"kind":"Name","value":"recruiterId"}},{"kind":"Field","name":{"kind":"Name","value":"benefits"}},{"kind":"Field","name":{"kind":"Name","value":"requirements"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]} as unknown as DocumentNode<UpdateJobMutation, UpdateJobMutationVariables>;
+export const CompaniesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"companies"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"companies"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<CompaniesQuery, CompaniesQueryVariables>;
 export const GetCompiledRtrTemplateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getCompiledRtrTemplate"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CompiledRtrTemplateInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"compiledRtrTemplate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"compiledTemplateInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"html"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}}]} as unknown as DocumentNode<GetCompiledRtrTemplateQuery, GetCompiledRtrTemplateQueryVariables>;
 export const RtrDetailDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"RtrDetail"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"rtr"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"candidateFirstName"}},{"kind":"Field","name":{"kind":"Name","value":"candidateLastName"}},{"kind":"Field","name":{"kind":"Name","value":"candidateEmail"}},{"kind":"Field","name":{"kind":"Name","value":"candidatePhone"}},{"kind":"Field","name":{"kind":"Name","value":"compensation"}},{"kind":"Field","name":{"kind":"Name","value":"compensationType"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"recruiterId"}},{"kind":"Field","name":{"kind":"Name","value":"rtrTemplateId"}},{"kind":"Field","name":{"kind":"Name","value":"candidateId"}},{"kind":"Field","name":{"kind":"Name","value":"createdById"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"signedAt"}},{"kind":"Field","name":{"kind":"Name","value":"resumeRequired"}},{"kind":"Field","name":{"kind":"Name","value":"photoIdRequired"}},{"kind":"Field","name":{"kind":"Name","value":"referencesRequired"}},{"kind":"Field","name":{"kind":"Name","value":"employerDetailsRequired"}},{"kind":"Field","name":{"kind":"Name","value":"skillsRequired"}},{"kind":"Field","name":{"kind":"Name","value":"job"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"company"}},{"kind":"Field","name":{"kind":"Name","value":"location"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"requirements"}},{"kind":"Field","name":{"kind":"Name","value":"benefits"}}]}},{"kind":"Field","name":{"kind":"Name","value":"createdBy"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]} as unknown as DocumentNode<RtrDetailQuery, RtrDetailQueryVariables>;
 export const JobDetailDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"jobDetail"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"job"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"JobQueryFragment"}},{"kind":"Field","name":{"kind":"Name","value":"recruiter"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"phone"}}]}},{"kind":"Field","name":{"kind":"Name","value":"organization"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"website"}},{"kind":"Field","name":{"kind":"Name","value":"linkedinUrl"}},{"kind":"Field","name":{"kind":"Name","value":"logo"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"JobQueryFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"JobResponse"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"jobId"}},{"kind":"Field","name":{"kind":"Name","value":"starred"}},{"kind":"Field","name":{"kind":"Name","value":"organizationId"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"company"}},{"kind":"Field","name":{"kind":"Name","value":"location"}},{"kind":"Field","name":{"kind":"Name","value":"workType"}},{"kind":"Field","name":{"kind":"Name","value":"jobType"}},{"kind":"Field","name":{"kind":"Name","value":"compensation"}},{"kind":"Field","name":{"kind":"Name","value":"salaryMin"}},{"kind":"Field","name":{"kind":"Name","value":"salaryMax"}},{"kind":"Field","name":{"kind":"Name","value":"recruiterId"}},{"kind":"Field","name":{"kind":"Name","value":"benefits"}},{"kind":"Field","name":{"kind":"Name","value":"requirements"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]} as unknown as DocumentNode<JobDetailQuery, JobDetailQueryVariables>;

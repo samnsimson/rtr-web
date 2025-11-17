@@ -1,5 +1,5 @@
 "use client";
-import { For, ListCollection, Portal, Select, SelectRootProps, SelectValueChangeDetails, Spinner } from "@chakra-ui/react";
+import { Field, For, ListCollection, Portal, Select, SelectRootProps, SelectValueChangeDetails, Show, Spinner } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FC } from "react";
 import qs from "qs";
@@ -18,7 +18,7 @@ interface SelectBoxProps extends Omit<SelectRootProps, "value"> {
 	value?: string;
 }
 
-export const SelectBox: FC<SelectBoxProps> = ({ name, label, onValueChange, updateUrl = false, loading = false, collection }) => {
+export const SelectBox: FC<SelectBoxProps> = ({ name, label, onValueChange, updateUrl = false, loading = false, collection, required = false, defaultValue = undefined }) => {
 	const params = useSearchParams();
 	const router = useRouter();
 
@@ -37,9 +37,14 @@ export const SelectBox: FC<SelectBoxProps> = ({ name, label, onValueChange, upda
 	};
 
 	return (
-		<Select.Root collection={collection} width="full" onValueChange={handleValueChange}>
+		<Select.Root collection={collection} width="full" onValueChange={handleValueChange} defaultValue={defaultValue}>
 			<Select.HiddenSelect />
-			<Select.Label>{label}</Select.Label>
+			<Select.Label>
+				{label}&nbsp;
+				<Show when={required}>
+					<Field.RequiredIndicator />
+				</Show>
+			</Select.Label>
 			<Select.Control bgColor={"bg.card"}>
 				<Select.Trigger height={11}>
 					<Select.ValueText placeholder={`Select ${label.toLowerCase()}`} />

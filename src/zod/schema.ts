@@ -34,9 +34,9 @@ export const createJobSchema = z.object({
 	compensation: z.enum(CompensationType),
 	salaryMin: z.number().positive(),
 	salaryMax: z.number().positive(),
-	benefits: z.array(z.string()),
+	benefits: z.array(z.object({ benefit: z.string().min(1, "Benefit is required") })),
 	description: z.string().min(1, "Description is required"),
-	requirements: z.array(z.string()),
+	requirements: z.array(z.object({ requirement: z.string().min(1, "Requirement is required") })),
 	skills: JobSkillsSchema.array().min(1, "Skills are required"),
 });
 
