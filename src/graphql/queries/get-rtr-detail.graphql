@@ -1,6 +1,9 @@
+#import "../fragments/job-query-fragment.graphql"
+
 query RtrDetail($id: String!) {
 	rtr(id: $id) {
 		id
+		rtrId
 		candidateFirstName
 		candidateLastName
 		candidateEmail
@@ -12,21 +15,18 @@ query RtrDetail($id: String!) {
 		rtrTemplateId
 		candidateId
 		createdById
+		createdAt
 		expiresAt
 		signedAt
+		viewedAt
+		notes
 		resumeRequired
 		photoIdRequired
 		referencesRequired
 		employerDetailsRequired
 		skillsRequired
 		job {
-			id
-			title
-			company
-			location
-			description
-			requirements
-			benefits
+			...JobQueryFragment
 		}
 		createdBy {
 			id

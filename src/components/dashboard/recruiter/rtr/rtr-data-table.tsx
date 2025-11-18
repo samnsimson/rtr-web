@@ -1,7 +1,7 @@
 "use client";
-import { Badge, HStack, Heading, VStack, Text, Icon, IconButton, FormatNumber } from "@chakra-ui/react";
+import { Badge, HStack, Heading, VStack, Text, Icon, IconButton, FormatNumber, Link } from "@chakra-ui/react";
 import { format } from "date-fns";
-import { LuBriefcase, LuEye, LuPencil, LuTrash2 } from "react-icons/lu";
+import { LuBriefcase, LuExternalLink, LuPencil, LuTrash2 } from "react-icons/lu";
 import { DataTable, EmptyStateProps } from "@/components/ui/data-table";
 import { toEnum } from "@/lib/utils";
 import { CompensationType, ListRtrsDocument, ListRtrsQuery, ListRtrsQueryVariables, RtrFiltersInput, RtrStatus } from "@/graphql/generated/graphql";
@@ -84,11 +84,13 @@ const RtrExpiresAtCell: FC<{ row: Row<RtrTable> }> = ({ row }) => {
 	return <Text>{format(row.original.expiresAt, "PPP")}</Text>;
 };
 
-const RowActions: FC<{ row: Row<RtrTable> }> = () => {
+const RowActions: FC<{ row: Row<RtrTable> }> = ({ row }) => {
 	return (
 		<HStack justify={"flex-end"}>
-			<IconButton variant={"ghost"} size={"sm"}>
-				<LuEye />
+			<IconButton asChild variant={"ghost"} size={"sm"}>
+				<Link href={`/recruiter/rtr/${row.original.id}`}>
+					<LuExternalLink />
+				</Link>
 			</IconButton>
 			<IconButton variant={"ghost"} size={"sm"}>
 				<LuPencil />

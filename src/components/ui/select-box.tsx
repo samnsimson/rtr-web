@@ -50,7 +50,9 @@ export const SelectBox: FC<SelectBoxProps> = ({ name, label, onValueChange, upda
 					<Select.ValueText placeholder={`Select ${label.toLowerCase()}`} />
 				</Select.Trigger>
 				<Select.IndicatorGroup spaceX={2}>
-					{loading && <Spinner size="xs" borderWidth="1.5px" color="fg.muted" />}
+					<Show when={loading}>
+						<Spinner size="xs" borderWidth="1.5px" color="fg.muted" />
+					</Show>
 					<Select.ClearTrigger />
 					<Select.Indicator />
 				</Select.IndicatorGroup>
