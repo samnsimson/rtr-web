@@ -1,19 +1,33 @@
 "use client";
-import { Flex, Heading, Stack, VStack } from "@chakra-ui/react";
+import { Flex, Heading, HStack, IconButton, Stack, VStack } from "@chakra-ui/react";
 import { FC, PropsWithChildren } from "react";
 import { Sidebar, SidebarToggle } from "./sidebar";
 import { Breadcrumb } from "./breadcrumb";
 import { recruiterSidebarConfig } from "@/config/recruiter-sidebar.config";
+import { LuBell, LuCircleHelp, LuSettings } from "react-icons/lu";
 
 const DashboardLayout: FC<PropsWithChildren> = ({ children }) => {
 	return (
 		<Stack direction={"row"} gap={0} h={"100vh"} divideX={"1px"} divideColor={"border"} bgColor={"bg.panel"}>
 			<Sidebar config={recruiterSidebarConfig} />
 			<Flex flex={1} h={"full"} direction={"column"} divideY={"1px"} divideColor={"border"}>
-				<Flex bgColor={"bg"} h={"full"} maxH={"80px"} alignItems={"center"} px={3} gap={4}>
-					<SidebarToggle />
-					<Heading fontSize={"2xl"}>Overview</Heading>
-				</Flex>
+				<HStack bgColor={"bg"} h={"full"} maxH={"80px"} alignItems={"center"} px={3} gap={4} justifyContent={"space-between"}>
+					<HStack>
+						<SidebarToggle />
+						<Heading fontSize={"2xl"}>Overview</Heading>
+					</HStack>
+					<HStack gap={2} alignItems={"center"}>
+						<IconButton variant={"ghost"} colorPalette={"white"} rounded={"full"}>
+							<LuCircleHelp />
+						</IconButton>
+						<IconButton variant={"ghost"} colorPalette={"white"} rounded={"full"}>
+							<LuBell />
+						</IconButton>
+						<IconButton variant={"ghost"} colorPalette={"white"} rounded={"full"}>
+							<LuSettings />
+						</IconButton>
+					</HStack>
+				</HStack>
 				<Flex flex={1} direction={"column"} overflow={"auto"} justify={"space-between"}>
 					<Stack>
 						<Breadcrumb />

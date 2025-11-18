@@ -1,5 +1,5 @@
 import { SidebarConfig } from "@/lib/types";
-import { LuBriefcase, LuFileText, LuHouse, LuPlus, LuList, LuUsers, LuStar } from "react-icons/lu";
+import { LuBriefcase, LuFileText, LuHouse, LuPlus, LuList, LuUsers, LuStar, LuSettings, LuCreditCard, LuUser } from "react-icons/lu";
 
 export const recruiterSidebarConfig: SidebarConfig = {
 	title: "Right to Represent",
@@ -62,6 +62,23 @@ export const recruiterSidebarConfig: SidebarConfig = {
 			href: "/recruiter/employer",
 			icon: LuUsers,
 			label: "Employers",
+		},
+		{
+			href: "/recruiter/settings",
+			icon: LuSettings,
+			label: "Settings",
+			subItems: [
+				{
+					href: "/recruiter/plans",
+					icon: LuUser,
+					label: "Account Settings",
+				},
+				{
+					href: "/recruiter/plans",
+					icon: LuCreditCard,
+					label: "Subscription",
+				},
+			],
 		},
 	],
 	showUserProfile: true,
