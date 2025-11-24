@@ -1,6 +1,6 @@
 import { Heading, Stack, Text } from "@chakra-ui/react";
 
-export const UserManagementPage = () => {
+const UserManagementPage = () => {
 	return (
 		<Stack padding={4} gap={4}>
 			<Heading fontSize={"2xl"}>User Management</Heading>
@@ -8,3 +8,5 @@ export const UserManagementPage = () => {
 		</Stack>
 	);
 };
+
+export default UserManagementPage;

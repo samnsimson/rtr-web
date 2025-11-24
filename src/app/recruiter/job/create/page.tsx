@@ -1,8 +1,9 @@
 import { JobPreview } from "@/components/dashboard/job/job-preview";
 import { CreateJobForm } from "@/components/forms/job/create-job.form";
 import { GridItem, Heading, SimpleGrid, Stack, Text } from "@chakra-ui/react";
+import { FC } from "react";
 
-const CreateJobPage = () => {
+const CreateJobPage: FC<PageProps<"/recruiter/job/create">> = () => {
 	return (
 		<Stack padding={4} gap={4}>
 			<Stack gap={0}>

@@ -4,6 +4,7 @@ import { Provider } from "@/components/ui/provider";
 import { AppProviders } from "@/components/providers";
 import "quill/dist/quill.snow.css";
 import "./globals.css";
+import { Suspense } from "react";
 
 const poppins = Poppins({
 	variable: "--font-poppins",
@@ -26,7 +27,9 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
 		<html lang="en" suppressHydrationWarning>
 			<body className={`${poppins.variable} ${quicksand.variable}`}>
 				<AppProviders>
-					<Provider forcedTheme="dark">{children}</Provider>
+					<Provider forcedTheme="dark">
+						<Suspense>{children}</Suspense>
+					</Provider>
 				</AppProviders>
 			</body>
 		</html>
