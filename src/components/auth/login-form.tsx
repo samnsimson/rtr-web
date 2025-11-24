@@ -38,6 +38,12 @@ export const LoginForm = () => {
 					<Text fontSize={"lg"} color={"gray.600"}>
 						to enjoy all of our cool <Span color={"blue.400"}>features</Span> ✌️
 					</Text>
+					<Text fontSize={"sm"} color={"gray.600"}>
+						Test email: <Span color={"blue.400"}>test@test.com</Span>
+					</Text>
+					<Text fontSize={"sm"} color={"gray.600"}>
+						Test password: <Span color={"blue.400"}>W3lcome!</Span>
+					</Text>
 				</Stack>
 				<Box rounded={"lg"} py={8} width={"full"} maxW={"xl"}>
 					{message && (
