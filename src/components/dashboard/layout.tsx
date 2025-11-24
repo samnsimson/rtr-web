@@ -5,6 +5,7 @@ import { Sidebar, SidebarToggle } from "./sidebar";
 import { Breadcrumb } from "./breadcrumb";
 import { recruiterSidebarConfig } from "@/config/recruiter-sidebar.config";
 import { LuBell, LuCircleHelp, LuSettings } from "react-icons/lu";
+import Link from "next/link";
 
 const DashboardLayout: FC<PropsWithChildren> = ({ children }) => {
 	return (
@@ -23,8 +24,10 @@ const DashboardLayout: FC<PropsWithChildren> = ({ children }) => {
 						<IconButton variant={"ghost"} colorPalette={"white"} rounded={"full"}>
 							<LuBell />
 						</IconButton>
-						<IconButton variant={"ghost"} colorPalette={"white"} rounded={"full"}>
-							<LuSettings />
+						<IconButton asChild variant={"ghost"} colorPalette={"white"} rounded={"full"}>
+							<Link href={"/recruiter/settings"}>
+								<LuSettings />
+							</Link>
 						</IconButton>
 					</HStack>
 				</HStack>

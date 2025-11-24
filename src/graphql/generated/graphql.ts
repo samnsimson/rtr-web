@@ -208,14 +208,23 @@ export type CreateNotificationInput = {
 };
 
 export type CreateOrganizationInput = {
+  address?: InputMaybe<Scalars['String']['input']>;
+  city?: InputMaybe<Scalars['String']['input']>;
   companySize?: InputMaybe<CompanySize>;
+  country: Scalars['String']['input'];
   description?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
   industry?: InputMaybe<Scalars['String']['input']>;
+  latitude?: InputMaybe<Scalars['String']['input']>;
   linkedinUrl?: InputMaybe<Scalars['String']['input']>;
-  location?: InputMaybe<Scalars['String']['input']>;
   logo?: InputMaybe<Scalars['String']['input']>;
+  longitude?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
+  phone?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['String']['input']>;
+  stripeCustomerId?: InputMaybe<Scalars['String']['input']>;
   website?: InputMaybe<Scalars['String']['input']>;
+  zipcode?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CreateOrganizationUserInput = {
@@ -285,6 +294,23 @@ export type CreateRtrTemplateInput = {
   html?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
   text?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CreateStripePaymentLinkInput = {
+  priceId: Scalars['String']['input'];
+};
+
+export type CreateStripePriceInput = {
+  amount: Scalars['Float']['input'];
+  currency: Scalars['String']['input'];
+  interval?: StripePaymentInterval;
+  name?: InputMaybe<Scalars['String']['input']>;
+  productId: Scalars['String']['input'];
+};
+
+export type CreateStripeProductInput = {
+  description: Scalars['String']['input'];
+  name: Scalars['String']['input'];
 };
 
 export type CreateSubscriptionInput = {
@@ -562,6 +588,9 @@ export type Mutation = {
   createRecruiterProfile: RecruiterProfileResponse;
   createRtr: RtrResponse;
   createRtrTemplate: RtrTemplate;
+  createStripePaymentLink: StripeProductResponse;
+  createStripeProduct: StripeProductResponse;
+  createStripeProductPrice: StripeProductResponse;
   createSubscription: Subscription;
   createUser: UserResponse;
   deleteAllDocuments: Scalars['Boolean']['output'];
@@ -607,7 +636,7 @@ export type Mutation = {
   updateJobApplication: JobApplication;
   updateJobInIndex: Scalars['Boolean']['output'];
   updateNotification: NotificationResponse;
-  updateOrganization: Organization;
+  updateOrganization: OrganizationResponseDto;
   updateOverview: Overview;
   updateRTR: RtrResponse;
   updateRTRHistory: RtrHistoryResponse;
@@ -714,6 +743,21 @@ export type MutationCreateRtrArgs = {
 
 export type MutationCreateRtrTemplateArgs = {
   createRtrTemplateInput: CreateRtrTemplateInput;
+};
+
+
+export type MutationCreateStripePaymentLinkArgs = {
+  createStripePaymentLinkInput: CreateStripePaymentLinkInput;
+};
+
+
+export type MutationCreateStripeProductArgs = {
+  createStripeProductInput: CreateStripeProductInput;
+};
+
+
+export type MutationCreateStripeProductPriceArgs = {
+  createStripePriceInput: CreateStripePriceInput;
 };
 
 
@@ -942,7 +986,6 @@ export type MutationUpdateNotificationArgs = {
 
 
 export type MutationUpdateOrganizationArgs = {
-  id: Scalars['String']['input'];
   updateOrganizationInput: UpdateOrganizationInput;
 };
 
@@ -1040,30 +1083,64 @@ export type Org = {
 
 export type Organization = {
   __typename?: 'Organization';
+  address?: Maybe<Scalars['String']['output']>;
   candidateProfiles?: Maybe<Array<CandidateProfile>>;
+  city?: Maybe<Scalars['String']['output']>;
   companySize?: Maybe<CompanySize>;
+  country?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['DateTime']['output'];
   description?: Maybe<Scalars['String']['output']>;
   documents?: Maybe<Array<Document>>;
+  email?: Maybe<Scalars['String']['output']>;
   id: Scalars['String']['output'];
   industry?: Maybe<Scalars['String']['output']>;
   isActive: Scalars['Boolean']['output'];
   jobApplications?: Maybe<Array<JobApplication>>;
   jobs?: Maybe<Array<Job>>;
+  latitude?: Maybe<Scalars['String']['output']>;
   linkedinUrl?: Maybe<Scalars['String']['output']>;
-  location?: Maybe<Scalars['String']['output']>;
   logo?: Maybe<Scalars['String']['output']>;
+  longitude?: Maybe<Scalars['String']['output']>;
   name: Scalars['String']['output'];
   notifications?: Maybe<Array<Notification>>;
   payments?: Maybe<Array<Payment>>;
+  phone?: Maybe<Scalars['String']['output']>;
   recruiterProfiles?: Maybe<Array<RecruiterProfile>>;
   rtrHistory?: Maybe<Array<RtrHistory>>;
   rtrTemplates?: Maybe<Array<RtrTemplate>>;
   rtrs?: Maybe<Array<Rtr>>;
+  state?: Maybe<Scalars['String']['output']>;
+  stripeCustomerId?: Maybe<Scalars['String']['output']>;
   subscriptions?: Maybe<Array<Subscription>>;
   updatedAt: Scalars['DateTime']['output'];
   users: Array<User>;
   website?: Maybe<Scalars['String']['output']>;
+  zipcode?: Maybe<Scalars['String']['output']>;
+};
+
+export type OrganizationResponseDto = {
+  __typename?: 'OrganizationResponseDto';
+  address?: Maybe<Scalars['String']['output']>;
+  city?: Maybe<Scalars['String']['output']>;
+  companySize?: Maybe<CompanySize>;
+  country?: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['DateTime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  industry?: Maybe<Scalars['String']['output']>;
+  isActive?: Maybe<Scalars['Boolean']['output']>;
+  latitude?: Maybe<Scalars['String']['output']>;
+  linkedinUrl?: Maybe<Scalars['String']['output']>;
+  logo?: Maybe<Scalars['String']['output']>;
+  longitude?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  phone?: Maybe<Scalars['String']['output']>;
+  state?: Maybe<Scalars['String']['output']>;
+  stripeCustomerId?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['DateTime']['output'];
+  website?: Maybe<Scalars['String']['output']>;
+  zipcode?: Maybe<Scalars['String']['output']>;
 };
 
 export type Overview = {
@@ -1172,6 +1249,13 @@ export enum PaymentStatus {
   Pending = 'PENDING',
   Refunded = 'REFUNDED'
 }
+
+export type PlanFeature = {
+  __typename?: 'PlanFeature';
+  description?: Maybe<Scalars['String']['output']>;
+  isEnabled: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+};
 
 export enum PlanType {
   Premium = 'PREMIUM',
@@ -1755,6 +1839,27 @@ export type SkillRequirementInput = {
   skill: Scalars['String']['input'];
 };
 
+export enum StripePaymentInterval {
+  Day = 'DAY',
+  Month = 'MONTH',
+  Week = 'WEEK',
+  Year = 'YEAR'
+}
+
+export type StripeProductResponse = {
+  __typename?: 'StripeProductResponse';
+  active: Scalars['Boolean']['output'];
+  created: Scalars['Float']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  images: Array<Scalars['String']['output']>;
+  livemode: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+  shippable?: Maybe<Scalars['Boolean']['output']>;
+  tax_code?: Maybe<Scalars['String']['output']>;
+  url?: Maybe<Scalars['String']['output']>;
+};
+
 export type Subscription = {
   __typename?: 'Subscription';
   amount: Scalars['Float']['output'];
@@ -1788,17 +1893,19 @@ export type SubscriptionPlan = {
   createdAt: Scalars['DateTime']['output'];
   currency: Scalars['String']['output'];
   description: Scalars['String']['output'];
-  features: Array<Scalars['String']['output']>;
+  features?: Maybe<Array<PlanFeature>>;
   id: Scalars['String']['output'];
   isActive: Scalars['Boolean']['output'];
+  maxEmails: Scalars['Float']['output'];
   maxJobs: Scalars['Float']['output'];
   maxRTRs: Scalars['Float']['output'];
+  maxSMS: Scalars['Float']['output'];
   maxUsers: Scalars['Float']['output'];
   name: Scalars['String']['output'];
   planType: PlanType;
   price: Scalars['Float']['output'];
+  stripePaymentLink?: Maybe<Scalars['String']['output']>;
   stripePriceId?: Maybe<Scalars['String']['output']>;
-  stripeProductId?: Maybe<Scalars['String']['output']>;
   subscriptions?: Maybe<Array<Subscription>>;
   updatedAt: Scalars['DateTime']['output'];
 };
@@ -1856,15 +1963,23 @@ export type UpdateNotificationInput = {
 };
 
 export type UpdateOrganizationInput = {
+  address?: InputMaybe<Scalars['String']['input']>;
+  city?: InputMaybe<Scalars['String']['input']>;
   companySize?: InputMaybe<CompanySize>;
+  country: Scalars['String']['input'];
   description?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['String']['input'];
+  email?: InputMaybe<Scalars['String']['input']>;
   industry?: InputMaybe<Scalars['String']['input']>;
+  latitude?: InputMaybe<Scalars['String']['input']>;
   linkedinUrl?: InputMaybe<Scalars['String']['input']>;
-  location?: InputMaybe<Scalars['String']['input']>;
   logo?: InputMaybe<Scalars['String']['input']>;
+  longitude?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['String']['input']>;
+  stripeCustomerId?: InputMaybe<Scalars['String']['input']>;
   website?: InputMaybe<Scalars['String']['input']>;
+  zipcode?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateOverviewInput = {
@@ -2019,6 +2134,13 @@ export type UpdateJobMutationVariables = Exact<{
 
 export type UpdateJobMutation = { __typename?: 'Mutation', updateJob: { __typename?: 'JobResponse', id: string, jobId?: string | null, starred: boolean, organizationId?: string | null, title: string, description: string, company: string, location: string, workType: WorkType, jobType: JobType, compensation: CompensationType, salaryMin?: number | null, salaryMax?: number | null, recruiterId: string, benefits: Array<string>, requirements: Array<string>, createdAt: any, updatedAt: any, expiresAt?: any | null, status: JobStatus } };
 
+export type UpdateOrganizationMutationVariables = Exact<{
+  input: UpdateOrganizationInput;
+}>;
+
+
+export type UpdateOrganizationMutation = { __typename?: 'Mutation', updateOrganization: { __typename?: 'OrganizationResponseDto', id: string } };
+
 export type CompaniesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -2093,6 +2215,7 @@ export const LoginDocument = {"kind":"Document","definitions":[{"kind":"Operatio
 export const RefreshTokenDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"refreshToken"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"refreshTokenInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RefreshTokenInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"refreshToken"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"refreshTokenInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"refreshTokenInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tokenType"}},{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"refreshToken"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"role"}},{"kind":"Field","name":{"kind":"Name","value":"isActive"}},{"kind":"Field","name":{"kind":"Name","value":"isEmailVerified"}},{"kind":"Field","name":{"kind":"Name","value":"organization"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]}}]} as unknown as DocumentNode<RefreshTokenMutation, RefreshTokenMutationVariables>;
 export const RegisterDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"register"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"registerInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RegisterInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"register"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"registerInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"registerInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"refreshToken"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"role"}},{"kind":"Field","name":{"kind":"Name","value":"isActive"}},{"kind":"Field","name":{"kind":"Name","value":"isEmailVerified"}},{"kind":"Field","name":{"kind":"Name","value":"organization"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]}}]} as unknown as DocumentNode<RegisterMutation, RegisterMutationVariables>;
 export const UpdateJobDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateJob"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"updateJobInput"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateJobInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateJob"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"updateJobInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"updateJobInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"JobQueryFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"JobQueryFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"JobResponse"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"jobId"}},{"kind":"Field","name":{"kind":"Name","value":"starred"}},{"kind":"Field","name":{"kind":"Name","value":"organizationId"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"company"}},{"kind":"Field","name":{"kind":"Name","value":"location"}},{"kind":"Field","name":{"kind":"Name","value":"workType"}},{"kind":"Field","name":{"kind":"Name","value":"jobType"}},{"kind":"Field","name":{"kind":"Name","value":"compensation"}},{"kind":"Field","name":{"kind":"Name","value":"salaryMin"}},{"kind":"Field","name":{"kind":"Name","value":"salaryMax"}},{"kind":"Field","name":{"kind":"Name","value":"recruiterId"}},{"kind":"Field","name":{"kind":"Name","value":"benefits"}},{"kind":"Field","name":{"kind":"Name","value":"requirements"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]} as unknown as DocumentNode<UpdateJobMutation, UpdateJobMutationVariables>;
+export const UpdateOrganizationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"updateOrganization"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateOrganizationInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateOrganization"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"updateOrganizationInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateOrganizationMutation, UpdateOrganizationMutationVariables>;
 export const CompaniesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"companies"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"companies"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<CompaniesQuery, CompaniesQueryVariables>;
 export const GetCompiledRtrTemplateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getCompiledRtrTemplate"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CompiledRtrTemplateInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"compiledRtrTemplate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"compiledTemplateInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"html"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}}]} as unknown as DocumentNode<GetCompiledRtrTemplateQuery, GetCompiledRtrTemplateQueryVariables>;
 export const RtrDetailDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"RtrDetail"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"rtr"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"rtrId"}},{"kind":"Field","name":{"kind":"Name","value":"candidateFirstName"}},{"kind":"Field","name":{"kind":"Name","value":"candidateLastName"}},{"kind":"Field","name":{"kind":"Name","value":"candidateEmail"}},{"kind":"Field","name":{"kind":"Name","value":"candidatePhone"}},{"kind":"Field","name":{"kind":"Name","value":"compensation"}},{"kind":"Field","name":{"kind":"Name","value":"compensationType"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"recruiterId"}},{"kind":"Field","name":{"kind":"Name","value":"rtrTemplateId"}},{"kind":"Field","name":{"kind":"Name","value":"candidateId"}},{"kind":"Field","name":{"kind":"Name","value":"createdById"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"signedAt"}},{"kind":"Field","name":{"kind":"Name","value":"viewedAt"}},{"kind":"Field","name":{"kind":"Name","value":"notes"}},{"kind":"Field","name":{"kind":"Name","value":"resumeRequired"}},{"kind":"Field","name":{"kind":"Name","value":"photoIdRequired"}},{"kind":"Field","name":{"kind":"Name","value":"referencesRequired"}},{"kind":"Field","name":{"kind":"Name","value":"employerDetailsRequired"}},{"kind":"Field","name":{"kind":"Name","value":"skillsRequired"}},{"kind":"Field","name":{"kind":"Name","value":"job"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"JobQueryFragment"}}]}},{"kind":"Field","name":{"kind":"Name","value":"createdBy"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"JobQueryFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"JobResponse"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"jobId"}},{"kind":"Field","name":{"kind":"Name","value":"starred"}},{"kind":"Field","name":{"kind":"Name","value":"organizationId"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"company"}},{"kind":"Field","name":{"kind":"Name","value":"location"}},{"kind":"Field","name":{"kind":"Name","value":"workType"}},{"kind":"Field","name":{"kind":"Name","value":"jobType"}},{"kind":"Field","name":{"kind":"Name","value":"compensation"}},{"kind":"Field","name":{"kind":"Name","value":"salaryMin"}},{"kind":"Field","name":{"kind":"Name","value":"salaryMax"}},{"kind":"Field","name":{"kind":"Name","value":"recruiterId"}},{"kind":"Field","name":{"kind":"Name","value":"benefits"}},{"kind":"Field","name":{"kind":"Name","value":"requirements"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]} as unknown as DocumentNode<RtrDetailQuery, RtrDetailQueryVariables>;

@@ -6,6 +6,7 @@ export interface NavItemProps extends BoxProps {
 	label: string;
 	children?: React.ReactNode;
 	isActive?: boolean;
+	isEnabled?: boolean;
 	hasActiveChild?: boolean;
 	subItems?: NavItemProps[];
 }

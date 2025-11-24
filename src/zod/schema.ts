@@ -107,3 +107,19 @@ export const rtrAcceptanceSchema = z
 			ctx.addIssue({ code: "custom", message: refErrMsg, input: data.references, path: ["references"] });
 		if (data.skillsRequired && (!data.skills || data.skills.length === 0)) ctx.addIssue({ code: "custom", message: skillErrMsg, input: data.skills, path: ["skills"] });
 	});
+
+export const accountSettingsSchema = z.object({
+	name: z.string().min(1, "Name is required"),
+	website: z.url("Invalid website URL"),
+	industry: z.string().min(1, "Industry is required"),
+	email: z.email("Invalid email address"),
+	address: z.string().min(1, "Address is required"),
+	city: z.string().min(1, "City is required"),
+	state: z.string().min(1, "State is required"),
+	country: z.string().min(1, "Country is required"),
+	zipcode: z.string().min(1, "Zipcode is required"),
+	phone: z
+		.string()
+		.min(1, "Phone is required")
+		.regex(/^\d{10}$/, "Invalid phone number"),
+});

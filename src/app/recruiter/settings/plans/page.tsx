@@ -26,32 +26,35 @@ const PaymentPlans = async ({ searchParams }: PageProps<"/recruiter/settings/pla
 						stripePaymentLink="https://stripe.com/payment-link"
 						stripePriceId="price_1234567890"
 						popular={false}
+						active={true}
 					/>
 				</GridItem>
 				<GridItem colSpan={{ base: 1, md: 1 }} spaceY={4}>
 					<SubscriptionCard
 						title="Standard"
 						description="Plan for medium businesses"
-						features={["1000 jobs", "1000 RTRs", "1000 users"]}
+						features={["1000 jobs", "1000 RTRs", "1000 users", "1000 applications", "1000 documents"]}
 						price={term === "monthly" ? 20 : 200}
 						interval={term}
 						currency="USD"
 						stripePaymentLink="https://stripe.com/payment-link/standard"
 						stripePriceId="price_1234567890"
 						popular={true}
+						active={false}
 					/>
 				</GridItem>
 				<GridItem colSpan={{ base: 1, md: 1 }} spaceY={4}>
 					<SubscriptionCard
 						title="Premium"
 						description="Plan for large businesses"
-						features={["10000 jobs", "10000 RTRs", "10000 users"]}
+						features={["10000 jobs", "10000 RTRs", "10000 users", "10000 applications", "10000 documents", "10000 users", "Live chat support"]}
 						price={term === "monthly" ? 30 : 300}
 						interval={term}
 						currency="USD"
 						stripePaymentLink="https://stripe.com/payment-link/premium"
 						stripePriceId="price_1234567890"
 						popular={false}
+						active={false}
 					/>
 				</GridItem>
 			</SimpleGrid>
